@@ -1,0 +1,25 @@
+# We do not use sudo
+sudo: false
+
+# Python versions for matrix
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install:
+  - pip install tox-travis
+  - pip install python-coveralls
+  - travis_retry pip install "virtualenv<14.0.0" "tox>=1.9"
+
+# Command to run tests, e.g. python setup.py test
+script:
+  - COMMAND_PREFIX='coverage run --source=src' QUIET=true tox
+
+
+# Report to coveralls
+after_success:
+  - coveralls

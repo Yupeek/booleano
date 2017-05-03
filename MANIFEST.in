@@ -1,0 +1,1 @@
+include VERSION.txt README.rst ez_setup.py

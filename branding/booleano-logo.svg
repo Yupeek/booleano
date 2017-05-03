@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="1000"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="booleano-logo.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask3560">
+      <text
+         xml:space="preserve"
+         style="font-size:381.95407104px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#44aa00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+         x="527.04779"
+         y="565.94214"
+         id="text3562"
+         transform="scale(0.9485463,1.0542448)"><tspan
+           sodipodi:role="line"
+           id="tspan3564"
+           x="527.04779"
+           y="565.94214"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#44aa00;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Bold">{0,1}</tspan></text>
+    </mask>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask3568">
+      <text
+         xml:space="preserve"
+         style="font-size:381.95407104px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#55d400;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+         x="527.04779"
+         y="565.94214"
+         id="text3570"
+         transform="scale(0.9485463,1.0542448)"><tspan
+           sodipodi:role="line"
+           id="tspan3572"
+           x="527.04779"
+           y="565.94214"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#55d400;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Bold">{0,1}</tspan></text>
+    </mask>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.498"
+     inkscape:cx="130.52209"
+     inkscape:cy="500"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1194"
+     inkscape:window-height="709"
+     inkscape:window-x="45"
+     inkscape:window-y="11" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Logo of Booleano</dc:title>
+        <dc:date>May 11th, 2009</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Gustavo Narea</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Gustavo Narea</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Gustavo Narea</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>booleano</rdf:li>
+            <rdf:li>python</rdf:li>
+            <rdf:li>library</rdf:li>
+            <rdf:li>boolean</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>The logo of Python library Booleano</dc:description>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-nd/3.0/es/deed.en_US" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-nd/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="set"
+     style="display:inline">
+    <g
+       id="g3720"
+       transform="translate(5e-6,0)"
+       inkscape:export-filename="/home/gustavo/Software/Booleano/branding/logo-medium.png"
+       inkscape:export-xdpi="14.769254"
+       inkscape:export-ydpi="14.769254">
+      <path
+         id="background-a"
+         d="M 967.46905,68.69121 L 32.531555,433.31621 C 44.418053,441.32974 58.805462,446.00371 74.312805,446.00371 L 925.68781,446.00371 C 966.84844,446.00371 1000.0003,413.06305 1000.0003,372.15996 L 1000.0003,129.84746 C 1000.0003,104.35467 987.1325,81.94775 967.46905,68.69121 z"
+         style="fill:#e3f4d7;fill-opacity:1;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;display:inline" />
+      <path
+         id="number-b"
+         d="M 904.68781,112.75371 C 898.67192,112.75393 893.85972,114.4476 890.25031,117.81621 C 886.64076,120.94464 884.84402,125.28189 884.84405,130.81621 C 884.84399,135.86969 886.40324,140.20694 889.53155,143.81621 C 892.90034,147.18525 897.23761,148.98203 902.53155,149.22246 C 907.58475,149.70391 910.97206,150.89135 912.65655,152.81621 C 914.58152,154.50082 915.53148,157.75374 915.53155,162.56621 L 915.53155,219.25371 C 915.53146,228.63847 916.14081,235.58807 917.34405,240.15996 C 918.78776,244.49143 921.66881,249.3349 926.00031,254.62871 C 921.90946,259.68206 919.1315,264.35991 917.68781,268.69121 C 916.24392,272.78202 915.53148,278.67853 915.53155,286.37871 L 915.53155,343.03496 C 915.53146,347.84759 914.58154,351.23491 912.65655,353.15996 C 910.97205,355.085 907.58478,356.16933 902.53155,356.40996 C 897.23757,356.65057 892.9003,358.44735 889.53155,361.81621 C 886.40327,365.42567 884.84402,369.7629 884.84405,374.81621 C 884.84399,380.35071 886.64076,384.68793 890.25031,387.81621 C 894.10035,391.18501 899.04691,392.84738 905.0628,392.84746 C 917.57559,392.84741 928.41866,388.16959 937.5628,378.78496 C 946.94733,369.40027 951.62518,358.3197 951.62531,345.56622 L 951.62531,286.37871 C 951.62518,281.56612 952.3376,278.21009 953.78155,276.28496 C 955.46584,274.35997 958.61565,273.14132 963.18781,272.65996 C 974.97863,271.45687 980.87514,265.45725 980.87531,254.62871 C 980.87515,243.80036 974.97862,237.63511 963.18781,236.19121 C 958.37503,235.71005 955.22519,234.62574 953.78155,232.94121 C 952.33763,231.01627 951.62518,227.55711 951.62531,222.50371 L 951.62531,160.03496 C 951.62518,147.28165 946.94731,136.23233 937.5628,126.84746 C 928.41868,117.46303 917.44122,112.75393 904.68781,112.75371 z M 734.46905,159.56621 L 698.37531,173.62871 L 698.37531,301.53496 L 661.9378,301.53496 C 654.47816,301.535 649.39721,302.38181 646.75031,304.06622 C 640.97511,307.43509 638.09405,312.61918 638.09406,319.59746 C 638.09403,325.61328 640.63448,330.42551 645.68781,334.03496 C 648.33471,336.44129 653.75629,337.62871 661.9378,337.62871 L 770.9378,337.62871 C 778.15659,337.62871 783.20631,336.78186 786.09406,335.09746 C 791.86905,331.24736 794.75011,326.09455 794.75031,319.59746 C 794.75012,313.58168 792.24086,308.63514 787.18781,304.78496 C 784.05941,302.61932 778.63784,301.53502 770.9378,301.53496 L 734.46905,301.53496 L 734.46905,159.56621 z M 470.75031,289.25371 L 445.84405,377.69121 C 445.12211,380.33812 444.78149,382.64111 444.78155,384.56622 C 444.7815,387.21311 445.8658,389.48482 448.03155,391.40996 C 450.19719,393.5756 452.84078,394.65987 455.96905,394.65996 C 460.78162,394.6599 464.61263,391.77882 467.50031,386.00371 L 518.40655,289.25371 L 470.75031,289.25371 z M 342.81281,312.31621 L 267.59405,341.62871 C 272.62657,342.5735 277.94707,343.03495 283.56281,343.03496 C 300.64757,343.03495 315.21856,338.22272 327.25031,328.59746 C 333.28327,323.74737 338.46622,318.3294 342.81281,312.31621 z"
+         style="font-size:360.94821167px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#22241c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Medium" />
+      <path
+         id="background-b"
+         d="M 74.31219,56.00433 C 33.151548,56.00433 -0.00031,88.94495 -0.00031,129.84807 L -0.00031,372.16057 C -0.00031,397.65336 12.867488,420.0603 32.53094,433.31682 L 967.46844,68.69183 C 955.58194,60.67829 941.19453,56.00433 925.68719,56.00433 L 74.31219,56.00433 z"
+         style="fill:#22241c;fill-opacity:1;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;display:inline" />
+      <path
+         id="number-a"
+         d="M 283.56219,107.34807 C 266.47722,107.34831 251.8031,112.29488 239.53094,122.16057 C 227.49928,131.78606 218.72169,144.05408 213.18719,158.97307 C 207.89325,173.65179 205.24966,190.01956 205.24969,208.06682 L 205.24969,242.34807 C 205.24966,270.26147 211.85863,294.08502 225.09344,313.81682 C 235.602,329.01678 249.76783,338.28284 267.59344,341.62933 L 342.81219,312.31682 C 347.30729,306.09818 350.90193,299.24814 353.59344,291.78557 C 359.1278,276.86645 361.90576,260.39555 361.90594,242.34807 L 361.90594,208.06682 C 361.90575,180.15365 355.16242,156.43319 341.68719,136.94182 C 328.45227,117.21021 309.06905,107.34831 283.56219,107.34807 z M 734.46844,107.34807 L 657.96844,127.19183 C 650.74943,129.11709 645.66851,131.42009 642.78094,134.06682 C 640.13395,136.47335 638.81215,140.30436 638.81219,145.59807 C 638.81216,150.89217 640.40269,155.36378 643.53094,158.97307 C 646.89975,162.58273 650.86511,164.37948 655.43719,164.37932 C 657.60283,164.37949 661.43387,163.66705 666.96844,162.22307 L 698.37469,153.91057 L 698.37469,173.62932 L 734.46844,159.56682 L 734.46844,107.34807 z M 94.93719,112.75432 C 82.424195,112.75454 71.477983,117.46364 62.09344,126.84807 C 52.949325,136.23292 48.3746,147.28225 48.37469,160.03557 L 48.37469,219.25432 C 48.3746,224.06708 47.527777,227.42311 45.84344,229.34807 C 44.399562,231.27323 41.384118,232.46067 36.81219,232.94182 C 25.021149,234.14508 19.124629,240.17596 19.12469,251.00433 C 19.12463,261.83284 25.021148,267.96687 36.81219,269.41057 C 41.62475,269.8919 44.774563,271.1106 46.21844,273.03558 C 47.662144,274.72006 48.3746,278.07611 48.37469,283.12933 L 48.37469,345.56683 C 48.3746,358.3203 52.949326,369.40091 62.09344,378.78557 C 71.477981,388.17017 82.558567,392.848 95.31219,392.84807 C 101.32785,392.84801 106.14006,391.1856 109.74969,387.81682 C 113.35902,384.68856 115.15578,380.35132 115.15594,374.81682 C 115.15578,369.76351 113.46213,365.42628 110.09344,361.81682 C 106.96507,358.44796 102.7622,356.65121 97.46844,356.41057 C 92.415031,355.9293 88.924615,354.71058 86.99969,352.78557 C 85.315139,351.10114 84.468317,347.84818 84.46844,343.03558 L 84.46844,286.37932 C 84.468314,276.99473 83.755859,270.14825 82.31219,265.81683 C 81.108907,261.24489 78.330952,256.29831 73.99969,251.00433 C 78.090317,245.95115 80.868276,241.37641 82.31219,237.28557 C 83.755858,232.95431 84.468317,226.95467 84.46844,219.25432 L 84.46844,162.56682 C 84.468314,157.75436 85.315137,154.39833 86.99969,152.47307 C 88.924617,150.5482 92.415029,149.4639 97.46844,149.22307 C 102.7622,148.98263 106.96507,147.18586 110.09344,143.81682 C 113.46214,140.20755 115.15578,135.87031 115.15594,130.81682 C 115.15578,125.28249 113.22465,120.94527 109.37469,117.81682 C 105.76506,114.44819 100.95285,112.75454 94.93719,112.75432 z M 283.56219,143.44182 C 296.31557,143.44201 306.54934,149.10106 314.24969,160.41057 C 321.94977,171.72045 325.81204,186.76642 325.81219,205.53557 L 325.81219,244.87932 C 325.81204,263.6487 321.94979,278.6634 314.24969,289.97307 C 306.54933,301.28282 296.31556,306.94187 283.56219,306.94183 C 270.80859,306.94186 260.60608,301.28279 252.90594,289.97307 C 245.20564,278.66342 241.34338,263.64871 241.34344,244.87932 L 241.34344,205.53557 C 241.34337,186.76641 245.20564,171.72046 252.90594,160.41057 C 260.60608,149.10105 270.80858,143.442 283.56219,143.44182 z"
+         style="font-size:360.94821167px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#e3f4d7;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Medium" />
+    </g>
+    <g
+       id="g3712"
+       transform="translate(-14.05621,0)">
+      <path
+         style="fill:#e3f4d7;fill-opacity:1;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;display:inline"
+         d="M 747.7906,507.22912 L 280.32213,974.69781 C 286.26538,984.97158 293.45908,990.96386 301.21274,990.96386 L 726.89999,990.96386 C 747.4803,990.96386 764.05621,948.73218 764.05621,896.29224 L 764.05621,585.63469 C 764.05621,552.95157 757.62231,524.22471 747.7906,507.22912 z"
+         id="path3696" />
+      <path
+         style="fill:#22241c;fill-opacity:1;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;display:inline"
+         d="M 301.21244,490.96386 C 280.63213,490.96386 264.05621,533.19549 264.05621,585.63547 L 264.05621,896.29302 C 264.05621,928.97613 270.4901,957.70303 280.32182,974.69859 L 747.7903,507.22991 C 741.84705,496.95613 734.65335,490.96386 726.89968,490.96386 L 301.21244,490.96386 z"
+         id="path3700" />
+      <text
+         id="text3704"
+         y="769.63287"
+         x="387.35138"
+         style="font-size:374.63156128px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#e3f4d7;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Medium"
+         xml:space="preserve"><tspan
+           y="769.63287"
+           x="387.35138"
+           id="tspan3706"
+           sodipodi:role="line">0</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:374.63156128px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#22241c;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:TlwgMono;-inkscape-font-specification:TlwgMono Medium"
+         x="634.33936"
+         y="956.37982"
+         id="text3708"><tspan
+           sodipodi:role="line"
+           id="tspan3710"
+           x="634.33936"
+           y="956.37982">1</tspan></text>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="box"
+     style="display:inline" />
+</svg>

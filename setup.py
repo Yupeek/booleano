@@ -27,6 +27,7 @@
 # use or other dealings in this Software without prior written authorization.
 
 import os
+import sys
 
 try:
     from setuptools import setup
@@ -34,9 +35,24 @@ except ImportError:
     from distutils.core import setup
 
 
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 VERSION = open(os.path.join(HERE, "VERSION.txt")).readline().rstrip()
 README = open(os.path.join(HERE, "README.rst")).read()
+
+
+if sys.argv[-1] == 'publish':
+    # os.system('cd docs && make html')
+    os.system('python setup.py sdist bdist_wheel upload')
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (VERSION, VERSION))
+    print("  git push --tags")
+    sys.exit()
+
+if sys.argv[-1] == 'doc':
+    os.system('cd docs && make html')
+    sys.exit()
+
 
 setup(name="booleano",
       version=VERSION,

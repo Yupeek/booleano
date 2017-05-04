@@ -10,7 +10,7 @@ python:
   - "3.6"
 before_script:
   - isort --recursive --check-only --diff src .
-# - flake8 src
+  - flake8 src
 
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors

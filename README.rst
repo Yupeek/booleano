@@ -1,3 +1,4 @@
+=========================================
 Booleano: Boolean Expressions Interpreter
 =========================================
 
@@ -53,7 +54,9 @@ The Fun Use Case
 Booleano allow to safely evaluate an expression into something usable.
 
 ``user:name is "john" and user:surname in {"doe", "shepard"}``
+
 +
+
 ``{"user": {"name": "katara", "surname"}}`` => False
 ``{"user": {"name": "john", "doe"}}`` => True
 
@@ -80,7 +83,7 @@ if you find a bug, or want some feature, feel free to create a issues, or a Pull
 it can be hard for us to work on it. the best way to have it fixed, it's to write a Pull Request with passing tests,
 and we will merge it if it's a good piece of code.
 
-see `CONTRIBUTING.rst <CONTRIBUTING.rst>`_ to know how work with ease on this project.
+see CONTRIBUTING.rst to know how work with ease on this project.
 
 
 Credit

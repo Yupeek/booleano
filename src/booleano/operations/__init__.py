@@ -35,10 +35,10 @@ using the classes provided by this package.
 
 """
 from __future__ import unicode_literals
+
 import six
 
 from booleano.exc import InvalidOperationError
-
 
 __all__ = (
     # Operands:
@@ -229,8 +229,9 @@ class OperationNode(object):
 
 # Importing the built-in operands and operators so they can be available from
 # this namespace:
-from booleano.operations.operands import (String, Number, Set, Variable,
-    Function, PlaceholderVariable, PlaceholderFunction, Operand)  # NOQA
-from booleano.operations.operators import (Not, And, Or, Xor, Equal, NotEqual,
+
+from booleano.operations.operands import (String, Number, Set, Variable,  # isort:skip
+    Function, PlaceholderVariable, PlaceholderFunction, Operand)
+from booleano.operations.operators import (Not, And, Or, Xor, Equal, NotEqual,  # isort:skip
     LessThan, GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset,
-    Operator)  # NOQA
+    Operator)

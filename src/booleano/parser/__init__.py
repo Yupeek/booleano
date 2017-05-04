@@ -31,10 +31,11 @@ Parser of boolean expressions.
 """
 
 from __future__ import unicode_literals
+
 from logging import getLogger
 
-from booleano.parser.parsers import EvaluableParser, ConvertibleParser
 from booleano.exc import GrammarError
+from booleano.parser.parsers import ConvertibleParser, EvaluableParser
 
 __all__ = ("EvaluableParseManager", "ConvertibleParseManager", "Grammar",
            "Bind", "SymbolTable")
@@ -378,5 +379,5 @@ class _Cache(object):
 
 
 # Importing the objects to be available from this namespace:
-from booleano.parser.scope import Bind, SymbolTable  # NOQA
-from booleano.parser.grammar import Grammar  # NOQA
+from booleano.parser.scope import Bind, SymbolTable  # isort:skip
+from booleano.parser.grammar import Grammar  # isort:skip

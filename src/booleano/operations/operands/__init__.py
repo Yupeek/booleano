@@ -33,9 +33,8 @@ from __future__ import unicode_literals
 
 import six
 
-
+from booleano.exc import BadOperandError, InvalidOperationError
 from booleano.operations import OPERATIONS, OperationNode
-from booleano.exc import InvalidOperationError, BadOperandError
 
 __all__ = ("String", "Number", "Set", "Variable", "Function",
            "PlaceholderVariable", "PlaceholderFunction")
@@ -238,7 +237,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
 
 # Importing the built-in operands so they can be available from this namespace:
-from booleano.operations.operands.constants import String, Number, Set  # NOQA
-from booleano.operations.operands.classes import Variable, Function  # NOQA
-from booleano.operations.operands.placeholders import (PlaceholderVariable,
-                                                       PlaceholderFunction)  # NOQA
+from booleano.operations.operands.constants import String, Number, Set  # isort:skip
+from booleano.operations.operands.classes import Variable, Function  # isort:skip
+from booleano.operations.operands.placeholders import (PlaceholderVariable,  # isort:skip
+                                                       PlaceholderFunction)

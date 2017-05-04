@@ -29,7 +29,7 @@
 Booleano operands.
 
 """
-
+import six
 
 from booleano.operations import OPERATIONS, OperationNode
 from booleano.exc import InvalidOperationError, BadOperandError
@@ -106,7 +106,7 @@ class _OperandMeta(type):
         return getattr(method, "implemented", True)
 
 
-class Operand(OperationNode):
+class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
     """
     Base class for operands.
     

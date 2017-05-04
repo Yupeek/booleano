@@ -34,6 +34,7 @@ Once parsed, the binary expressions are turned into the relevant operation
 using the classes provided by this package.
 
 """
+import six
 
 from booleano.exc import InvalidOperationError
 
@@ -57,6 +58,7 @@ OPERATIONS = set((
 ))
 
 
+@six.python_2_unicode_compatible
 class OperationNode(object):
     """
     Base class for the individual elements available in a boolean operation
@@ -154,6 +156,9 @@ class OperationNode(object):
         error_msg = 'Nodes "%s" and "%s" are not equivalent'
         assert isinstance(node, self.__class__), error_msg % (repr(node),
                                                               repr(self))
+
+    def __hash__(self):
+        return id(self)
     
     def __nonzero__(self):
         """
@@ -200,21 +205,6 @@ class OperationNode(object):
             return True
     
     def __str__(self):
-        """
-        Return the ASCII representation of this node.
-        
-        :raises NotImplementedError: If the Unicode representation is not
-            yet implemented.
-        
-        If it contains non-English characters, they'll get converted into ASCII
-        into ugly things -- It's best to use the Unicode representation
-        directly.
-        
-        """
-        as_unicode = self.__unicode__()
-        return str(as_unicode.encode("utf-8"))
-    
-    def __unicode__(self):
         """
         Return the Unicode representation for this node.
         

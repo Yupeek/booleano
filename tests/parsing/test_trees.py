@@ -31,7 +31,7 @@ Tests for the parse trees.
 """
 
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
-
+import six
 from booleano.parser.trees import EvaluableParseTree, ConvertibleParseTree
 from booleano.operations import And, String, PlaceholderVariable
 from booleano.exc import InvalidOperationError
@@ -96,7 +96,7 @@ class TestEvaluableTrees(object):
     
     def test_string(self):
         tree = EvaluableParseTree(BoolVar())
-        as_unicode = unicode(tree)
+        as_unicode = six.text_type(tree)
         expected = "Evaluable parse tree (Anonymous variable [BoolVar])"
         eq_(as_unicode, expected)
     
@@ -140,7 +140,7 @@ class TestConvertibleTrees(object):
     
     def test_string(self):
         tree = ConvertibleParseTree(BoolVar())
-        as_unicode = unicode(tree)
+        as_unicode = six.text_type(tree)
         expected = "Convertible parse tree (Anonymous variable [BoolVar])"
         eq_(as_unicode, expected)
     

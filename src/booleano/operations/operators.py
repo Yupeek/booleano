@@ -29,6 +29,8 @@
 Built-in operators.
 
 """
+import six
+
 
 from booleano.exc import InvalidOperationError
 from booleano.operations import OPERATIONS, OperationNode
@@ -48,6 +50,7 @@ class Operator(OperationNode):
     pass
 
 
+@six.python_2_unicode_compatible
 class UnaryOperator(Operator):
     """
     Base class for unary logical operators.
@@ -80,13 +83,16 @@ class UnaryOperator(Operator):
         assert node.operand == self.operand, \
                'Operands of unary operations %s and %s are not equivalent' % \
                (node, self)
+
+    def __hash__(self):
+        return id(self)
     
-    def __unicode__(self):
+    def __str__(self):
         """
         Return the Unicode representation for this operator and its operand.
         
         """
-        operand = unicode(self.operand)
+        operand = six.text_type(self.operand)
         return u"%s(%s)" % (self.__class__.__name__, operand)
     
     def __repr__(self):
@@ -95,6 +101,7 @@ class UnaryOperator(Operator):
         return "<%s %s>" % (self.__class__.__name__, operand)
 
 
+@six.python_2_unicode_compatible
 class BinaryOperator(Operator):
     """
     Base class for binary logical operators.
@@ -185,7 +192,7 @@ class BinaryOperator(Operator):
                'Operands of binary operations %s and %s are not equivalent' % \
                (node, self)
     
-    def __unicode__(self):
+    def __str__(self):
         """
         Return the Unicode representation for this binary operator, including
         its operands.

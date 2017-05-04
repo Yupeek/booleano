@@ -36,6 +36,7 @@ Booleano supports two kinds of parse trees:
   SQL "WHERE" clauses) using so-called parse tree converters.
 
 """
+import six
 
 __all__ = ("EvaluableParseTree", "ConvertibleParseTree")
 
@@ -62,6 +63,9 @@ class ParseTree(object):
         """
         return (isinstance(other, self.__class__) and
                 other.root_node == self.root_node)
+
+    def __hash__(self):
+        return id(self)
     
     def __ne__(self, other):
         """
@@ -71,6 +75,7 @@ class ParseTree(object):
         return not self.__eq__(other)
 
 
+@six.python_2_unicode_compatible
 class EvaluableParseTree(ParseTree):
     """
     Truth-evaluable parse tree.
@@ -100,15 +105,16 @@ class EvaluableParseTree(ParseTree):
         """
         return self.root_node(context)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation for this tree."""
-        return "Evaluable parse tree (%s)" % unicode(self.root_node)
+        return "Evaluable parse tree (%s)" % six.text_type(self.root_node)
     
     def __repr__(self):
         """Return the representation for this tree."""
         return "<Parse tree (evaluable) %s>" % repr(self.root_node)
 
 
+@six.python_2_unicode_compatible
 class ConvertibleParseTree(ParseTree):
     """
     Convertible parse tree.
@@ -127,9 +133,9 @@ class ConvertibleParseTree(ParseTree):
         """
         return converter(self.root_node)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation for this tree."""
-        return "Convertible parse tree (%s)" % unicode(self.root_node)
+        return "Convertible parse tree (%s)" % six.text_type(self.root_node)
     
     def __repr__(self):
         """Return the representation for this tree."""

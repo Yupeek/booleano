@@ -29,6 +29,8 @@
 Constant operands.
 
 """
+import six
+
 from booleano.exc import InvalidOperationError
 from booleano.operations.operands import Operand
 
@@ -93,7 +95,7 @@ class Constant(Operand):
                u'Constants %s and %s represent different values' % (self,
                                                                     node)
 
-
+@six.python_2_unicode_compatible
 class String(Constant):
     u"""
     Constant string.
@@ -141,15 +143,15 @@ class String(Constant):
         have to be a :class:`basestring` initially.
         
         """
-        string = unicode(string)
+        string = six.text_type(string)
         super(String, self).__init__(string)
     
     def equals(self, value, context):
         """Turn ``value`` into a string if it isn't a string yet"""
-        value = unicode(value)
+        value = six.text_type(value)
         return super(String, self).equals(value, context)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation of this constant string."""
         return u'"%s"' % self.constant_value
     
@@ -158,6 +160,7 @@ class String(Constant):
         return '<String "%s">' % self.constant_value.encode("utf-8")
 
 
+@six.python_2_unicode_compatible
 class Number(Constant):
     """
     Numeric constant.
@@ -236,15 +239,16 @@ class Number(Constant):
         except ValueError:
             raise InvalidOperationError('"%s" is not a number' % value)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation of this constant number."""
-        return unicode(self.constant_value)
+        return six.text_type(self.constant_value)
     
     def __repr__(self):
         """Return the representation for this constant number."""
         return '<Number %s>' % self.constant_value
 
 
+@six.python_2_unicode_compatible
 class Set(Constant):
     """
     Constant sets.
@@ -356,9 +360,9 @@ class Set(Constant):
         assert 0 == len(unmatched_elements), \
                u'No match for the following elements: %s' % unmatched_elements
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation of this constant set."""
-        elements = [unicode(element) for element in self.constant_value]
+        elements = [six.text_type(element) for element in self.constant_value]
         elements = u", ".join(elements)
         return "{%s}" % elements
     

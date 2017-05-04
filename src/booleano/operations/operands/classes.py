@@ -37,6 +37,8 @@ There are two types of Booleano classes:
 """
 from collections import OrderedDict
 
+import six
+
 from booleano.exc import BadCallError, BadFunctionError, BadOperandError
 from booleano.operations.operands import Operand, _OperandMeta
 
@@ -61,6 +63,7 @@ class Class(Operand):
     bypass_operation_check = True
 
 
+@six.python_2_unicode_compatible
 class Variable(Class):
     """
     Developer-defined variable.
@@ -70,7 +73,7 @@ class Variable(Class):
     # Only actual variables should be checked.
     bypass_operation_check = True
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation of this variable."""
         return 'Anonymous variable [%s]' % self.__class__.__name__
     
@@ -120,6 +123,7 @@ class _FunctionMeta(_OperandMeta):
         super(_FunctionMeta, cls).__init__(name, bases, ns)
 
 
+@six.python_2_unicode_compatible
 class Function(Class):
     """
     Base class for **calls** of developer-defined, n-ary functions.
@@ -278,7 +282,7 @@ class Function(Class):
                "Functions %s and %s were called with different arguments" % \
                (node, self)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation of this function."""
         args = [u'%s=%s' % (k, v) for (k, v) in self.arguments.items()]
         args = ", ".join(args)

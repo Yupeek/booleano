@@ -32,6 +32,8 @@ Booleano scope handling.
 
 from logging import getLogger
 
+import six
+
 from booleano.exc import ScopeError
 
 __all__ = ("Bind", "SymbolTable", "Namespace")
@@ -40,12 +42,13 @@ __all__ = ("Bind", "SymbolTable", "Namespace")
 LOGGER = getLogger(__name__)
 
 
+@six.python_2_unicode_compatible
 class _Identifier(object):
     """
     Multilingual identifier.
     
     """
-    
+
     def __init__(self, global_name, **names):
         """
         Create the identifier using ``global_name`` as it's name.
@@ -65,7 +68,7 @@ class _Identifier(object):
         for (locale, name) in names.items():
             names[locale] = name.lower()
         self.names = names
-    
+
     def get_localized_name(self, locale):
         """
         Return the localized name of the identifier in ``locale``.
@@ -84,7 +87,7 @@ class _Identifier(object):
                         self, locale)
             name = self.global_name
         return name
-    
+
     def _get_contents(self, locale):
         """
         Return the contents being wrapped, filtered by ``locale`` where
@@ -97,9 +100,9 @@ class _Identifier(object):
         
         """
         raise NotImplementedError()
-    
+
     #{ Comparison stuff
-    
+
     def __hash__(self):
         """
         Make the identifier hashable based on its global name.
@@ -109,7 +112,7 @@ class _Identifier(object):
         last = ord(self.global_name[-1])
         hash_ = first*2 + last*3 + len(self.global_name)
         return hash_
-    
+
     def __eq__(self, other):
         """
         Check that the ``other`` identifier is equivalent to this one.
@@ -122,17 +125,18 @@ class _Identifier(object):
             self.names == other.names):
             return True
         return False
-    
+
+
     def __ne__(self, other):
         """
         Check that the ``other`` identifier is NOT equivalent to this one.
         
         """
         return not self.__eq__(other)
-    
+
     #{ Representations
-    
-    def __unicode__(self):
+
+    def __str__(self):
         """
         Return the Unicode representation for the identifier.
         
@@ -141,19 +145,12 @@ class _Identifier(object):
         """
         raise NotImplementedError("Identifiers must set their Unicode "
                                   "representation")
-    
-    def __str__(self):
-        """
-        Return the ASCII representation for this identifier.
-        
-        This method returns the same as :meth:`__unicode__`.
-        
-        """
-        return self.__unicode__().encode("utf-8")
-    
+
+
     #}
 
 
+@six.python_2_unicode_compatible
 class Bind(_Identifier):
     """
     Operand binder.
@@ -162,7 +159,7 @@ class Bind(_Identifier):
     operand (even in different languages).
     
     """
-    
+
     def __init__(self, global_name, operand, **names):
         """
         
@@ -178,7 +175,7 @@ class Bind(_Identifier):
         """
         self.operand = operand
         super(Bind, self).__init__(global_name, **names)
-    
+
     def _get_contents(self, locale):
         """
         Return the operand bound.
@@ -187,7 +184,7 @@ class Bind(_Identifier):
         
         """
         return self.operand
-    
+
     def __eq__(self, other):
         """
         Check that the ``other`` binding is equivalent to this one.
@@ -200,8 +197,8 @@ class Bind(_Identifier):
         # We have to make sure ``other`` is a binding; otherwise, a symbol
         # table with the same names would equal this binding:
         return (same_id and isinstance(other, Bind))
-    
-    def __unicode__(self):
+
+    def __str__(self):
         """
         Return the Unicode representation for this binding, including its
         symbol table (if any).
@@ -214,6 +211,7 @@ class Bind(_Identifier):
         return description
 
 
+@six.python_2_unicode_compatible
 class SymbolTable(_Identifier):
     """
     Symbol table.
@@ -221,7 +219,7 @@ class SymbolTable(_Identifier):
     Symbol tables wrap *bound* operands (aka, "bindings").
     
     """
-    
+
     def __init__(self, global_name, objects, *subtables, **names):
         """
         
@@ -247,7 +245,7 @@ class SymbolTable(_Identifier):
             self.add_object(obj)
         for table in subtables:
             self.add_subtable(table)
-    
+
     def add_object(self, obj):
         """
         Add the ``obj`` object to this symbol table.
@@ -265,11 +263,11 @@ class SymbolTable(_Identifier):
         if obj in self.objects or obj.symbol_table:
             raise ScopeError(u"An equivalent of %s is already defined in %s" %
                              (obj, self))
-        
+
         # It's safe to include it!
         obj.symbol_table = self
         self.objects.add(obj)
-    
+
     def add_subtable(self, table):
         """
         Include ``table`` in the child tables of this symbol table.
@@ -287,11 +285,11 @@ class SymbolTable(_Identifier):
         if table in self.subtables:
             raise ScopeError(u"An equivalent of %s is already available in %s" %
                              (table, self))
-        
+
         # It's safe to include it!
         table.symbol_table = self
         self.subtables.add(table)
-    
+
     def validate_scope(self):
         """
         Make sure there's no name clash in the symbol table.
@@ -307,28 +305,28 @@ class SymbolTable(_Identifier):
         
         """
         # <--- Checking that there's no name clash among the global names
-        
+
         unique_objects = set([obj.global_name for obj in self.objects])
         if len(unique_objects) != len(self.objects):
             raise ScopeError("Two or more objects in %s share the same global "
                              "name" % self)
-        
+
         unique_tables = set([table.global_name for table in self.subtables])
         if len(unique_tables) != len(self.subtables):
             raise ScopeError("Two or more sub-tables in %s share the same "
                              "global name" % self)
-        
+
         # <--- Checking that there's no name clash in the sub-tables
         for table in self.subtables:
             table.validate_scope()
-        
+
         # <--- Checking that there's no name clash among the localized names
-        
+
         # Collecting all the locales used:
         locales = set()
         for id_ in (self.objects | self.subtables):
             locales |= set(id_.names.keys())
-        
+
         # Now let's see if any of them are duplicate:
         for locale in locales:
             # Checking the objects:
@@ -340,7 +338,7 @@ class SymbolTable(_Identifier):
                                      'bindings in %s (locale: %s)' %
                                      (name, self, locale))
                 used_object_names.add(name)
-            
+
             # Checking the sub-tables:
             used_table_names = set()
             for table in self.subtables:
@@ -350,7 +348,7 @@ class SymbolTable(_Identifier):
                                      'sub-tables in %s (locale: %s)' %
                                      (name, self, locale))
                 used_table_names.add(name)
-    
+
     def get_namespace(self, locale=None):
         """
         Extract the namespace for this symbol table in the ``locale``.
@@ -365,8 +363,8 @@ class SymbolTable(_Identifier):
         objects = self._get_objects(locale)
         subnamespaces = self._get_subnamespaces(locale)
         return Namespace(objects, subnamespaces)
-    
-    def __unicode__(self):
+
+    def __str__(self):
         """
         Return the Unicode representation for this symbol table, including its
         ancestors.
@@ -375,7 +373,7 @@ class SymbolTable(_Identifier):
         ancestors = self._get_ancestors_global_names()
         names = u":".join(ancestors)
         return u"Symbol table %s" % names
-    
+
     def __eq__(self, other):
         """
         Check that the ``other`` symbol table is equivalent to this one.
@@ -386,16 +384,16 @@ class SymbolTable(_Identifier):
         
         """
         same_id = super(SymbolTable, self).__eq__(other)
-        return (same_id and 
-                hasattr(other, "subtables") and 
-                hasattr(other, "objects") and 
+        return (same_id and
+                hasattr(other, "subtables") and
+                hasattr(other, "objects") and
                 other.subtables == self.subtables and
                 self.objects == other.objects)
-    
+
     def _get_contents(self, locale):
         """Return the namespace for this symbol table in ``locale``."""
         return self.get_namespace(locale)
-    
+
     def _get_objects(self, locale):
         """
         Return the objects available in this symbol table.
@@ -410,7 +408,7 @@ class SymbolTable(_Identifier):
         """
         objects = self.__extract_items__(self.objects, locale)
         return objects
-    
+
     def _get_subnamespaces(self, locale):
         """
         Return the sub-tables available under this symbol table, turned into
@@ -427,7 +425,7 @@ class SymbolTable(_Identifier):
         """
         subnamespaces = self.__extract_items__(self.subtables, locale)
         return subnamespaces
-    
+
     def __extract_items__(self, items, locale):
         """
         Filter the contents of the ``items`` identifiers based on the
@@ -443,7 +441,7 @@ class SymbolTable(_Identifier):
         
         """
         extracted_items = {}
-        
+
         if locale:
             # The items have to be extracted by their localized names:
             for item in items:
@@ -453,9 +451,9 @@ class SymbolTable(_Identifier):
             # We have to extract the items by their global names:
             for item in items:
                 extracted_items[item.global_name] = item._get_contents(locale)
-        
+
         return extracted_items
-    
+
     def _get_ancestors_global_names(self):
         """
         Return the global names for the ancestors **and** the current
@@ -485,7 +483,7 @@ class Namespace(object):
     A symbol table has one namespace per locale.
     
     """
-    
+
     def __init__(self, objects, subnamespaces={}):
         """
         
@@ -497,7 +495,7 @@ class Namespace(object):
         """
         self.objects = objects
         self.subnamespaces = subnamespaces
-    
+
     def get_object(self, object_name, namespace_parts=None):
         """
         Return the object identified by ``object_name``, which is under the
@@ -523,7 +521,7 @@ class Namespace(object):
                 msg = u'%s in %s' % (msg, u":".join(namespace_parts))
             raise ScopeError(msg)
         return ns.objects[object_name]
-    
+
     def _get_subnamespace(self, namespace_parts):
         """
         Return the sub-namespace represented by the names in

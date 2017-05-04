@@ -33,6 +33,8 @@ A placeholder operand is an object whose evaluation is not done by Booleano
 parser won't verify its existence.
 
 """
+import six
+
 from booleano.exc import BadCallError, InvalidOperationError
 from booleano.operations import OPERATIONS
 from booleano.operations.operands import Operand
@@ -101,13 +103,14 @@ class PlaceholderInstance(Operand):
         return ":".join(parts)
 
 
+@six.python_2_unicode_compatible
 class PlaceholderVariable(PlaceholderInstance):
     """
     Placeholder variable.
     
     """
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation for this placeholder variable."""
         msg = 'Placeholder variable "%s"' % self.name
         if self.namespace_parts:
@@ -124,6 +127,7 @@ class PlaceholderVariable(PlaceholderInstance):
         return msg + ">"
 
 
+@six.python_2_unicode_compatible
 class PlaceholderFunction(PlaceholderInstance):
     """
     Placeholder for a function call.
@@ -165,9 +169,9 @@ class PlaceholderFunction(PlaceholderInstance):
                u'Placeholder functions "%s" and "%s" were called with ' \
                'different arguments' % (self, node)
     
-    def __unicode__(self):
+    def __str__(self):
         """Return the Unicode representation for this placeholder function."""
-        args = [unicode(arg) for arg in self.arguments]
+        args = [six.text_type(arg) for arg in self.arguments]
         args = ", ".join(args)
         msg = 'Placeholder function call "%s"(%s)' % (self.name, args)
         if self.namespace_parts:

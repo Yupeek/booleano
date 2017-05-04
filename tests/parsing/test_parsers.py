@@ -31,7 +31,7 @@ Test suite for the built-in parser implementation.
 """
 
 from nose.tools import eq_, assert_raises
-
+import six
 from booleano.parser import Grammar, ConvertibleParser, EvaluableParser
 from booleano.parser.scope import Namespace
 from booleano.parser.parsers import Parser
@@ -867,7 +867,7 @@ class TestEvaluableParser(object):
         try:
             self.parser('~ foo')
         except BadExpressionError, exc:
-            eq_('"foo" represents a function, not a variable', unicode(exc))
+            eq_('"foo" represents a function, not a variable', six.text_type(exc))
         else:
             assert 0, '"foo" is a function, not a variable!'
     
@@ -903,7 +903,7 @@ class TestEvaluableParser(object):
         try:
             self.parser('~ bool()')
         except BadExpressionError, exc:
-            eq_('"bool" is not a function', unicode(exc))
+            eq_('"bool" is not a function', six.text_type(exc))
         else:
             assert 0, '"bool" is a variable, not a function!'
     

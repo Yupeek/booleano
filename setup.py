@@ -64,7 +64,7 @@ setup(name="booleano",
       packages=['booleano', 'booleano.parser', 'booleano.operations', 'booleano.operations.operands'],
       zip_safe=False,
       tests_require=["coverage >= 3.0", "nose >= 0.11.0", "tox"],
-      install_requires=["pyparsing >= 1.5.2"],
+      install_requires=["pyparsing >= 1.5.2", "six"],
       test_suite="nose.collector",
       )
 

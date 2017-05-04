@@ -31,7 +31,7 @@ Tests for the operators.
 """
 
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
-
+import six
 from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
     GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset)
 from booleano.operations.operators import Operator
@@ -122,8 +122,8 @@ class TestNot(object):
     def test_string_representation(self):
         op1 = Not(BoolVar())
         op2 = Not(And(BoolVar(), BoolVar()))
-        as_unicode1 = unicode(op1)
-        as_unicode2 = unicode(op2)
+        as_unicode1 = six.text_type(op1)
+        as_unicode2 = six.text_type(op2)
         eq_(as_unicode1, "Not(Anonymous variable [BoolVar])")
         eq_(as_unicode1, str(op1))
         eq_(as_unicode2, "Not(And(Anonymous variable [BoolVar], " \
@@ -208,7 +208,7 @@ class TestAnd(object):
     
     def test_string_representation(self):
         op = And(BoolVar(), BoolVar())
-        as_unicode = unicode(op)
+        as_unicode = six.text_type(op)
         eq_("And(Anonymous variable [BoolVar], Anonymous variable [BoolVar])",
             as_unicode)
         eq_(as_unicode, str(op))
@@ -216,7 +216,7 @@ class TestAnd(object):
         # Now with operators as operands:
         op = And(Not(BoolVar()), Not(BoolVar()))
         eq_("And(Not(Anonymous variable [BoolVar]), Not(Anonymous variable [BoolVar]))",
-            unicode(op))
+            six.text_type(op))
     
     def test_representation(self):
         op = And(BoolVar(), BoolVar())
@@ -302,7 +302,7 @@ class TestOr(object):
     
     def test_string_representation(self):
         op = Or(BoolVar(), BoolVar())
-        as_unicode = unicode(op)
+        as_unicode = six.text_type(op)
         expected = "Or(Anonymous variable [BoolVar], " \
                    "Anonymous variable [BoolVar])"
         eq_(as_unicode, expected)
@@ -312,7 +312,7 @@ class TestOr(object):
         op = Or(Not(BoolVar()), Not(BoolVar()))
         expected = "Or(Not(Anonymous variable [BoolVar]), " \
                       "Not(Anonymous variable [BoolVar]))"
-        eq_(unicode(op), expected)
+        eq_(six.text_type(op), expected)
     
     def test_representation(self):
         op = Or(BoolVar(), BoolVar())
@@ -385,7 +385,7 @@ class TestXor(object):
     
     def test_string_representation(self):
         op = Xor(BoolVar(), BoolVar())
-        as_unicode = unicode(op)
+        as_unicode = six.text_type(op)
         eq_("Xor(Anonymous variable [BoolVar], Anonymous variable [BoolVar])",
             as_unicode)
         eq_(as_unicode, str(op))
@@ -394,7 +394,7 @@ class TestXor(object):
         op = Xor(Not(BoolVar()), Not(BoolVar()))
         eq_("Xor(Not(Anonymous variable [BoolVar]), " \
             "Not(Anonymous variable [BoolVar]))",
-            unicode(op))
+            six.text_type(op))
     
     def test_representation(self):
         op = Xor(BoolVar(), BoolVar())
@@ -487,7 +487,7 @@ class TestNonConnectiveBinaryOperators(object):
     def test_string_representation(self):
         op = Equal(String(u"¿qué hora es?"), BoolVar())
         eq_(u'Equal(Anonymous variable [BoolVar], "¿qué hora es?")',
-            unicode(op))
+            six.text_type(op))
         eq_(str(op), 'Equal(Anonymous variable [BoolVar], "¿qué hora es?")')
     
     def test_representation(self):

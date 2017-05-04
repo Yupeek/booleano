@@ -31,6 +31,7 @@ Tests for unbounded operands.
 """
 
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
+import six
 
 from booleano.operations import (String, Number, Set, Variable, Function,
                                  PlaceholderVariable, PlaceholderFunction)
@@ -317,7 +318,7 @@ class TestVariable(object):
     
     def test_string_representation(self):
         var = TrafficLightVar()
-        as_unicode = unicode(var)
+        as_unicode = six.text_type(var)
         eq_("Anonymous variable [TrafficLightVar]", as_unicode)
         eq_(str(var), as_unicode)
     
@@ -552,7 +553,7 @@ class TestFunction(object):
         func = PermissiveFunction(String("foo"), String(u"bár"))
         expected = u'Anonymous function call [PermissiveFunction](arg0="foo", '\
                    u'oarg0="bár", oarg1=1.0)'
-        eq_(unicode(func), expected)
+        eq_(six.text_type(func), expected)
         eq_(str(func), expected.encode("utf-8"))
     
     def test_representation(self):
@@ -635,7 +636,7 @@ class TestString(object):
     
     def test_string_representation(self):
         string = String(u"caña")
-        eq_(unicode(string), u'"caña"')
+        eq_(six.text_type(string), u'"caña"')
         eq_(str(string), '"caña"')
     
     def test_representation(self):
@@ -759,7 +760,7 @@ class TestNumber(object):
     
     def test_string_representation(self):
         number = Number(4)
-        eq_(unicode(number), "4.0")
+        eq_(six.text_type(number), "4.0")
         eq_(str(number), "4.0")
     
     def test_representation(self):
@@ -799,8 +800,8 @@ class TestSet(object):
         try:
             Set(Number(3), "hola")
             assert False, "InvalidOperationError exception not raised"
-        except InvalidOperationError, exc:
-            assert 'Item "hola" is not an operand' in unicode(exc)
+        except InvalidOperationError as exc:
+            assert 'Item "hola" is not an operand' in six.text_type(exc)
 
     def test_equality(self):
         op = Set(Number(3), String("hola"))
@@ -892,7 +893,7 @@ class TestSet(object):
 
     def test_string_representation(self):
         set_ = Set(Number(3), Number(5))
-        as_unicode = unicode(set_)
+        as_unicode = six.text_type(set_)
         try:
             eq_(as_unicode, "{3.0, 5.0}")
         except AssertionError:
@@ -1050,12 +1051,12 @@ class TestPlaceholderVariable(object):
     
     def test_string_representation_without_namespace(self):
         var = PlaceholderVariable(u"aquí", None)
-        eq_(unicode(var), u'Placeholder variable "aquí"')
+        eq_(six.text_type(var), u'Placeholder variable "aquí"')
         eq_(str(var), 'Placeholder variable "aquí"')
     
     def test_string_representation_with_namespace(self):
         var = PlaceholderVariable(u"aquí", ["some", "thing"])
-        eq_(unicode(var), u'Placeholder variable "aquí" at some:thing')
+        eq_(six.text_type(var), u'Placeholder variable "aquí" at some:thing')
         eq_(str(var), 'Placeholder variable "aquí" at some:thing')
     
     def test_representation_without_namespace(self):
@@ -1275,12 +1276,12 @@ class TestPlaceholderFunction(object):
     
     def test_string_representation_without_namespace(self):
         func = PlaceholderFunction(u"aquí", None, Number(1), Number(2))
-        eq_(unicode(func), u'Placeholder function call "aquí"(1.0, 2.0)')
+        eq_(six.text_type(func), u'Placeholder function call "aquí"(1.0, 2.0)')
         eq_(str(func), 'Placeholder function call "aquí"(1.0, 2.0)')
     
     def test_string_representation_with_namespace(self):
         func = PlaceholderFunction(u"aquí", ["a", "z"], Number(1), Number(2))
-        eq_(unicode(func), u'Placeholder function call "aquí"(1.0, 2.0) at a:z')
+        eq_(six.text_type(func), u'Placeholder function call "aquí"(1.0, 2.0) at a:z')
         eq_(str(func), 'Placeholder function call "aquí"(1.0, 2.0) at a:z')
     
     def test_representation_without_namespace(self):

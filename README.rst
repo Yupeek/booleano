@@ -28,10 +28,6 @@ stable branche
     :target: https://pypi.python.org/pypi/booleano
     :alt: Number of PyPI downloads per month
 
-.. image:: https://requires.io/github/Yupeek/booleano/requirements.svg?branch=master
-     :target: https://requires.io/github/Yupeek/booleano/requirements/?branch=master
-     :alt: Requirements Status
-
 development status
 
 .. image:: https://img.shields.io/travis/Yupeek/booleano/develop.svg
@@ -39,11 +35,6 @@ development status
 
 .. image:: https://coveralls.io/repos/github/Yupeek/booleano/badge.svg?branch=develop
     :target: https://coveralls.io/github/Yupeek/booleano?branch=develop
-
-.. image:: https://requires.io/github/Yupeek/booleano/requirements.svg?branch=develop
-     :target: https://requires.io/github/Yupeek/booleano/requirements/?branch=develop
-     :alt: Requirements Status
-
 
 
 In order to handle text-based filters, Booleano ships with a fully-featured

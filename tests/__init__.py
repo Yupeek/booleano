@@ -35,6 +35,8 @@ This module contains utilities shared among the whole test suite.
 import logging
 from collections import OrderedDict
 
+import six
+
 from booleano.operations.converters import BaseConverter
 from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
     GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset, String, Number,
@@ -381,7 +383,7 @@ class StringConverter(BaseConverter):
     def convert_number(self, number):
         # TODO: Number properties such as decimal separator must be taken into
         # account.
-        return unicode(number)
+        return six.text_type(number)
     
     def convert_set(self, *elements):
         element_sep = self.grammar.get_token("element_separator") + " "

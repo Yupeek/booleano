@@ -32,6 +32,7 @@ Generic Pyparsing-based parser implementation.
 
 import re
 
+import six
 from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal,
                        OneOrMore, Optional, ParseException, ParserElement,
                        Regex, StringEnd, StringStart, Suppress, Word,
@@ -434,7 +435,7 @@ class EvaluableParser(Parser):
     
     def __get_original_identifier__(self, tokens):
         """Build the original identifier from a Pyparsing ``tokens``."""
-        ns_sep = unicode(self._grammar.get_token("namespace_separator"))
+        ns_sep = six.text_type(self._grammar.get_token("namespace_separator"))
         id_parts = list(tokens.namespace_parts) + [tokens.identifier]
         id_ = ns_sep.join(id_parts)
         return id_

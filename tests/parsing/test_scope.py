@@ -31,7 +31,7 @@ Scope handling tests.
 """
 
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
-
+import six
 from booleano.parser.scope import Bind, SymbolTable, Namespace, _Identifier
 from booleano.operations import String, Number
 from booleano.exc import ScopeError
@@ -221,12 +221,12 @@ class TestBind(object):
     def test_string_without_symbol_table(self):
         # With ASCII characters:
         bind1 = Bind("pi", Number(3.1416))
-        bind1_as_unicode = unicode(bind1)
+        bind1_as_unicode = six.text_type(bind1)
         eq_(bind1_as_unicode, 'Operand 3.1416 bound as "pi"')
         eq_(bind1_as_unicode, str(bind1))
         # With non-ASCII characters:
         bind2 = Bind(u"pí", Number(3.1416))
-        bind2_as_unicode = unicode(bind2)
+        bind2_as_unicode = six.text_type(bind2)
         eq_(bind2_as_unicode, u'Operand 3.1416 bound as "pí"')
         eq_(str(bind2), 'Operand 3.1416 bound as "pí"')
     
@@ -234,14 +234,14 @@ class TestBind(object):
         # With ASCII characters:
         bind1 = Bind("pi", Number(3.1416))
         SymbolTable("global", [bind1])
-        bind1_as_unicode = unicode(bind1)
+        bind1_as_unicode = six.text_type(bind1)
         eq_('Operand 3.1416 bound as "pi" (in Symbol table global)',
             bind1_as_unicode)
         eq_(str(bind1), bind1_as_unicode)
         # With non-ASCII characters:
         bind2 = Bind(u"pí", Number(3.1416))
         SymbolTable("global", [bind2])
-        bind2_as_unicode = unicode(bind2)
+        bind2_as_unicode = six.text_type(bind2)
         eq_(u'Operand 3.1416 bound as "pí" (in Symbol table global)',
             bind2_as_unicode)
         eq_('Operand 3.1416 bound as "pí" (in Symbol table global)', str(bind2))
@@ -841,16 +841,16 @@ class TestSymbolTable(object):
         st2 = SymbolTable("grand-child", [])
         st1 = SymbolTable("parent", (), st2)
         st0 = SymbolTable("global", (), st1)
-        eq_(unicode(st0), "Symbol table global")
-        eq_(unicode(st1), "Symbol table global:parent")
-        eq_(unicode(st2), "Symbol table global:parent:grand-child")
+        eq_(six.text_type(st0), "Symbol table global")
+        eq_(six.text_type(st1), "Symbol table global:parent")
+        eq_(six.text_type(st2), "Symbol table global:parent:grand-child")
         # With Unicode characters:
         st2 = SymbolTable(u"gránd-chíld", [])
         st1 = SymbolTable(u"párênt", (), st2)
         st0 = SymbolTable(u"glòbál", (), st1)
-        eq_(unicode(st0), u"Symbol table glòbál")
-        eq_(unicode(st1), u"Symbol table glòbál:párênt")
-        eq_(unicode(st2), u"Symbol table glòbál:párênt:gránd-chíld")
+        eq_(six.text_type(st0), u"Symbol table glòbál")
+        eq_(six.text_type(st1), u"Symbol table glòbál:párênt")
+        eq_(six.text_type(st2), u"Symbol table glòbál:párênt:gránd-chíld")
 
 
 class TestNamespaces(object):

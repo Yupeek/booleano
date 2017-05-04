@@ -35,6 +35,7 @@ There are two types of Booleano classes:
 **Python classes and Booleano classes are two different things!**
 
 """
+from __future__ import unicode_literals
 from collections import OrderedDict
 
 import six

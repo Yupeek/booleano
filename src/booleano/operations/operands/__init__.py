@@ -29,7 +29,9 @@
 Booleano operands.
 
 """
+from __future__ import unicode_literals
 import six
+
 
 from booleano.operations import OPERATIONS, OperationNode
 from booleano.exc import InvalidOperationError, BadOperandError

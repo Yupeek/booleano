@@ -29,6 +29,7 @@
 Tests for the parsing managers.
 
 """
+from __future__ import unicode_literals
 
 from nose.tools import eq_, ok_, assert_false, assert_raises
 
@@ -115,7 +116,9 @@ class TestEvaluableParseManager(object):
             LessEqual(PedestriansCrossingRoad(), Number(3)))
         eq_(parse_tree, expected_tree)
         # Checking the log:
-        info = "Generated parser for unknown grammar 'es'"
+        info = "Generated parser for unknown grammar u'es'"
+        print(log_handler.handler.messages)
+
         ok_(info in log_handler.handler.messages['info'])
         log_handler.undo()
     
@@ -135,7 +138,7 @@ class TestEvaluableParseManager(object):
             LessEqual(PedestriansCrossingRoad(), Number(3)))
         eq_(parse_tree, expected_tree)
         # Checking the log:
-        info = "Generated parser for unknown grammar 'fr'"
+        info = "Generated parser for unknown grammar u'fr'"
         ok_(info in log_handler.handler.messages['info'])
         log_handler.undo()
     

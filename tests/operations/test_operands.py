@@ -29,6 +29,7 @@
 Tests for unbounded operands.
 
 """
+from __future__ import unicode_literals
 
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
 import six

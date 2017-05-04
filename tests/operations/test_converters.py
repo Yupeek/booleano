@@ -29,6 +29,8 @@
 Tests for the parse tree converters.
 
 """
+from __future__ import unicode_literals
+
 from nose.tools import eq_, assert_raises, raises
 
 from booleano.operations.converters import BaseConverter

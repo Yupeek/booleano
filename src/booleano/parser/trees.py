@@ -36,6 +36,7 @@ Booleano supports two kinds of parse trees:
   SQL "WHERE" clauses) using so-called parse tree converters.
 
 """
+from __future__ import unicode_literals
 import six
 
 __all__ = ("EvaluableParseTree", "ConvertibleParseTree")

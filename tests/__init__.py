@@ -32,10 +32,19 @@ This module contains utilities shared among the whole test suite.
 
 """
 
+from __future__ import unicode_literals
+import six
+
+if six.PY2:  # pragma: nocover
+    import sys
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
+
+
 import logging
 from collections import OrderedDict
 
-import six
+
 
 from booleano.operations.converters import BaseConverter
 from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
@@ -224,6 +233,7 @@ class MockLoggingHandler(logging.Handler):
         logging.Handler.__init__(self, *args, **kwargs)
 
     def emit(self, record):
+        print("received message %s %s"% (record.levelname, record.getMessage()))
         self.messages[record.levelname.lower()].append(record.getMessage())
     
     def reset(self):

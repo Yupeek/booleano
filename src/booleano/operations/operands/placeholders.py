@@ -33,6 +33,7 @@ A placeholder operand is an object whose evaluation is not done by Booleano
 parser won't verify its existence.
 
 """
+from __future__ import unicode_literals
 import six
 
 from booleano.exc import BadCallError, InvalidOperationError
@@ -120,7 +121,7 @@ class PlaceholderVariable(PlaceholderInstance):
     
     def __repr__(self):
         """Return the representation for this placeholder variable."""
-        msg = '<Placeholder variable "%s"' % self.name.encode("utf-8")
+        msg = '<Placeholder variable "%s"' % self.name
         if self.namespace_parts:
             ns = self._namespace_to_ascii()
             msg = '%s at namespace="%s"' % (msg, ns)
@@ -183,7 +184,7 @@ class PlaceholderFunction(PlaceholderInstance):
         """Return the representation for this placeholder function."""
         args = [repr(arg) for arg in self.arguments]
         args = ", ".join(args)
-        func_name = self.name.encode("utf-8")
+        func_name = self.name
         msg = '<Placeholder function call "%s"(%s)' % (func_name, args)
         if self.namespace_parts:
             ns = self._namespace_to_ascii()

@@ -29,6 +29,7 @@
 Test suite for the grammar configurations.
 
 """
+from __future__ import unicode_literals
 
 from nose.tools import eq_, ok_, assert_raises
 

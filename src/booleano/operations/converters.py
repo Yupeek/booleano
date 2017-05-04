@@ -30,6 +30,8 @@ Converters for Booleano parse tree structures (the convertible, not the
 evaluable ones).
 
 """
+from __future__ import unicode_literals
+
 from booleano.exc import ConversionError
 from booleano.operations import (And, BelongsTo, Equal, GreaterEqual,
                                  GreaterThan, IsSubset, LessEqual, LessThan,

@@ -29,6 +29,7 @@
 Test suite for the built-in parser implementation.
 
 """
+from __future__ import unicode_literals
 
 from nose.tools import eq_, assert_raises
 import six

@@ -28,6 +28,7 @@
 
 # Namespace package here! See:
 # http://peak.telecommunity.com/DevCenter/setuptools#namespace-packages
+from __future__ import unicode_literals
 try: #pragma: no cover
     __import__('pkg_resources').declare_namespace(__name__)
 except ImportError: #pragma: no cover

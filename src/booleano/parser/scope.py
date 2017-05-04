@@ -29,6 +29,7 @@
 Booleano scope handling.
 
 """
+from __future__ import unicode_literals
 
 from logging import getLogger
 

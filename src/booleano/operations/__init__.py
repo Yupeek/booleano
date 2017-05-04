@@ -34,6 +34,7 @@ Once parsed, the binary expressions are turned into the relevant operation
 using the classes provided by this package.
 
 """
+from __future__ import unicode_literals
 import six
 
 from booleano.exc import InvalidOperationError

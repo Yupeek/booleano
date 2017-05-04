@@ -29,6 +29,7 @@
 Constant operands.
 
 """
+from __future__ import unicode_literals
 import six
 
 from booleano.exc import InvalidOperationError
@@ -157,7 +158,7 @@ class String(Constant):
     
     def __repr__(self):
         """Return the representation for this constant string."""
-        return '<String "%s">' % self.constant_value.encode("utf-8")
+        return '<String "%s">' % self.constant_value
 
 
 @six.python_2_unicode_compatible

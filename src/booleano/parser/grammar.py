@@ -29,6 +29,7 @@
 Adaptive grammar definition and handling.
 
 """
+from __future__ import unicode_literals
 
 from booleano.exc import GrammarError
 

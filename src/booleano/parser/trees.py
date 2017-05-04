@@ -37,6 +37,7 @@ Booleano supports two kinds of parse trees:
 
 """
 from __future__ import unicode_literals
+
 import six
 
 __all__ = ("EvaluableParseTree", "ConvertibleParseTree")

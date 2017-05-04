@@ -30,8 +30,8 @@ Built-in operators.
 
 """
 from __future__ import unicode_literals
-import six
 
+import six
 
 from booleano.exc import InvalidOperationError
 from booleano.operations import OPERATIONS, OperationNode

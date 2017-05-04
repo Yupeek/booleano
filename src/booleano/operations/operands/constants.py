@@ -30,6 +30,7 @@ Constant operands.
 
 """
 from __future__ import unicode_literals
+
 import six
 
 from booleano.exc import InvalidOperationError

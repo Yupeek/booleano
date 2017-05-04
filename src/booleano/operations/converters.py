@@ -33,11 +33,8 @@ evaluable ones).
 from __future__ import unicode_literals
 
 from booleano.exc import ConversionError
-from booleano.operations import (And, BelongsTo, Equal, GreaterEqual,
-                                 GreaterThan, IsSubset, LessEqual, LessThan,
-                                 Not, NotEqual, Number, Or,
-                                 PlaceholderFunction, PlaceholderVariable, Set,
-                                 String, Xor)
+from booleano.operations import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual, LessThan, Not,
+                                 NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set, String, Xor)
 from booleano.operations.operators import UnaryOperator
 
 __all__ = ("BaseConverter", )

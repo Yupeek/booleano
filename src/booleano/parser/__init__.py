@@ -378,5 +378,5 @@ class _Cache(object):
 
 
 # Importing the objects to be available from this namespace:
-from booleano.parser.scope import Bind, SymbolTable
-from booleano.parser.grammar import Grammar
+from booleano.parser.scope import Bind, SymbolTable  # NOQA
+from booleano.parser.grammar import Grammar  # NOQA

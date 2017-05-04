@@ -8,11 +8,14 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+before_script:
+  - isort --recursive --check-only --diff src .
+# - flake8 src
+
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
-  - pip install tox-travis
-  - pip install python-coveralls
+  - pip install tox-travis python-coveralls flake8 isort
   - travis_retry pip install "virtualenv<14.0.0" "tox>=1.9"
 
 # Command to run tests, e.g. python setup.py test

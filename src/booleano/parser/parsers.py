@@ -31,22 +31,18 @@ Generic Pyparsing-based parser implementation.
 """
 
 from __future__ import unicode_literals
+
 import re
 
 import six
 import six.moves
-
-from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal,
-                       OneOrMore, Optional, ParseException, ParserElement,
-                       Regex, StringEnd, StringStart, Suppress, Word,
-                       ZeroOrMore, alphas, delimitedList, nums, opAssoc,
-                       operatorPrecedence, quotedString, removeQuotes)
+from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal, OneOrMore, Optional, ParseException,
+                       ParserElement, Regex, StringEnd, StringStart, Suppress, Word, ZeroOrMore, alphas, delimitedList,
+                       nums, opAssoc, operatorPrecedence, quotedString, removeQuotes)
 
 from booleano.exc import BadExpressionError
-from booleano.operations import (And, BelongsTo, Equal, Function, GreaterEqual,
-                                 GreaterThan, IsSubset, LessEqual, LessThan,
-                                 Not, NotEqual, Number, Or,
-                                 PlaceholderFunction, PlaceholderVariable, Set,
+from booleano.operations import (And, BelongsTo, Equal, Function, GreaterEqual, GreaterThan, IsSubset, LessEqual,
+                                 LessThan, Not, NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set,
                                  String, Variable, Xor)
 from booleano.parser.trees import ConvertibleParseTree, EvaluableParseTree
 

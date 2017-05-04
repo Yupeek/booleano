@@ -230,7 +230,7 @@ class OperationNode(object):
 # Importing the built-in operands and operators so they can be available from
 # this namespace:
 from booleano.operations.operands import (String, Number, Set, Variable,
-    Function, PlaceholderVariable, PlaceholderFunction, Operand)
+    Function, PlaceholderVariable, PlaceholderFunction, Operand)  # NOQA
 from booleano.operations.operators import (Not, And, Or, Xor, Equal, NotEqual,
     LessThan, GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset,
-    Operator)
+    Operator)  # NOQA

@@ -34,6 +34,7 @@ parser won't verify its existence.
 
 """
 from __future__ import unicode_literals
+
 import six
 
 from booleano.exc import BadCallError, InvalidOperationError

@@ -27,6 +27,7 @@
 # use or other dealings in this Software without prior written authorization.
 
 import os
+import sys
 
 try:
     from setuptools import setup
@@ -34,9 +35,24 @@ except ImportError:
     from distutils.core import setup
 
 
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 VERSION = open(os.path.join(HERE, "VERSION.txt")).readline().rstrip()
 README = open(os.path.join(HERE, "README.rst")).read()
+
+
+if sys.argv[-1] == 'publish':
+    # os.system('cd docs && make html')
+    os.system('python setup.py sdist bdist_wheel upload')
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (VERSION, VERSION))
+    print("  git push --tags")
+    sys.exit()
+
+if sys.argv[-1] == 'doc':
+    os.system('cd docs && make html')
+    sys.exit()
+
 
 setup(name="booleano",
       version=VERSION,
@@ -49,6 +65,10 @@ setup(name="booleano",
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         "Topic :: Scientific/Engineering :: Human Machine Interfaces",
         "Topic :: Software Development :: Libraries",
         "Topic :: Text Processing :: Linguistic",
@@ -56,8 +76,8 @@ setup(name="booleano",
       keywords="boolean expression natural language condition conditions",
       author="Gustavo Narea",
       author_email="me@gustavonarea.net",
-      url="http://code.gustavonarea.net/booleano/",
-      download_url="https://launchpad.net/booleano/+download",
+      url="https://github.com/Yupeek/booleano",
+      download_url="https://github.com/Yupeek/booleano",
       license="MIT X License (http://www.opensource.org/licenses/mit-license.php)",
       namespace_packages=["booleano"],
       package_dir={'': "src"},

@@ -23,6 +23,16 @@ Booleano: Boolean Expressions Interpreter
     conditions from objects provided by a third party library.
 
 
+The Fun Use Case
+----------------
+
+Booleano allow to safely evaluate an expression into something usable.
+
+``user:name is "john" and user:surname in {"doe", "shepard"}``
++
+``{"user": {"name": "katara", "surname"}}`` => False
+``{"user": {"name": "john", "doe"}}`` => True
+
 The Three Use Cases
 -------------------
 

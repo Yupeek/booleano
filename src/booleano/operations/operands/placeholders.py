@@ -97,11 +97,6 @@ class PlaceholderInstance(Operand):
     def _namespace_to_unicode(self):
         """Return the namespace as a single Unicode string."""
         return u":".join(self.namespace_parts)
-    
-    def _namespace_to_ascii(self):
-        """Return the namespace as a single ASCII string."""
-        parts = [part.encode("utf-8") for part in self.namespace_parts]
-        return ":".join(parts)
 
 
 @six.python_2_unicode_compatible
@@ -123,7 +118,7 @@ class PlaceholderVariable(PlaceholderInstance):
         """Return the representation for this placeholder variable."""
         msg = '<Placeholder variable "%s"' % self.name
         if self.namespace_parts:
-            ns = self._namespace_to_ascii()
+            ns = self._namespace_to_unicode()
             msg = '%s at namespace="%s"' % (msg, ns)
         return msg + ">"
 
@@ -187,6 +182,6 @@ class PlaceholderFunction(PlaceholderInstance):
         func_name = self.name
         msg = '<Placeholder function call "%s"(%s)' % (func_name, args)
         if self.namespace_parts:
-            ns = self._namespace_to_ascii()
+            ns = self._namespace_to_unicode()
             msg = '%s at namespace="%s"' % (msg, ns)
         return msg + ">"

@@ -233,7 +233,6 @@ class MockLoggingHandler(logging.Handler):
         logging.Handler.__init__(self, *args, **kwargs)
 
     def emit(self, record):
-        print("received message %s %s"% (record.levelname, record.getMessage()))
         self.messages[record.levelname.lower()].append(record.getMessage())
     
     def reset(self):

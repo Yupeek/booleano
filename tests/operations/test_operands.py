@@ -73,10 +73,6 @@ class TestOperand(object):
         assert_raises(NotImplementedError, self.op.belongs_to, None, None)
         assert_raises(NotImplementedError, self.op.is_subset, None, None)
     
-    def test_no_unicode_by_default(self):
-        """Operands must not have a default Unicode representation."""
-        assert_raises(NotImplementedError, unicode, self.op)
-    
     def test_no_repr_by_default(self):
         """Operands must not have a default representation."""
         assert_raises(NotImplementedError, repr, self.op)
@@ -317,12 +313,6 @@ class TestVariable(object):
         ok_(var3 != var1)
         ok_(var3 != var2)
     
-    def test_string_representation(self):
-        var = TrafficLightVar()
-        as_unicode = six.text_type(var)
-        eq_("Anonymous variable [TrafficLightVar]", as_unicode)
-        eq_(str(var), as_unicode)
-    
     def test_representation(self):
         var = TrafficLightVar()
         eq_(repr(var), "<Anonymous variable [TrafficLightVar]>")
@@ -550,13 +540,6 @@ class TestFunction(object):
         ok_(func5 != func3)
         ok_(func5 != func4)
     
-    def test_string_representation(self):
-        func = PermissiveFunction(String("foo"), String(u"bár"))
-        expected = u'Anonymous function call [PermissiveFunction](arg0="foo", '\
-                   u'oarg0="bár", oarg1=1.0)'
-        eq_(six.text_type(func), expected)
-        eq_(str(func), expected.encode("utf-8"))
-    
     def test_representation(self):
         func = PermissiveFunction(String("foo"), String(u"báz"))
         expected = '<Anonymous function call [PermissiveFunction] ' \
@@ -634,11 +617,6 @@ class TestString(object):
         ok_(text2 != text1)
         ok_(text2 != text3)
         ok_(text3 != text2)
-    
-    def test_string_representation(self):
-        string = String(u"caña")
-        eq_(six.text_type(string), u'"caña"')
-        eq_(str(string), '"caña"')
     
     def test_representation(self):
         # With Unicode:
@@ -758,11 +736,6 @@ class TestNumber(object):
         ok_(number2 != number1)
         ok_(number2 != number3)
         ok_(number3 != number2)
-    
-    def test_string_representation(self):
-        number = Number(4)
-        eq_(six.text_type(number), "4.0")
-        eq_(str(number), "4.0")
     
     def test_representation(self):
         number = Number(4)
@@ -891,15 +864,6 @@ class TestSet(object):
         ok_(set4 != set1)
         ok_(set4 != set2)
         ok_(set4 != set3)
-
-    def test_string_representation(self):
-        set_ = Set(Number(3), Number(5))
-        as_unicode = six.text_type(set_)
-        try:
-            eq_(as_unicode, "{3.0, 5.0}")
-        except AssertionError:
-            eq_(as_unicode, "{5.0, 3.0}")
-        eq_(as_unicode, str(set_))
 
     def test_representation(self):
         set1 = Set(Number(3), Number(5))
@@ -1049,17 +1013,7 @@ class TestPlaceholderVariable(object):
         ok_(var6 != var2)
         ok_(var6 != var3)
         ok_(var6 != var5)
-    
-    def test_string_representation_without_namespace(self):
-        var = PlaceholderVariable(u"aquí", None)
-        eq_(six.text_type(var), u'Placeholder variable "aquí"')
-        eq_(str(var), 'Placeholder variable "aquí"')
-    
-    def test_string_representation_with_namespace(self):
-        var = PlaceholderVariable(u"aquí", ["some", "thing"])
-        eq_(six.text_type(var), u'Placeholder variable "aquí" at some:thing')
-        eq_(str(var), 'Placeholder variable "aquí" at some:thing')
-    
+
     def test_representation_without_namespace(self):
         # With Unicode
         var = PlaceholderVariable(u"aquí", None)
@@ -1067,7 +1021,7 @@ class TestPlaceholderVariable(object):
         # With ASCII
         var = PlaceholderVariable("here", None)
         eq_(repr(var), '<Placeholder variable "here">')
-    
+
     def test_representation_with_namespace(self):
         # With Unicode
         var = PlaceholderVariable(u"aquí", ["some", "thing"])
@@ -1274,17 +1228,7 @@ class TestPlaceholderFunction(object):
         ok_(func7 != func4)
         ok_(func7 != func5)
         ok_(func7 != func8)
-    
-    def test_string_representation_without_namespace(self):
-        func = PlaceholderFunction(u"aquí", None, Number(1), Number(2))
-        eq_(six.text_type(func), u'Placeholder function call "aquí"(1.0, 2.0)')
-        eq_(str(func), 'Placeholder function call "aquí"(1.0, 2.0)')
-    
-    def test_string_representation_with_namespace(self):
-        func = PlaceholderFunction(u"aquí", ["a", "z"], Number(1), Number(2))
-        eq_(six.text_type(func), u'Placeholder function call "aquí"(1.0, 2.0) at a:z')
-        eq_(str(func), 'Placeholder function call "aquí"(1.0, 2.0) at a:z')
-    
+
     def test_representation_without_namespace(self):
         # With Unicode:
         func = PlaceholderFunction(u"aquí", None, Number(1), String("hi"))

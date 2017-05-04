@@ -34,6 +34,8 @@ from __future__ import unicode_literals
 import re
 
 import six
+import six.moves
+
 from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal,
                        OneOrMore, Optional, ParseException, ParserElement,
                        Regex, StringEnd, StringStart, Suppress, Word,
@@ -267,8 +269,8 @@ class Parser(object):
         """
         # --- Defining the individual identifiers:
         # Getting all the Unicode numbers in a single string:
-        unicode_numbers = "".join([unichr(n) for n in xrange(0x10000)
-                                   if unichr(n).isdigit()])
+        unicode_numbers = "".join([six.unichr(n) for n in six.moves.range(0x10000)
+                                   if six.unichr(n).isdigit()])
         unicode_number_expr = Regex("[%s]" % unicode_numbers, re.UNICODE)
         space_char = re.escape(self._grammar.get_token("identifier_spacing"))
         identifier0 = Regex("[\w%s]+" % space_char, re.UNICODE)

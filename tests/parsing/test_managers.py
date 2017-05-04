@@ -116,7 +116,7 @@ class TestEvaluableParseManager(object):
             LessEqual(PedestriansCrossingRoad(), Number(3)))
         eq_(parse_tree, expected_tree)
         # Checking the log:
-        info = "Generated parser for unknown grammar u'es'"
+        info = "Generated parser for unknown grammar %s" % repr(u'es')
         print(log_handler.handler.messages)
 
         ok_(info in log_handler.handler.messages['info'])
@@ -138,7 +138,7 @@ class TestEvaluableParseManager(object):
             LessEqual(PedestriansCrossingRoad(), Number(3)))
         eq_(parse_tree, expected_tree)
         # Checking the log:
-        info = "Generated parser for unknown grammar u'fr'"
+        info = "Generated parser for unknown grammar %s" % repr('fr')
         ok_(info in log_handler.handler.messages['info'])
         log_handler.undo()
     

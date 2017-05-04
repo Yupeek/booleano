@@ -161,7 +161,7 @@ class OperationNode(object):
     def __hash__(self):
         return id(self)
     
-    def __nonzero__(self):
+    def __bool__(self):
         """
         Cancel the pythonic truth evaluation by raising an exception.
         
@@ -176,6 +176,8 @@ class OperationNode(object):
         """
         raise InvalidOperationError("Operation nodes do not support Pythonic "
                                     "truth evaluation")
+
+    __nonzero__ = __bool__
     
     def __eq__(self, other):
         """
@@ -213,8 +215,7 @@ class OperationNode(object):
             yet implemented.
         
         """
-        raise NotImplementedError("Node %s doesn't have an Unicode "
-                                  "representation" % type(self))
+        return "<%s>" % type(self)
     
     def __repr__(self):
         """

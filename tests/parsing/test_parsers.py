@@ -867,7 +867,7 @@ class TestEvaluableParser(object):
         # parenthesis):
         try:
             self.parser('~ foo')
-        except BadExpressionError, exc:
+        except BadExpressionError as exc:
             eq_('"foo" represents a function, not a variable', six.text_type(exc))
         else:
             assert 0, '"foo" is a function, not a variable!'
@@ -903,7 +903,7 @@ class TestEvaluableParser(object):
         # parenthesis):
         try:
             self.parser('~ bool()')
-        except BadExpressionError, exc:
+        except BadExpressionError as exc:
             eq_('"bool" is not a function', six.text_type(exc))
         else:
             assert 0, '"bool" is a variable, not a function!'

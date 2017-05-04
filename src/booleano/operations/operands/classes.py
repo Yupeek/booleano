@@ -125,7 +125,7 @@ class _FunctionMeta(_OperandMeta):
 
 
 @six.python_2_unicode_compatible
-class Function(Class):
+class Function(six.with_metaclass(_FunctionMeta, Class)):
     """
     Base class for **calls** of developer-defined, n-ary functions.
     
@@ -137,9 +137,7 @@ class Function(Class):
     define :attr:`required_arguments` and :attr:`optional_arguments`.
     
     """
-    
-    __metaclass__ = _FunctionMeta
-    
+
     # Only actual functions should be checked.
     bypass_operation_check = True
     

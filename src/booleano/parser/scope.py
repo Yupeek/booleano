@@ -127,15 +127,12 @@ class _Identifier(object):
             return True
         return False
 
-
     def __ne__(self, other):
         """
         Check that the ``other`` identifier is NOT equivalent to this one.
         
         """
         return not self.__eq__(other)
-
-    #{ Representations
 
     def __str__(self):
         """
@@ -197,7 +194,10 @@ class Bind(_Identifier):
         same_id = super(Bind, self).__eq__(other)
         # We have to make sure ``other`` is a binding; otherwise, a symbol
         # table with the same names would equal this binding:
-        return (same_id and isinstance(other, Bind))
+        return same_id and isinstance(other, Bind)
+    
+    def __hash__(self):
+        return super(Bind, self).__hash__()
 
     def __str__(self):
         """
@@ -390,6 +390,9 @@ class SymbolTable(_Identifier):
                 hasattr(other, "objects") and
                 other.subtables == self.subtables and
                 self.objects == other.objects)
+
+    def __hash__(self):
+        return hash((frozenset(getattr(self, 'subtables', set())), frozenset(getattr(self, 'objects', set()))))
 
     def _get_contents(self, locale):
         """Return the namespace for this symbol table in ``locale``."""

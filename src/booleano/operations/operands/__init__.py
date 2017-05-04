@@ -113,9 +113,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
     Base class for operands.
     
     """
-    
-    __metaclass__ = _OperandMeta
-    
+
     #: Whether it should be checked that the operand really supports the
     #: operations it claims to support.
     bypass_operation_check = True

@@ -19,8 +19,8 @@ Test utilities
 .. autoclass:: booleano.parser.testutils.BaseGrammarTest
 
 
-Scope definition / name :term:`binding`
-=======================================
+Scope definition / name binding
+===============================
 
 .. autoclass:: Bind
     :inherited-members:

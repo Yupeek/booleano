@@ -35,7 +35,7 @@ Classes
 -------
 
 Note we're talking about **Booleano classes**, not Python classes. These are
-used in :term:`evaluable parsing`.
+used in evaluable parsing.
 
 .. autoclass:: booleano.operations.operands.classes.Class
 
@@ -50,7 +50,7 @@ Placeholder instances
 ---------------------
 
 Note we're talking about **placeholders for instances of Booleano classes**,
-not Python class instances. These are used in :term:`convertible parsing`.
+not Python class instances. These are used in convertible parsing.
 
 .. autoclass:: booleano.operations.operands.placeholders.PlaceholderInstance
 

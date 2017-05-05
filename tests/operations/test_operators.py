@@ -81,11 +81,10 @@ class TestNot(object):
         traffic_light = TrafficLightVar()
         Not(And(traffic_light, traffic_light))
     
-    @raises(InvalidOperationError)
     def test_constructor_with_non_boolean_operand(self):
         # Constants cannot act as booleans
         constant = String("Paris")
-        Not(constant)
+        ok_(not Not(constant)(None))
     
     def test_evaluation(self):
         # Setup:
@@ -793,10 +792,10 @@ class TestBelongsTo(object):
         eq_(operation.slave_operand, item)
     
     def test_item_and_non_set(self):
-        item = String("Paris")
-        set_ = String("France")
+        item = Number(1)
+        set_ = Number(2)
         assert_raises(InvalidOperationError, BelongsTo, item, set_)
-    
+
     def test_constant_evaluation(self):
         item = Number(3)
         set_ = Set(Number(1), Number(3), Number(5), Number(7), Number(11))
@@ -834,8 +833,8 @@ class TestIsSubset(object):
         eq_(operation.slave_operand, subset)
     
     def test_non_set_and_non_set(self):
-        subset = String("Paris")
-        set_ = String("France")
+        subset = Number(1)
+        set_ = Number(2)
         assert_raises(InvalidOperationError, IsSubset, subset, set_)
     
     def test_constant_evaluation(self):

@@ -65,7 +65,7 @@ with some code, you can provide any type you want, and the expression can still 
 ``user:birthdate > "03-07-1987"``
 ``duration > 1m30s``
 
-
+check the sample dirrectory to view more running examples !
 
 Documentation
 -------------

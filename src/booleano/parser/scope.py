@@ -224,7 +224,7 @@ class SymbolTable(_Identifier):
             symbol tables, if any).
         :type global_name: basestring
         :param objects: List of bound operands available in this symbol table.
-        :type objects: list
+        :type objects: list | tuple
         :raises booleano.exc.ScopeError: If an object/subtable is already
             included or already belongs to another symbol table.
 

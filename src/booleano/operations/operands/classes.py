@@ -242,11 +242,9 @@ class Function(six.with_metaclass(_FunctionMeta, Class)):
         for arg_pos in range(len(arguments)):
             arg_name = self.all_args[arg_pos]
             self.arguments[arg_name] = arguments[arg_pos]
-        print('%r' % self.arguments)
         for oname, odefault in self.optional_arguments.items():
             if oname not in self.arguments:
                 self.arguments[oname] = odefault
-        print('%r' % self.arguments)
         # Finally, check that all the parameters are correct:
         self.check_arguments()
 

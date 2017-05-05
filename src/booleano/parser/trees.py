@@ -76,6 +76,17 @@ class ParseTree(object):
         """
         return not self.__eq__(other)
 
+    def __call__(self, context):
+        """
+        Check if the parse tree evaluates to True with the context described by
+        the ``context``.
+
+        :return: Whether the parse tree evaluates to True.
+        :rtype: bool
+
+        """
+        raise NotImplementedError()
+
 
 @six.python_2_unicode_compatible
 class EvaluableParseTree(ParseTree):

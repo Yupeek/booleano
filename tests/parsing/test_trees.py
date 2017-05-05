@@ -57,7 +57,9 @@ class TestEvaluableTrees(object):
     
     def test_non_boolean_operands(self):
         """Only operands that support logical values are supported."""
-        operand = String("I'm a string")
+        class FakeString(String):
+            operations = {"equality"}
+        operand = FakeString("I'm a string")
         assert_raises(InvalidOperationError, EvaluableParseTree, operand)
     
     def test_operation(self):

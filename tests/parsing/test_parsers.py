@@ -33,6 +33,8 @@ from __future__ import unicode_literals
 
 from nose.tools import eq_, assert_raises
 import six
+
+from booleano.operations.variables import BooleanVariable
 from booleano.parser import Grammar, ConvertibleParser, EvaluableParser
 from booleano.parser.scope import Namespace
 from booleano.parser.parsers import Parser
@@ -42,7 +44,7 @@ from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
 from booleano.parser.testutils import BaseGrammarTest
 from booleano.exc import ScopeError, BadExpressionError
 
-from tests import (StringConverter, BoolVar, TrafficLightVar, 
+from tests import (StringConverter, BoolVar, TrafficLightVar,
                    PedestriansCrossingRoad, DriversAwaitingGreenLightVar,
                    PermissiveFunction, TrafficViolationFunc)
 
@@ -52,9 +54,9 @@ class TestDefaultGrammar(BaseGrammarTest):
     Tests for the parser of the default/generic grammar.
     
     """
-    
+
     grammar = Grammar()
-    
+
     expressions = {
         # Literals-only expressions:
         '  "a string" == 245    ': Equal(String("a string"), Number(245)),
@@ -518,7 +520,7 @@ class TestDefaultGrammar(BaseGrammarTest):
                  PlaceholderFunction("today_is_thursday")
             ),
     }
-    
+
     badformed_expressions = (
         "",
         " ",
@@ -528,7 +530,7 @@ class TestDefaultGrammar(BaseGrammarTest):
         "== 3 4",
         "3 4 ==",
         )
-    
+
     single_operands = {
         # ----- Strings
         '"oneword"': String("oneword"),
@@ -685,7 +687,7 @@ class TestDefaultGrammar(BaseGrammarTest):
         u'ñŝ:ñś1:function()': PlaceholderFunction("function", (u"ñŝ", u"ñś1")),
         u'ñŝ:ñś1:función()': PlaceholderFunction(u"función", (u"ñŝ", u"ñś1")),
     }
-    
+
     invalid_operands = (
         # Invalid strings:
         '\'mixed quotes"',
@@ -748,7 +750,7 @@ class TestDefaultGrammar(BaseGrammarTest):
         "-",
         "this is definitely not an operand",
     )
-    
+
     def test_custom_tokens_against_trees(self):
         """
         All the custom tokens in the grammar must be taken into account by the
@@ -761,7 +763,7 @@ class TestDefaultGrammar(BaseGrammarTest):
         tree.
         
         """
-        
+
         grammars = (
             # A grammar that overrides all the default tokens:
             Grammar(**{
@@ -784,15 +786,15 @@ class TestDefaultGrammar(BaseGrammarTest):
                 }
             )
         )
-        
+
         for grammar_num in range(len(grammars)):
             grammar = grammars[grammar_num]
             parser = ConvertibleParser(grammar)
             convert_to_string = StringConverter(grammar)
-            
+
             for operation in self.expressions.values():
                 expression = convert_to_string(operation)
-                
+
                 # Using a Nose test generator:
                 def check():
                     new_operation = parser(expression).root_node
@@ -802,7 +804,7 @@ class TestDefaultGrammar(BaseGrammarTest):
                 check.description = (u"The following expression is valid in "
                                      u"the grammar #%r: %r" % (grammar_num,
                                                                expression))
-                
+
                 yield check
 
 
@@ -811,7 +813,7 @@ class TestBaseParser(object):
     Tests for the parsers' abstract base class.
     
     """
-    
+
     def test_abstract_methods(self):
         parser = Parser(Grammar())
         assert_raises(NotImplementedError, parser.make_variable, None)

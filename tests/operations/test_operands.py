@@ -548,6 +548,7 @@ class TestFunction(object):
         eq_(repr(func), expected)
 
 
+
 #{ Constants
 
 
@@ -564,8 +565,12 @@ class TestString(object):
         assert_false(string.is_branch())
     
     def test_operations(self):
-        """String constants must only support equality operations"""
-        eq_(String.operations, set(["equality"]))
+        """String constants support all operation as python string do"""
+        eq_(String.operations, {"equality",
+                                "inequality",
+                                "boolean",
+                                "membership",
+                                })
     
     def test_python_value(self):
         op = String("carabobo")
@@ -590,9 +595,9 @@ class TestString(object):
         ok_(op.equals(10, None))
     
     def test_checking_logical_support(self):
-        """Strings don't have logical support."""
+        """Strings have logical support as python do."""
         op = String("hey there")
-        assert_raises(InvalidOperationError, op.check_logical_support)
+        op.check_logical_support()
     
     def test_equivalence(self):
         """
@@ -760,11 +765,11 @@ class TestSet(object):
         operations.
 
         """
-        eq_(Set.operations, set(["equality", "inequality", "membership"]))
+        eq_(Set.operations, {"equality", "inequality", "membership"})
 
     def test_python_value(self):
         op = Set(Number(10), Number(1), String("paola"))
-        eq_(op.to_python(None), set((10, 1, "paola")))
+        eq_(op.to_python(None), {10, 1, "paola"})
 
     def test_instantiation(self):
         """All the members of a set must be operands"""
@@ -779,10 +784,10 @@ class TestSet(object):
 
     def test_equality(self):
         op = Set(Number(3), String("hola"))
-        set1 = set([3, "hola"])
-        set2 = set([3])
-        set3 = set([3, "hola", "something else"])
-        set4 = set(["nothing to do"])
+        set1 = {3, "hola"}
+        set2 = {3}
+        set3 = {3, "hola", "something else"}
+        set4 = {"nothing to do"}
         # Comparing them...
         ok_(op.equals(set1, None), "The constant equals %s" % op.constant_value)
         assert_false(op.equals(set2, None))
@@ -797,7 +802,7 @@ class TestSet(object):
         assert_false(op.less_than(1, None))
         assert_raises(InvalidOperationError, op.less_than, "some string", None)
         assert_raises(InvalidOperationError, op.less_than, 3.10, None)
-    #
+
     def test_greater_than(self):
         op = Set(String("carla"), String("andreina"), String("liliana"))
         ok_(op.greater_than(2, None))
@@ -826,7 +831,6 @@ class TestSet(object):
         """Sets don't have logical support."""
         op = Set(Number(9), String("carla"))
         assert_raises(InvalidOperationError, op.check_logical_support)
-
 
     def test_equivalence(self):
         """

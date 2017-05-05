@@ -62,6 +62,7 @@ class BoolVar(Variable):
     called ``bool``.
     
     """
+
     operations = set(("boolean", "equality"))
     
     def __init__(self):

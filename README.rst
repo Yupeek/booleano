@@ -28,6 +28,11 @@ stable branche
 .. image:: https://img.shields.io/pypi/dm/booleano.svg
     :target: https://pypi.python.org/pypi/booleano
     :alt: Number of PyPI downloads per month
+    
+.. image:: https://codeclimate.com/github/Yupeek/booleano/badges/gpa.svg
+   :target: https://codeclimate.com/github/Yupeek/booleano
+   :alt: Code Climate
+
 
 development status
 
@@ -55,15 +60,16 @@ Booleano allow to safely evaluate an expression into something usable.
 
 ``user:name is "john" and user:surname in {"doe", "shepard"}``
 
-+
 
-``{"user": {"name": "katara", "surname"}}`` => False
-``{"user": {"name": "john", "doe"}}`` => True
++ ``{"user": {"name": "katara"}}`` => False
+
++ ``{"user": {"name": "john", "surname": "doe"}}`` => True
 
 with some code, you can provide any type you want, and the expression can still be in text:
 
-``user:birthdate > "03-07-1987"``
-``duration > 1m30s``
++ ``user:birthdate > "03-07-1987"``
+
++ ``duration > 1m30s``
 
 
 

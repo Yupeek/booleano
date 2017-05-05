@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -47,22 +47,22 @@ from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
 class TestOperand(object):
     """
     Tests for the base class Operand.
-    
+
     """
-    
+
     def setUp(self):
         """Create an instance of Operand"""
         self.op = Operand()
-    
+
     def test_type(self):
         """Operand nodes must be known as operands."""
         ok_(self.op.is_operand())
         assert_false(self.op.is_operator())
-    
+
     def test_supported_operations(self):
         """Operands shouldn't support any operation by default"""
         eq_(0, len(self.op.operations))
-    
+
     def test_operation_methods(self):
         """No operation should be supported by default"""
         assert_raises(NotImplementedError, self.op.to_python, None)
@@ -72,17 +72,17 @@ class TestOperand(object):
         assert_raises(NotImplementedError, self.op.less_than, None, None)
         assert_raises(NotImplementedError, self.op.belongs_to, None, None)
         assert_raises(NotImplementedError, self.op.is_subset, None, None)
-    
+
     def test_no_repr_by_default(self):
         """Operands must not have a default representation."""
         assert_raises(NotImplementedError, repr, self.op)
-    
+
     def test_python_bool(self):
         """Operands must not support Pythonic truth evaluation."""
         assert_raises(InvalidOperationError, bool, self.op)
-    
-    #{ Operations support
-    
+
+    # Operations support
+
     def test_checking_valid_operations(self):
         """Valid operations should just work."""
         class EqualityOperand(Operand):
@@ -91,7 +91,7 @@ class TestOperand(object):
                 pass
             def equals(self, value, context):
                 pass
-        
+
         class InequalityOperand(Operand):
             operations = set(["inequality"])
             def to_python(self, value, context):
@@ -100,14 +100,14 @@ class TestOperand(object):
                 pass
             def greater_than(self, value, context):
                 pass
-        
+
         class BooleanOperand(Operand):
             operations = set(["boolean"])
             def to_python(self, value, context):
                 pass
             def __call__(self, value, context):
                 pass
-        
+
         class MembershipOperand(Operand):
             operations = set(["membership"])
             def to_python(self, value, context):
@@ -116,19 +116,19 @@ class TestOperand(object):
                 pass
             def is_subset(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_invalid_operations(self):
         """Invalid operations must be detected."""
         class SillyOperand(Operand):
             operations = set(["equality", "addition"])
-    
+
     @raises(BadOperandError)
     def test_checking_no_operation(self):
         """Operands must support at least one type of operation."""
         class BadOperand(Operand):
             operations = set()
-    
+
     @raises(BadOperandError)
     def test_checking_no_to_python(self):
         """Operands must define the .to_python() method."""
@@ -136,18 +136,18 @@ class TestOperand(object):
             operations = set(["equality"])
             def equals(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_logic_value(self):
         """
         Operands supporting truth values must define the .__call__() method.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["boolean"])
             def to_python(self, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_equals(self):
         """Operands supporting equality must define the .equals() method."""
@@ -155,24 +155,24 @@ class TestOperand(object):
             operations = set(["equality"])
             def to_python(self, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_lessthan_nor_greaterthan(self):
         """
         Operands supporting inequality must define the .less_than() and
         .greater_than() methods.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
             def to_python(self, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_lessthan(self):
         """
         Operands supporting inequality must define the .less_than() method.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
@@ -180,12 +180,12 @@ class TestOperand(object):
                 pass
             def greater_than(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_greaterthan(self):
         """
         Operands supporting inequality must define the .greater_than() method.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
@@ -193,24 +193,24 @@ class TestOperand(object):
                 pass
             def less_than(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_contains_nor_issubset(self):
         """
         Operands supporting membership must define the .belongs_to() and
         .is_subset() methods.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["membership"])
             def to_python(self, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_belongs_to(self):
         """
         Operands supporting membership must define the .belongs_to() method.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["membership"])
@@ -218,12 +218,12 @@ class TestOperand(object):
                 pass
             def is_subset(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_no_issubset(self):
         """
         Operands supporting membership must define the .is_subset() method.
-        
+
         """
         class BadOperand(Operand):
             operations = set(["membership"])
@@ -231,12 +231,12 @@ class TestOperand(object):
                 pass
             def belongs_to(self, value, context):
                 pass
-    
+
     def test_bypassing_operation_check(self):
         """Operations shouldn't be checked if asked so explicitly."""
         class BadOperand(Operand):
             bypass_operation_check = True
-    
+
     @raises(BadOperandError)
     def test_bypassing_operation_check_not_inherited(self):
         """The operation support check setting shouldn't be inherited."""
@@ -244,40 +244,40 @@ class TestOperand(object):
             bypass_operation_check = True
         class BadOperand(ForgivenOperand):
             pass
-    
-    #}
+
+    #
 
 
-#{ Variables
+# Variables
 
 
 class TestVariable(object):
     """Tests for variable operands."""
-    
+
     def test_node_type(self):
         """Variables are leaf nodes."""
         var = BoolVar()
         ok_(var.is_leaf())
         assert_false(var.is_branch())
-    
+
     def test_checking_supported_operations(self):
         class GreetingVariable(Variable):
             operations = set(["equality"])
-            
+
             def to_python(self, context):
                 pass
-            
+
             def equals(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_unsupported_operations(self):
         class GreetingVariable(Variable):
             operations = set(["equality"])
-            
+
             def to_python(self, context):
                 pass
-    
+
     def test_checking_logical_support(self):
         class GreetingVariable(Variable):
             operations = set(["equality"])
@@ -285,34 +285,34 @@ class TestVariable(object):
                 pass
             def equals(self, value, context):
                 pass
-        
+
         var1 = BoolVar()
         var2 = GreetingVariable()
         # Checking logical support:
         var1.check_logical_support()
         assert_raises(InvalidOperationError, var2.check_logical_support)
-    
+
     def test_equivalence(self):
         """Two variables are equivalent if they share the same class."""
         var1 = TrafficLightVar()
         var2 = TrafficLightVar()
         var3 = BoolVar()
-        
+
         var1.check_equivalence(var2)
         var2.check_equivalence(var1)
-        
+
         assert_raises(AssertionError, var1.check_equivalence, var3)
         assert_raises(AssertionError, var2.check_equivalence, var3)
         assert_raises(AssertionError, var3.check_equivalence, var1)
         assert_raises(AssertionError, var3.check_equivalence, var1)
-        
+
         ok_(var1 == var2)
         ok_(var2 == var1)
         ok_(var1 != var3)
         ok_(var2 != var3)
         ok_(var3 != var1)
         ok_(var3 != var2)
-    
+
     def test_representation(self):
         var = TrafficLightVar()
         eq_(repr(var), "<Anonymous variable [TrafficLightVar]>")
@@ -320,31 +320,31 @@ class TestVariable(object):
 
 class TestFunction(object):
     """Tests for the base class of user-defined function operators."""
-    
+
     def test_node_type(self):
         """Functions are branch nodes."""
         func = PermissiveFunction(String("arg0"))
         ok_(func.is_branch())
         assert_false(func.is_leaf())
-    
+
     def test_checking_supported_operations(self):
         class GreetingFunction(Function):
             operations = set(["equality"])
-            
+
             def to_python(self, context):
                 pass
-            
+
             def equals(self, value, context):
                 pass
-    
+
     @raises(BadOperandError)
     def test_checking_unsupported_operations(self):
         class GreetingFunction(Function):
             operations = set(["equality"])
-            
+
             def to_python(self, context):
                 pass
-    
+
     def test_constructor_with_minimum_arguments(self):
         func = PermissiveFunction(String("this-is-arg0"))
         args = {
@@ -353,7 +353,7 @@ class TestFunction(object):
             'oarg1': Number(1),
         }
         eq_(func.arguments, args)
-    
+
     def test_constructor_with_one_optional_argument(self):
         func = PermissiveFunction(String("this-is-arg0"),
                                   String("this-is-oarg0"))
@@ -363,7 +363,7 @@ class TestFunction(object):
             'oarg1': Number(1),
         }
         eq_(func.arguments, args)
-    
+
     def test_constructor_with_all_arguments(self):
         func = PermissiveFunction(
             String("this-is-arg0"),
@@ -376,11 +376,11 @@ class TestFunction(object):
             'oarg1': String("this-is-oarg1"),
         }
         eq_(func.arguments, args)
-    
+
     @raises(BadCallError)
     def test_constructor_with_few_arguments(self):
         PermissiveFunction()
-    
+
     @raises(BadCallError)
     def test_constructor_with_many_arguments(self):
         PermissiveFunction(
@@ -395,49 +395,49 @@ class TestFunction(object):
             Number(8),
             Number(9),
         )
-    
+
     def test_constructor_accepts_operands(self):
         """Only operands are valid function arguments."""
         PermissiveFunction(Number(0), Number(1))
         assert_raises(BadCallError, PermissiveFunction, 0, 1)
-    
+
     def test_no_argument_validation_by_default(self):
         """
         Arguments must be explicitly validated by the function.
-        
+
         This is, their .check_arguments() method must be overriden.
-        
+
         """
         class MockFunction(Function):
             bypass_operation_check = True
         assert_raises(NotImplementedError, MockFunction)
-    
+
     def test_arity(self):
         """
         The arity and all the arguments for a function must be calculated
         right after it's been defined.
-        
+
         """
         # Nullary function:
         class NullaryFunction(Function):
             bypass_operation_check = True
         eq_(NullaryFunction.arity, 0)
         eq_(NullaryFunction.all_args, ())
-        
+
         # Unary function:
         class UnaryFunction(Function):
             bypass_operation_check = True
             required_arguments = ("arg1", )
         eq_(UnaryFunction.arity, 1)
         eq_(UnaryFunction.all_args, ("arg1", ))
-        
+
         # Unary function, with its argument optional:
         class OptionalUnaryFunction(Function):
             bypass_operation_check = True
             optional_arguments = {'oarg1': Set()}
         eq_(OptionalUnaryFunction.arity, 1)
         eq_(OptionalUnaryFunction.all_args, ("oarg1", ))
-        
+
         # Binary function:
         class BinaryFunction(Function):
             bypass_operation_check = True
@@ -445,61 +445,61 @@ class TestFunction(object):
             optional_arguments = {'oarg1': Set()}
         eq_(BinaryFunction.arity, 2)
         eq_(BinaryFunction.all_args, ("arg1", "oarg1"))
-    
+
     @raises(BadFunctionError)
     def test_duplicate_arguments(self):
         """An optional argument shouldn't share its name with a required one"""
         class FunctionWithDuplicateArguments(Function):
             required_arguments = ("arg1", )
             optional_arguments = {'arg1': None}
-    
+
     @raises(BadFunctionError)
     def test_duplicate_required_arguments(self):
         """Two required arguments must not share the same name."""
         class FunctionWithDuplicateArguments(Function):
             required_arguments = ("arg1", "arg1")
-    
+
     @raises(BadFunctionError)
     def test_non_operand_default_arguments(self):
         """Default values for the optional arguments must be operands."""
         class FunctionWithNonOperands(Function):
             bypass_operation_check = True
             optional_arguments = {'arg': 1}
-    
+
     def test_checking_logical_support(self):
         class NoBoolFunction(Function):
             operations = set(["equality"])
             def equals(self, node): pass
             def to_python(self): pass
             def check_arguments(self): pass
-        
+
         func1 = PermissiveFunction(String("foo"))
         func2 = NoBoolFunction()
         # Checking logical support:
         func1.check_logical_support()
         assert_raises(InvalidOperationError, func2.check_logical_support)
-    
+
     def test_equivalence(self):
         """
         Two functions are equivalent not only if they share the same class,
         but also if their arguments are equivalent.
-        
+
         """
         class FooFunction(Function):
             bypass_operation_check = True
             required_arguments = ("abc", )
             optional_arguments = {"xyz": String("123")}
             def check_arguments(self): pass
-        
+
         func1 = FooFunction(String("whatever"))
         func2 = FooFunction(String("whatever"))
         func3 = TrafficViolationFunc(String("pedestrians"))
         func4 = PermissiveFunction(String("foo"))
         func5 = FooFunction(String("something"))
-        
+
         func1.check_equivalence(func2)
         func2.check_equivalence(func1)
-        
+
         assert_raises(AssertionError, func1.check_equivalence, func3)
         assert_raises(AssertionError, func1.check_equivalence, func4)
         assert_raises(AssertionError, func1.check_equivalence, func5)
@@ -518,7 +518,7 @@ class TestFunction(object):
         assert_raises(AssertionError, func5.check_equivalence, func2)
         assert_raises(AssertionError, func5.check_equivalence, func3)
         assert_raises(AssertionError, func5.check_equivalence, func4)
-        
+
         ok_(func1 == func2)
         ok_(func2 == func1)
         ok_(func1 != func3)
@@ -539,7 +539,7 @@ class TestFunction(object):
         ok_(func5 != func2)
         ok_(func5 != func3)
         ok_(func5 != func4)
-    
+
     def test_representation(self):
         func = PermissiveFunction(String("foo"), String(u"báz"))
         expected = '<Anonymous function call [PermissiveFunction] ' \
@@ -549,21 +549,21 @@ class TestFunction(object):
 
 
 
-#{ Constants
+# Constants
 
 
 class TestString(object):
     """
     Tests for :class:`String` contants.
-    
+
     """
-    
+
     def test_node_type(self):
         """Strings are leaf nodes."""
         string = String("greeting")
         ok_(string.is_leaf())
         assert_false(string.is_branch())
-    
+
     def test_operations(self):
         """String constants support all operation as python string do"""
         eq_(String.operations, {"equality",
@@ -571,17 +571,17 @@ class TestString(object):
                                 "boolean",
                                 "membership",
                                 })
-    
+
     def test_python_value(self):
         op = String("carabobo")
         eq_(op.to_python(None), "carabobo")
-    
+
     def test_equality(self):
         op = String("freedomware")
         ok_(op.equals("freedomware", None))
         assert_false(op.equals(" freedomware ", None))
         assert_false(op.equals("microsoftware", None))
-    
+
     def test_number_support(self):
         """Strings given as a number must be converted first into a string"""
         # When the constant is defined as a number:
@@ -593,36 +593,36 @@ class TestString(object):
         # When both are defined as numbers:
         op = String(10)
         ok_(op.equals(10, None))
-    
+
     def test_checking_logical_support(self):
         """Strings have logical support as python do."""
         op = String("hey there")
         op.check_logical_support()
-    
+
     def test_equivalence(self):
         """
         Two constant strings are equivalent if they represent the same string.
-        
+
         """
         text1 = String("hello world")
         text2 = String("hello earth")
         text3 = String("hello world")
-        
+
         text1.check_equivalence(text3)
         text3.check_equivalence(text1)
-        
+
         assert_raises(AssertionError, text1.check_equivalence, text2)
         assert_raises(AssertionError, text2.check_equivalence, text1)
         assert_raises(AssertionError, text2.check_equivalence, text3)
         assert_raises(AssertionError, text3.check_equivalence, text2)
-        
+
         ok_(text1 == text3)
         ok_(text3 == text1)
         ok_(text1 != text2)
         ok_(text2 != text1)
         ok_(text2 != text3)
         ok_(text3 != text2)
-    
+
     def test_representation(self):
         # With Unicode:
         string = String(u"caña")
@@ -635,26 +635,26 @@ class TestString(object):
 class TestNumber(object):
     """
     Tests for :class:`Number` constants.
-    
+
     """
-    
+
     def test_node_type(self):
         """Numbers are leaf nodes."""
         number = Number(4)
         ok_(number.is_leaf())
         assert_false(number.is_branch())
-    
+
     def test_operations(self):
         """
         Numeric constants must only support equality and inequality operations.
-        
+
         """
         eq_(Number.operations, set(["equality", "inequality"]))
-    
+
     def test_python_value(self):
         op = Number(22)
         eq_(op.to_python(None), 22.00)
-    
+
     def test_equality(self):
         # With an integer constant:
         op = Number(10)
@@ -670,7 +670,7 @@ class TestNumber(object):
         assert_false(op.equals(10.00001, None))
         # Checking an invalid comparison:
         assert_raises(InvalidOperationError, op.equals, "today", None)
-    
+
     def test_greater_than(self):
         # With an integer constant:
         op = Number(10)
@@ -684,7 +684,7 @@ class TestNumber(object):
         assert_false(op.greater_than(10.00001, None))
         # With everything but a number:
         assert_raises(InvalidOperationError, op.greater_than, "ten", None)
-    
+
     def test_less_than(self):
         # With an integer constant:
         op = Number(10)
@@ -698,7 +698,7 @@ class TestNumber(object):
         assert_false(op.less_than(9.99999, None))
         # With everything but a number:
         assert_raises(InvalidOperationError, op.less_than, "ten", None)
-    
+
     def test_string_support(self):
         """Numbers given as strings must be converted first"""
         # The constant as a string:
@@ -713,35 +713,35 @@ class TestNumber(object):
         ok_(op.greater_than("9", None))
         assert_false(op.less_than("9", None))
         assert_false(op.greater_than("11", None))
-    
+
     def test_checking_logical_support(self):
         """Numbers don't have logical support."""
         op = Number(9)
         assert_raises(InvalidOperationError, op.check_logical_support)
-    
+
     def test_equivalence(self):
         """
         Two constant numbers are equivalent if they represent the same number.
-        
+
         """
         number1 = Number(22)
         number2 = Number(23)
         number3 = Number(22)
-        
+
         number1.check_equivalence(number3)
         number3.check_equivalence(number1)
         assert_raises(AssertionError, number1.check_equivalence, number2)
         assert_raises(AssertionError, number2.check_equivalence, number1)
         assert_raises(AssertionError, number2.check_equivalence, number3)
         assert_raises(AssertionError, number3.check_equivalence, number2)
-        
+
         ok_(number1 == number3)
         ok_(number3 == number1)
         ok_(number1 != number2)
         ok_(number2 != number1)
         ok_(number2 != number3)
         ok_(number3 != number2)
-    
+
     def test_representation(self):
         number = Number(4)
         eq_(repr(number), "<Number 4.0>")
@@ -750,7 +750,7 @@ class TestNumber(object):
 class TestSet(object):
     """
     Tests for :class:`Set` constants.
-    
+
     """
 
     def test_node_type(self):
@@ -886,45 +886,45 @@ class TestSet(object):
             eq_(repr(set3), '<Set <String "carabobeño">, <String "España">>')
 
 
-#{ Placeholders
+# Placeholders
 
 
 class TestPlaceholderVariable(object):
     """Tests for the PlaceholderVariable."""
-    
+
     def test_node_type(self):
         """Placeholder variables are leaf nodes."""
         var = PlaceholderVariable("greeting", None)
         ok_(var.is_leaf())
         assert_false(var.is_branch())
-    
+
     def test_constructor(self):
         """
         Placeholder variables should contain an attribute which represents the
         name of the variable in question.
-        
+
         """
         var1 = PlaceholderVariable(u"PAÍS", None)
         var2 = PlaceholderVariable("country", None)
-        
+
         eq_(var1.name, u"país")
         eq_(var2.name, "country")
-    
+
     def test_no_namespace(self):
         """Placeholder variables shouldn't have a default namespace."""
         var = PlaceholderVariable("foo")
         eq_(len(var.namespace_parts), 0)
-    
+
     def test_namespace(self):
         """Placeholder variables should be aware of their namespace."""
         var = PlaceholderVariable("country", ("geo", "bar"))
         eq_(var.namespace_parts, ("geo", "bar"))
-    
+
     def test_namespace_as_non_tuple(self):
         """Namespace parts must be stored as tuple."""
         var = PlaceholderVariable("country", ["geo", "bar"])
         eq_(var.namespace_parts, ("geo", "bar"))
-    
+
     def test_no_operations(self):
         """Placeholder variables don't support operations."""
         var = PlaceholderVariable("var", None)
@@ -935,17 +935,17 @@ class TestPlaceholderVariable(object):
         assert_raises(InvalidOperationError, var.greater_than, None)
         assert_raises(InvalidOperationError, var.belongs_to, None)
         assert_raises(InvalidOperationError, var.is_subset, None)
-    
+
     def test_checking_logical_support(self):
         """Placeholder variables always have logical support."""
         op = PlaceholderVariable("foo")
         op.check_logical_support()
-    
+
     def test_equivalence(self):
         """
         Two placeholder variables are equivalent if they have the same name
         and share the same namespace.
-        
+
         """
         var1 = PlaceholderVariable("foo", None)
         var2 = PlaceholderVariable("bar", None)
@@ -953,12 +953,12 @@ class TestPlaceholderVariable(object):
         var4 = PlaceholderVariable("foo", ["some", "namespace"])
         var5 = PlaceholderVariable("bar", ["some", "namespace"])
         var6 = PlaceholderVariable("foo", ["some", "namespace"])
-        
+
         var1.check_equivalence(var3)
         var3.check_equivalence(var1)
         var4.check_equivalence(var6)
         var6.check_equivalence(var4)
-        
+
         assert_raises(AssertionError, var1.check_equivalence, var2)
         assert_raises(AssertionError, var1.check_equivalence, var4)
         assert_raises(AssertionError, var1.check_equivalence, var5)
@@ -985,12 +985,12 @@ class TestPlaceholderVariable(object):
         assert_raises(AssertionError, var6.check_equivalence, var2)
         assert_raises(AssertionError, var6.check_equivalence, var3)
         assert_raises(AssertionError, var6.check_equivalence, var5)
-        
+
         ok_(var1 == var3)
         ok_(var3 == var1)
         ok_(var4 == var6)
         ok_(var6 == var4)
-        
+
         ok_(var1 != var2)
         ok_(var1 != var4)
         ok_(var1 != var5)
@@ -1039,45 +1039,45 @@ class TestPlaceholderVariable(object):
 
 class TestPlaceholderFunction(object):
     """Tests for the PlaceholderFunction."""
-    
+
     def test_node_type(self):
         """Placeholder functions are branch nodes."""
         func = PlaceholderFunction("greet", None, String("arg0"))
         ok_(func.is_branch())
         assert_false(func.is_leaf())
-    
+
     def test_constructor(self):
         """
         Placeholder functions should contain an attribute which represents the
         name of the function in question and another one which represents the
         arguments passed.
-        
+
         """
         func1 = PlaceholderFunction(u"PAÍS", None)
         eq_(func1.name, u"país")
         eq_(func1.arguments, ())
-        
+
         func2 = PlaceholderFunction("country", None,
                                     PlaceholderFunction("city", None),
                                     Number(2))
         eq_(func2.name, "country")
         eq_(func2.arguments, (PlaceholderFunction("city", None), Number(2)))
-    
+
     def test_no_namespace(self):
         """Placeholder functions shouldn't have a default namespace."""
         func = PlaceholderFunction("foo")
         eq_(len(func.namespace_parts), 0)
-    
+
     def test_namespaces(self):
         """Placeholder functions should be aware of their namespace."""
         func = PlaceholderFunction("country", ("geo", "bar"))
         eq_(func.namespace_parts, ("geo", "bar"))
-    
+
     def test_namespace_as_non_tuple(self):
         """Namespace parts must be stored as tuple."""
         func = PlaceholderFunction("country", ["geo", "bar"])
         eq_(func.namespace_parts, ("geo", "bar"))
-    
+
     def test_non_operands_as_arguments(self):
         """Placeholder functions reject non-operands as arguments."""
         assert_raises(BadCallError, PlaceholderFunction, "func", (),
@@ -1086,7 +1086,7 @@ class TestPlaceholderFunction(object):
                       Number(6), Number(3))
         assert_raises(BadCallError, PlaceholderFunction, "func", (),
                       Number(6), 3, Number(3))
-    
+
     def test_no_operations(self):
         """Placeholder functions don't support operations."""
         func = PlaceholderFunction("func", ())
@@ -1097,17 +1097,17 @@ class TestPlaceholderFunction(object):
         assert_raises(InvalidOperationError, func.greater_than, None)
         assert_raises(InvalidOperationError, func.belongs_to, None)
         assert_raises(InvalidOperationError, func.is_subset, None)
-    
+
     def test_checking_logical_support(self):
         """Placeholder functions always have logical support."""
         op = PlaceholderFunction("foo")
         op.check_logical_support()
-    
+
     def test_equivalence(self):
         """
         Two placeholder functions are equivalent if they have the same name
         and share the namespace.
-        
+
         """
         func1 = PlaceholderFunction("foo", None, String("hi"), Number(4))
         func2 = PlaceholderFunction("foo", None)
@@ -1117,12 +1117,12 @@ class TestPlaceholderFunction(object):
         func6 = PlaceholderFunction("foo", ["a", "b"], String("hi"), Number(4))
         func7 = PlaceholderFunction("foo", ["a", "b"], String("hi"), Number(4))
         func8 = PlaceholderFunction("foo", ["a", "b"])
-        
+
         func1.check_equivalence(func3)
         func3.check_equivalence(func1)
         func6.check_equivalence(func7)
         func7.check_equivalence(func6)
-        
+
         assert_raises(AssertionError, func1.check_equivalence, func2)
         assert_raises(AssertionError, func1.check_equivalence, func4)
         assert_raises(AssertionError, func1.check_equivalence, func5)
@@ -1175,12 +1175,12 @@ class TestPlaceholderFunction(object):
         assert_raises(AssertionError, func8.check_equivalence, func5)
         assert_raises(AssertionError, func8.check_equivalence, func6)
         assert_raises(AssertionError, func8.check_equivalence, func7)
-        
+
         ok_(func1 == func3)
         ok_(func3 == func1)
         ok_(func6 == func7)
         ok_(func7 == func6)
-        
+
         ok_(func1 != func2)
         ok_(func1 != func4)
         ok_(func1 != func5)
@@ -1242,7 +1242,7 @@ class TestPlaceholderFunction(object):
         func = PlaceholderFunction("here", None, Number(1), String("hi"))
         eq_(u'<Placeholder function call "here"(<Number 1.0>, <String "hi">)>',
             repr(func))
-    
+
     def test_representation_with_namespace(self):
         # With Unicode:
         func = PlaceholderFunction(u"aquí", ["a", "d"], Number(1), String("hi"))
@@ -1256,4 +1256,4 @@ class TestPlaceholderFunction(object):
             repr(func))
 
 
-#}
+

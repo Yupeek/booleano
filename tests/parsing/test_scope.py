@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -43,12 +43,12 @@ from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
 
 class TestIdentifiers(object):
     """Tests for the base :class:`_Identifier`."""
-    
+
     def test_no_identifier_contents_by_default(self):
         """Identifiers must not return any contents by default."""
         id_ = _Identifier("name")
         assert_raises(NotImplementedError, id_._get_contents, None)
-    
+
     def test_no_unicode_representation_by_default(self):
         id_ = _Identifier("name")
         assert_raises(NotImplementedError, six.text_type, id_)
@@ -56,7 +56,7 @@ class TestIdentifiers(object):
 
 class TestBind(object):
     """Tests for operand binder."""
-    
+
     def test_global_names(self):
         """When an operand is bound, its global name must be set accordingly."""
         operand = String("hey there")
@@ -64,11 +64,11 @@ class TestBind(object):
         bind2 = Bind("Da_Global_Name", operand)
         eq_(bind1.global_name, "da_global_name")
         eq_(bind1.global_name, bind2.global_name)
-    
+
     def test_names(self):
         """
         When an operand is bound, its multiple names must be set accordingly.
-        
+
         """
         operand = String("Vive la france !")
         # No localized names:
@@ -82,16 +82,16 @@ class TestBind(object):
         names1 = {'es_VE': "Cartuchera", 'es_ES': "estuche"}
         bind2 = Bind("bar", operand, **names1)
         eq_(bind2.names, names0)
-    
+
     def test_retrieving_existing_localized_names(self):
         bind = Bind("foo", String("hey"), es="fulano")
         eq_(bind.get_localized_name("es"), "fulano")
-    
+
     def test_retrieving_non_existing_localized_names(self):
         """
-        When a non-existing localized name is requested, a warning must be 
+        When a non-existing localized name is requested, a warning must be
         issued and the global name returned.
-        
+
         """
         bind = Bind("foo", String("hey"), es="fulano")
         logging_fixture = LoggingHandlerFixture()
@@ -103,30 +103,30 @@ class TestBind(object):
                      'using the global one')
         # Undoing it:
         logging_fixture.undo()
-    
+
     def test_no_default_symbol_table(self):
         """Operand bindings must not be in a symbol table by default."""
         bind = Bind("foo", String("whatever"))
         eq_(bind.symbol_table, None)
-    
+
     def test_constant(self):
         """Constants can be bound."""
         constant = String("I'm a string!")
         bound_constant = Bind("da_string", constant)
         eq_(bound_constant.operand, constant)
-    
+
     def test_instance(self):
         """Class instances can be bound."""
         instance = TrafficLightVar()
         bound_instance = Bind("da_variable", instance)
         eq_(bound_instance.operand, instance)
-    
+
     def test_contents_retrieval(self):
         """Bindings must return bound operand as its contents."""
         op = BoolVar()
         bind = Bind("bool", op)
         eq_(op, bind._get_contents(None))
-    
+
     def test_equality(self):
         """Two bindings are equivalent if they have the same names."""
         op1 = TrafficLightVar()
@@ -140,7 +140,7 @@ class TestBind(object):
         bind7 = Bind("name1", op1, es="nombre1")
         bind8 = Bind("name1", op1, es_VE="nombre1", es="nombre1")
         bind9 = Bind("name1", op1, es="nombre1")
-        
+
         ok_(bind1 == bind4)
         ok_(bind1 == bind5)
         ok_(bind2 == bind3)
@@ -156,10 +156,10 @@ class TestBind(object):
         ok_(bind6 == bind3)
         ok_(bind7 == bind9)
         ok_(bind9 == bind7)
-        
+
         ok_(bind1 != None)
         ok_(bind1 != SymbolTable("name1", []))
-        
+
         ok_(bind1 != bind2)
         ok_(bind1 != bind3)
         ok_(bind1 != bind6)
@@ -218,7 +218,7 @@ class TestBind(object):
         ok_(bind9 != bind5)
         ok_(bind9 != bind6)
         ok_(bind9 != bind8)
-    
+
     def test_string_without_symbol_table(self):
         # With ASCII characters:
         bind1 = Bind("pi", Number(3.1416))
@@ -230,7 +230,7 @@ class TestBind(object):
         bind2_as_unicode = six.text_type(bind2)
         eq_(bind2_as_unicode, u'Operand 3.1416 bound as "pí"')
         eq_(six.text_type(bind2), 'Operand 3.1416 bound as "pí"')
-    
+
     def test_string_with_symbol_table(self):
         # With ASCII characters:
         bind1 = Bind("pi", Number(3.1416))
@@ -250,21 +250,21 @@ class TestBind(object):
 
 class TestSymbolTable(object):
     """Tests for the multilingual symbol tables."""
-    
+
     def test_global_names(self):
         """
         When a symbol table is created, its global name must be set accordingly.
-        
+
         """
         st1 = SymbolTable("foo", [])
         st2 = SymbolTable("Foo", [])
         eq_(st1.global_name, "foo")
         eq_(st1.global_name, st2.global_name)
-    
+
     def test_names(self):
         """
         When a table is created, its multiple names must be set accordingly.
-        
+
         """
         # No localized names:
         st0 = SymbolTable("foo", [])
@@ -277,17 +277,17 @@ class TestSymbolTable(object):
         names1 = {'es_VE': "Cartuchera", 'es_ES': "estuche"}
         st2 = SymbolTable("bar", [], **names1)
         eq_(st2.names, names0)
-    
+
     def test_no_default_symbol_table(self):
         """Tables must not have a parent table by default."""
         st = SymbolTable("foo", [])
         eq_(st.symbol_table, None)
-    
+
     def test_constructor_without_subtables(self):
         """Sub-tables are optional."""
         st = SymbolTable("foo", [])
         eq_(len(st.subtables), 0)
-    
+
     def test_constructor_without_objects(self):
         """Objects are mandatory, or an empty list must be passed explicitly."""
         # No objects
@@ -295,13 +295,13 @@ class TestSymbolTable(object):
         # Empty list of objects:
         st = SymbolTable("foo", [])
         eq_(len(st.objects), 0)
-    
+
     def test_constructor_with_objects(self):
         objects = [Bind("greeting", String("hey")),
                    Bind("traffic", TrafficLightVar())]
         st = SymbolTable("global", objects)
         eq_(st.objects, set(objects))
-    
+
     def test_constructor_with_subtables(self):
         tables = [
             SymbolTable("sub1", []),
@@ -314,7 +314,7 @@ class TestSymbolTable(object):
         ]
         st = SymbolTable("global", [], *tables)
         eq_(st.subtables, set(tables))
-    
+
     def test_duplicate_objects(self):
         """There must be no duplicate object."""
         # In the constructor:
@@ -328,7 +328,7 @@ class TestSymbolTable(object):
         st = SymbolTable("global", objects2)
         assert_raises(ScopeError, st.add_object,
                       Bind("salutation", String("hey")))
-    
+
     def test_duplicate_subtables(self):
         """There must not be duplicate sub-tables."""
         # In the constructor:
@@ -340,12 +340,12 @@ class TestSymbolTable(object):
         subtables2 = [SymbolTable("foo", ()), SymbolTable("bar", ())]
         st = SymbolTable("global", [], *subtables2)
         assert_raises(ScopeError, st.add_subtable, SymbolTable("bar", []))
-    
+
     def test_unreusable_bindings(self):
         """
         Operand bindings and symbol tables can only be bound to a single parent
         symbol table.
-        
+
         """
         # An operand binding:
         bind = Bind("traffic-light", TrafficLightVar())
@@ -355,7 +355,7 @@ class TestSymbolTable(object):
         st0 = SymbolTable("foo", [])
         SymbolTable("global", [], st0)
         assert_raises(ScopeError, SymbolTable, "bar", [], st0)
-    
+
     def test_checking_valid_table(self):
         st = SymbolTable("global",
             # Bindings/global objects:
@@ -372,11 +372,11 @@ class TestSymbolTable(object):
             ),
         )
         eq_(st.validate_scope(), None)
-    
+
     def test_checking_object_and_subtable_sharing_global_name(self):
         """
         It's valid for an object and a sub-table to share the global name.
-        
+
         """
         st = SymbolTable("global",
             (
@@ -385,11 +385,11 @@ class TestSymbolTable(object):
             SymbolTable("today", ()),
         )
         eq_(st.validate_scope(), None)
-    
+
     def test_checking_object_and_subtable_sharing_localized_name(self):
         """
         It's valid for an object and a sub-table to share the localized name.
-        
+
         """
         st1 = SymbolTable("global",
             (
@@ -406,11 +406,11 @@ class TestSymbolTable(object):
         )
         eq_(st1.validate_scope(), None)
         eq_(st2.validate_scope(), None)
-    
+
     def test_checking_duplicate_object_global_names(self):
         """
         Two objects cannot have the same global names in the same table.
-        
+
         """
         st = SymbolTable("global",
             (
@@ -420,11 +420,11 @@ class TestSymbolTable(object):
             ),
         )
         assert_raises(ScopeError, st.validate_scope)
-    
+
     def test_checking_duplicate_object_localized_names(self):
         """
         Two objects cannot have the same localized names in the same table.
-        
+
         """
         st1 = SymbolTable("global",
             (
@@ -443,12 +443,12 @@ class TestSymbolTable(object):
         )
         assert_raises(ScopeError, st1.validate_scope)
         assert_raises(ScopeError, st2.validate_scope)
-    
+
     def test_checking_duplicate_subtable_global_names(self):
         """
         Two sub-tables cannot have the same global names in the same
         parent symbol table.
-        
+
         """
         st = SymbolTable("global",
             (),
@@ -457,12 +457,12 @@ class TestSymbolTable(object):
             SymbolTable("maths", (), es=u"matemática"),
         )
         assert_raises(ScopeError, st.validate_scope)
-    
+
     def test_checking_duplicate_subtable_localized_names(self):
         """
         Two sub-tables cannot have the same global names in the same
         parent table.
-        
+
         """
         st1 = SymbolTable("global",
             (),
@@ -479,11 +479,11 @@ class TestSymbolTable(object):
         )
         assert_raises(ScopeError, st1.validate_scope)
         assert_raises(ScopeError, st2.validate_scope)
-    
+
     def test_name_clash_in_grand_children(self):
         """
         The scope must be validated even inside the sub-tables.
-        
+
         """
         sciences_st1 = SymbolTable("sciences",
             (),
@@ -511,7 +511,7 @@ class TestSymbolTable(object):
                 Bind("foo", TrafficLightVar(), es="bar"),
             )
         )
-        
+
         st1 = SymbolTable("global", (), sciences_st1,
                           SymbolTable("society", ()))
         st2 = SymbolTable("global", (), sciences_st2,
@@ -519,17 +519,17 @@ class TestSymbolTable(object):
         st3 = SymbolTable("global", (), sciences_st3,
                           SymbolTable("society", ()))
         st4 = SymbolTable("global", (), sciences_st4)
-        
+
         assert_raises(ScopeError, st1.validate_scope)
         assert_raises(ScopeError, st2.validate_scope)
         assert_raises(ScopeError, st3.validate_scope)
         assert_raises(ScopeError, st4.validate_scope)
-    
+
     def test_retrieving_namespace_without_children(self):
         """
         A namespace shouldn't have sub-namespaces if the original symbol table
         doesn't have sub-tables.
-        
+
         """
         bool_var = BoolVar()
         traffic = TrafficLightVar()
@@ -539,20 +539,20 @@ class TestSymbolTable(object):
                 Bind("traffic", traffic, es=u"tráfico")
             ),
         )
-        
+
         # Checking the namespace:
         global_namespace = st.get_namespace()
         eq_(len(global_namespace.subnamespaces), 0)
-        
+
         # Checking the namespace in Castilian:
         castilian_namespace = st.get_namespace("es")
         eq_(len(castilian_namespace.subnamespaces), 0)
-    
+
     def test_retrieving_namespace_with_children(self):
         """
         A namespace should have sub-namespaces for the sub-tables of the
         original symbol table.
-        
+
         """
         bool_var = BoolVar()
         traffic = TrafficLightVar()
@@ -568,7 +568,7 @@ class TestSymbolTable(object):
                 ),
             ),
         )
-        
+
         # Checking the namespace:
         global_namespace = st.get_namespace()
         eq_(len(global_namespace.subnamespaces), 1)
@@ -578,7 +578,7 @@ class TestSymbolTable(object):
             'baz': traffic,
         }
         eq_(global_subnamespace.objects, global_subnamespace_objects)
-        
+
         # Checking the namespace in Castilian:
         castilian_namespace = st.get_namespace("es")
         eq_(len(castilian_namespace.subnamespaces), 1)
@@ -588,12 +588,12 @@ class TestSymbolTable(object):
             'mengano': traffic,
         }
         eq_(castilian_subnamespace.objects, castilian_subnamespace_objects)
-    
+
     def test_retrieving_namespace_with_untrastlated_contents(self):
         """
         When a namespace is requested in a locale which is not available,
         the namespace with global names should be returned isttead.
-        
+
         """
         bool_var = BoolVar()
         traffic = TrafficLightVar()
@@ -609,7 +609,7 @@ class TestSymbolTable(object):
                 ),
             ),
         )
-        
+
         # Checking the namespace:
         namespace = st.get_namespace("fr")
         eq_(len(namespace.subnamespaces), 1)
@@ -624,12 +624,12 @@ class TestSymbolTable(object):
             'traffic': TrafficLightVar(),
         }
         eq_(namespace.objects, expected_unbound_objects_global)
-    
+
     def test_retrieving_namespace_with_partially_untrastlated_contents(self):
         """
         When a namespace is requested in a locale in which not all items are
         available, the namespace with global names should be returned instead.
-        
+
         """
         bool_var = BoolVar()
         traffic = TrafficLightVar()
@@ -645,7 +645,7 @@ class TestSymbolTable(object):
                 ),
             ),
         )
-        
+
         # Checking the namespace:
         namespace = st.get_namespace("fr")
         eq_(len(namespace.subnamespaces), 1)
@@ -660,14 +660,14 @@ class TestSymbolTable(object):
             'traffic': TrafficLightVar(),
         }
         eq_(namespace.objects, expected_unbound_objects_global)
-    
+
     def test_equivalence(self):
         objects1 = lambda: [Bind("dish", String("cachapa")),
                             Bind("drink", String("empanada"))]
         objects2 = lambda: [Bind("drink", String("empanada")),
                             Bind("dish", String("cachapa"))]
         objects3 = lambda: [Bind("pi", Number(3.1416))]
-        
+
         st1 = SymbolTable("foo", objects1())
         st2 = SymbolTable("foo", objects1())
         st3 = SymbolTable("foo", objects1(), es="fulano")
@@ -682,10 +682,10 @@ class TestSymbolTable(object):
             "foo", objects1(), SymbolTable("bar", []), SymbolTable("baz", []))
         st12 = SymbolTable(
             "foo", objects1(), SymbolTable("baz", []), SymbolTable("bar", []))
-        
+
         # Moving st10 into the "baz" symbol table:
         SymbolTable("baz", [], st10)
-        
+
         ok_(st1 == st2)
         ok_(st1 == st5)
         ok_(st1 == st10)
@@ -706,10 +706,10 @@ class TestSymbolTable(object):
         ok_(st10 == st5)
         ok_(st11 == st12)
         ok_(st12 == st11)
-        
+
         ok_(st1 != None)
         ok_(st1 != Bind("foo", String("cachapa")))
-        
+
         ok_(st1 != st3)
         ok_(st1 != st4)
         ok_(st1 != st6)
@@ -820,7 +820,7 @@ class TestSymbolTable(object):
         ok_(st12 != st8)
         ok_(st12 != st9)
         ok_(st12 != st10)
-    
+
     def test_string(self):
         # With ASCII names:
         st2 = SymbolTable("grand-child", [])
@@ -836,7 +836,7 @@ class TestSymbolTable(object):
         eq_(six.text_type(st0), "Symbol table glòbál")
         eq_(six.text_type(st1), "Symbol table glòbál:párênt")
         eq_(six.text_type(st2), "Symbol table glòbál:párênt:gránd-chíld")
-    
+
     def test_unicode(self):
         # With ASCII names:
         st2 = SymbolTable("grand-child", [])
@@ -856,12 +856,12 @@ class TestSymbolTable(object):
 
 class TestNamespaces(object):
     """Tests for the namespaces."""
-    
+
     def test_subnamespaces_are_optional(self):
         """Namespaces may not have sub-namespaces."""
         st = Namespace(objects={})
         eq_(st.subnamespaces, {})
-    
+
     def test_retrieving_existing_global_object(self):
         objects = {
             'bool': BoolVar(),
@@ -870,7 +870,7 @@ class TestNamespaces(object):
         st = Namespace(objects)
         requested_object = st.get_object("bool")
         eq_(requested_object, BoolVar())
-    
+
     def test_retrieving_existing_2nd_level_object(self):
         sub_objects = {
             'bool': BoolVar(),
@@ -883,7 +883,7 @@ class TestNamespaces(object):
         st = Namespace(global_objects, sub_namespace)
         requested_object = st.get_object("bool", ["sub1"])
         eq_(requested_object, BoolVar())
-    
+
     def test_retrieving_existing_3rd_level_object(self):
         third_level_objects = {
             'bool': BoolVar(),
@@ -901,7 +901,7 @@ class TestNamespaces(object):
         st = Namespace(global_objects, second_level_namespaces)
         requested_object = st.get_object("bool", ["sub1", "sub2"])
         eq_(requested_object, BoolVar())
-    
+
     def test_retrieving_object_in_non_existing_subtable(self):
         global_objects = {
             'foo': TrafficLightVar(),
@@ -909,7 +909,7 @@ class TestNamespaces(object):
         }
         st = Namespace(global_objects,)
         assert_raises(ScopeError, st.get_object, "foo", ["doesn't", "exist"])
-    
+
     def test_retrieving_non_existing_object(self):
         global_objects = {
             'foo': TrafficLightVar(),

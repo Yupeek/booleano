@@ -22,7 +22,6 @@ sample = [
     {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
 ]
 
-
 # 1: create a static Symbol Table
 root_table = SymbolTable(
     "root",
@@ -37,12 +36,12 @@ root_table = SymbolTable(
     )
 )
 
-
 # 2: create the parser with se symbol table and the grammar (customized)
-parse_manager = EvaluableParseManager(root_table, Grammar(belongs_to='in'))
+
+grammar = Grammar(belongs_to='in')
+parse_manager = EvaluableParseManager(root_table, grammar)
 # 3: compile a expression
 compiled_expression = parse_manager.parse('age < majority & "o" in name & birthdate > "1983-02-02"')
-
 
 # check the command line args
 if len(sys.argv) == 1:
@@ -54,19 +53,18 @@ print("searching with expression %r" % stmt)
 try:
     compiled_expression = parse_manager.parse(stmt)
 except pyparsing.ParseException as e:
+    attrs = dict(
+        expr=stmt,
+        e=e,
+        tild='^',
+        grammar="\n".join("%s => '%s'" % (k, v) for k, v in grammar.get_all_tokens().items())
+    )
     msg = "error while parsing the expression {expr} at {e.lineno}:{e.col}: {e}\n" \
           "{e.line}\n" \
           "{tild:->{e.col}}\n" \
-          " valid grammar : {grammar}".format(
-            expr=stmt,
-            e=e,
-            tild='^',
-            grammar="\n".join(
-                "%s => '%s'" % (k, v) for k, v in grammar.get_all_tokens().items())
-    )
+          " valid grammar : {grammar}".format(**attrs)
     print(msg)
     exit(2)
-
 else:
     # run the rule for all sample data
     for character in sample:

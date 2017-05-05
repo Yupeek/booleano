@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -51,7 +51,7 @@ from tests import (BoolVar, TrafficLightVar, PedestriansCrossingRoad,
 
 class TestBaseManager(object):
     """Tests for the base :class:`ParseManager`."""
-    
+
     def test_abstract_methods(self):
         mgr = ParseManager(Grammar())
         assert_raises(NotImplementedError, mgr._define_parser, None, "es")
@@ -60,9 +60,9 @@ class TestBaseManager(object):
 class TestEvaluableParseManager(object):
     """
     Tests for the :class:`EvaluableParseManager` with caching disabled.
-    
+
     """
-    
+
     # A symbol table to be used across the tests:
     symbol_table = SymbolTable("root",
         (
@@ -83,7 +83,7 @@ class TestEvaluableParseManager(object):
             es=u"tráfico"
         ),
     )
-    
+
     def test_parsing_with_no_localized_grammars(self):
         mgr = EvaluableParseManager(self.symbol_table, Grammar())
         parse_tree1 = mgr.parse('message == "2009-07-13"')
@@ -92,7 +92,7 @@ class TestEvaluableParseManager(object):
                                                  String("2009-07-13")))
         eq_(parse_tree1, parse_tree2)
         eq_(parse_tree1, expected_tree)
-    
+
     def test_parsing_with_localized_grammars(self):
         castilian_grammar = Grammar(decimal_separator=",",
                                     thousands_separator=".")
@@ -102,14 +102,14 @@ class TestEvaluableParseManager(object):
         expected_tree = EvaluableParseTree(
             LessEqual(PedestriansCrossingRoad(), Number(3.0)))
         eq_(parse_tree, expected_tree)
-    
+
     def test_parsing_with_undefined_grammar_but_available_translations(self):
         """
         When an expression is written in an unsupported grammar, a parser
         based on the generic grammar must be created and used.
-        
+
         The respective translated bindings must be used if available.
-        
+
         """
         log_handler = LoggingHandlerFixture()
         mgr = EvaluableParseManager(self.symbol_table, Grammar())
@@ -123,14 +123,14 @@ class TestEvaluableParseManager(object):
 
         ok_(info in log_handler.handler.messages['info'])
         log_handler.undo()
-    
+
     def test_parsing_with_undefined_grammar_and_no_translated_bindings(self):
         """
         When an expression is written in an unsupported grammar, a parser
         based on the generic grammar must be created and used.
-        
+
         If there are no translated bindings, the default names must be used.
-        
+
         """
         log_handler = LoggingHandlerFixture()
         mgr = EvaluableParseManager(self.symbol_table, Grammar())
@@ -143,13 +143,13 @@ class TestEvaluableParseManager(object):
         info = "Generated parser for unknown grammar %s" % repr('fr')
         ok_(info in log_handler.handler.messages['info'])
         log_handler.undo()
-    
+
     def test_parsing_with_defined_grammar_but_no_available_translations(self):
         """
         When an expression is written in an supported grammar but there are no
         translated bindings, the default names must be used along with the
         custom grammar.
-        
+
         """
         french_grammar = Grammar(decimal_separator=",", thousands_separator=".")
         mgr = EvaluableParseManager(self.symbol_table, Grammar(),
@@ -159,7 +159,7 @@ class TestEvaluableParseManager(object):
         expected_tree = EvaluableParseTree(
             LessEqual(PedestriansCrossingRoad(), Number(3)))
         eq_(parse_tree, expected_tree)
-    
+
     def test_adding_grammar(self):
         """It should be possible to add grammars after instantiation."""
         castilian_grammar = Grammar(decimal_separator=",",
@@ -170,12 +170,12 @@ class TestEvaluableParseManager(object):
         expected_tree = EvaluableParseTree(
             LessEqual(PedestriansCrossingRoad(), Number(3.0)))
         eq_(parse_tree, expected_tree)
-    
+
     def test_adding_existing_grammar(self):
         """There can't be duplicate/overlapped parsers."""
         mgr = EvaluableParseManager(self.symbol_table, Grammar(), es=Grammar())
         assert_raises(GrammarError, mgr.add_parser, "es", Grammar())
-    
+
     def test_evaluating_expressions(self):
         """Managers should be able to evaluate the expressions too."""
         mgr = EvaluableParseManager(self.symbol_table, Grammar())
@@ -351,9 +351,9 @@ class TestNativeVariableEvaluableParseManager(object):
 class TestConvertibleParseManager(object):
     """
     Tests for the :class:`ConvertibleParseManager` with caching disabled.
-    
+
     """
-    
+
     def test_parsing_with_no_localized_grammars(self):
         mgr = ConvertibleParseManager(Grammar())
         parse_tree1 = mgr.parse('message == "2009-07-13"')
@@ -362,7 +362,7 @@ class TestConvertibleParseManager(object):
             Equal(PlaceholderVariable("message"), String("2009-07-13")))
         eq_(parse_tree1, parse_tree2)
         eq_(parse_tree1, expected_tree)
-    
+
     def test_parsing_with_localized_grammars(self):
         castilian_grammar = Grammar(decimal_separator=",",
                                     thousands_separator=".")
@@ -378,21 +378,21 @@ class TestConvertibleParseManager(object):
 class TestManagersWithCaching(object):
     """
     Tests for the parse managers with caching enabled.
-    
+
     """
-    
+
     def setUp(self):
         castilian_grammar = Grammar(decimal_separator=",",
                                     thousands_separator=".")
         self.manager = ConvertibleParseManager(Grammar(), cache_limit=3,
                                                es=castilian_grammar)
-    
+
     def test_empty_by_default(self):
         """The cache must be empty by default."""
         eq_(self.manager._cache.counter, 0)
         eq_(len(self.manager._cache.cache_by_locale), 0)
         eq_(len(self.manager._cache.latest_expressions), 0)
-    
+
     def test_parsing_not_yet_cached_result(self):
         """Not yet cached trees must be cached after parsing."""
         # The first parse:
@@ -412,7 +412,7 @@ class TestManagersWithCaching(object):
         eq_(self.manager._cache.cache_by_locale[locale2][expr2], tree2)
         eq_(self.manager._cache.latest_expressions, [(locale2, expr2),
                                                      (locale1, expr1)])
-    
+
     def test_parsing_already_cached_result(self):
         """Already parsed expressions must not be parsed again."""
         expr = 'today == "2009-07-13"'
@@ -426,11 +426,11 @@ class TestManagersWithCaching(object):
         eq_(len(self.manager._cache.cache_by_locale[locale]), 1)
         eq_(self.manager._cache.cache_by_locale[locale][expr], tree1)
         eq_(self.manager._cache.latest_expressions, [(locale, expr)])
-    
+
     def test_limit_reached(self):
         """
         When the cache limit has been reached, the oldest items must be removed.
-        
+
         """
         expr1 = 'today == "2009-07-13"'
         expr2 = 'yesterday < "2009-07-13"'
@@ -449,12 +449,12 @@ class TestManagersWithCaching(object):
         eq_(self.manager._cache.cache_by_locale[None][expr4], tree4)
         latest = [(None, expr4), (None, expr3), (None, expr2)]
         eq_(self.manager._cache.latest_expressions, latest)
-    
+
     def test_limit_reached_in_different_locales(self):
         """
         When the cache limit has been reached among all the locales, the
         oldest items must be removed.
-        
+
         """
         expr1 = 'today == "2009-07-13"'
         expr2 = 'yesterday < "2009-07-13"'
@@ -475,13 +475,13 @@ class TestManagersWithCaching(object):
         eq_(self.manager._cache.cache_by_locale['es'][expr4], tree4)
         latest = [("es", expr4), (None, expr3), ("fr", expr2)]
         eq_(self.manager._cache.latest_expressions, latest)
-    
+
     def test_unlimited_caching(self):
         """
         The cache may have no limit.
-        
+
         If so, the cache counter will be disabled.
-        
+
         """
         manager = ConvertibleParseManager(Grammar(), cache_limit=None)
         manager.parse('today == "2009-07-13"')

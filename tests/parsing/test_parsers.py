@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -52,7 +52,7 @@ from tests import (StringConverter, BoolVar, TrafficLightVar,
 class TestDefaultGrammar(BaseGrammarTest):
     """
     Tests for the parser of the default/generic grammar.
-    
+
     """
 
     grammar = Grammar()
@@ -499,17 +499,17 @@ class TestDefaultGrammar(BaseGrammarTest):
             ),
         # Let's make sure whitespace doesn't change anything:
         '''
-        
+
         variable == "hi"
-        
+
         ''': Equal(PlaceholderVariable("variable"), String("hi")),
         '''
-        
-        variable 
-        == 
-        
+
+        variable
+        ==
+
         "hi"
-        
+
         ''': Equal(PlaceholderVariable("variable"), String("hi")),
         '''
         \t variable == "hi"
@@ -755,13 +755,13 @@ class TestDefaultGrammar(BaseGrammarTest):
         """
         All the custom tokens in the grammar must be taken into account by the
         parser.
-        
+
         To test that custom tokens are used, and in order to test many scenarios
         writen few lines of code, we're going to convert operation nodes into
         boolean expressions (using the relevant grammar), and then these
         expressions will be parsed to check if the result is the original
         tree.
-        
+
         """
 
         grammars = (
@@ -811,7 +811,7 @@ class TestDefaultGrammar(BaseGrammarTest):
 class TestBaseParser(object):
     """
     Tests for the parsers' abstract base class.
-    
+
     """
 
     def test_abstract_methods(self):
@@ -822,48 +822,48 @@ class TestBaseParser(object):
 
 class TestEvaluableParser(object):
     """Tests for the evaluable parser."""
-    
+
     global_objects = {
         'bool': BoolVar(),
         'message': String("Hello world"),
         'foo': PermissiveFunction,
     }
-    
+
     traffic_objects = {
         'traffic_light': TrafficLightVar(),
         'pedestrians_crossing_road': PedestriansCrossingRoad(),
         'drivers_awaiting_green_light': DriversAwaitingGreenLightVar(),
         'traffic_violation': TrafficViolationFunc,
     }
-    
+
     root_namespace = Namespace(global_objects,
         {
         'traffic': Namespace(traffic_objects),
         })
-    
+
     parser = EvaluableParser(Grammar(), root_namespace)
-    
-    #{ Tests for the parse action that makes the variables
-    
+
+    # Tests for the parse action that makes the variables
+
     def test_existing_variable_without_namespace(self):
         parse_tree = self.parser("~ bool")
         eq_(parse_tree.root_node, Not(self.global_objects['bool']))
-    
+
     def test_existing_variable_with_namespace(self):
         parse_tree = self.parser('traffic:traffic_light == "green"')
         expected_node = Equal(self.traffic_objects['traffic_light'],
                               String("green"))
         eq_(parse_tree.root_node, expected_node)
-    
+
     def test_non_existing_variable_without_namespace(self):
         assert_raises(ScopeError, self.parser, "~ non_existing_var")
-    
+
     def test_non_existing_variable_with_namespace(self):
         assert_raises(ScopeError, self.parser, "~ traffic:non_existing_var")
-    
+
     def test_variable_in_non_existing_namespace(self):
         assert_raises(ScopeError, self.parser, "~ bar:foo")
-    
+
     def test_function_instead_of_variable(self):
         # "foo" is a function, so it cannot be used as a variable (without
         # parenthesis):
@@ -873,33 +873,33 @@ class TestEvaluableParser(object):
             eq_('"foo" represents a function, not a variable', six.text_type(exc))
         else:
             assert 0, '"foo" is a function, not a variable!'
-    
+
     def test_named_constant(self):
         """Named constants must be supported."""
         parse_tree = self.parser('message == "Hello earth"')
         expected_node = Equal(String("Hello world"), String("Hello earth"))
         eq_(parse_tree.root_node, expected_node)
-    
-    #{ Tests for the parse action that makes the functions
-    
+
+    # Tests for the parse action that makes the functions
+
     def test_existing_function_without_namespace(self):
         parse_tree = self.parser('~ foo("baz")')
         eq_(parse_tree.root_node, Not(PermissiveFunction(String("baz"))))
-    
+
     def test_existing_function_with_namespace(self):
         parse_tree = self.parser('~ traffic:traffic_violation("pedestrians")')
         expected_node = Not(TrafficViolationFunc(String("pedestrians")))
         eq_(parse_tree.root_node, expected_node)
-    
+
     def test_non_existing_function_without_namespace(self):
         assert_raises(ScopeError, self.parser, "~ non_existing_function()")
-    
+
     def test_non_existing_function_with_namespace(self):
         assert_raises(ScopeError, self.parser, "~ traffic:non_existing_func()")
-    
+
     def test_function_in_non_existing_namespace(self):
         assert_raises(ScopeError, self.parser, "~ bar:foo(123)")
-    
+
     def test_variable_instead_of_function(self):
         # "bool" is a variable, so it cannot be used as a function (with
         # parenthesis):
@@ -909,6 +909,6 @@ class TestEvaluableParser(object):
             eq_('"bool" is not a function', six.text_type(exc))
         else:
             assert 0, '"bool" is a variable, not a function!'
-    
-    #}
+
+    #
 

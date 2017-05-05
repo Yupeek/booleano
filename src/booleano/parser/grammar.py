@@ -131,7 +131,7 @@ class Grammar(object):
     def get_all_tokens(self):
         """
         return the list of all valid token for this grammar
-        :return: 
+        :return: the dict representing all tokens
         """
         res = {}
         res.update(self.default_tokens)

@@ -42,4 +42,3 @@ compiled_expression = parse_manager.parse('age < majority & "o" in name & birthd
 for character in sample:
     # 4 execute the cumpiled expression with a context
     print("%s => %s" % (character, compiled_expression(character)))
-

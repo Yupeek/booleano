@@ -42,7 +42,7 @@ root_table = SymbolTable(
 grammar = Grammar(belongs_to='in')
 parse_manager = EvaluableParseManager(root_table, grammar)
 # 3: compile a expression
-compiled_expression = parse_manager.parse('age < majority & "o" in name & birthdate > "1983-02-02"')
+# compiled_expression = parse_manager.parse('age < majority & "o" in name & birthdate > "1983-02-02"')
 
 # check the command line args
 if len(sys.argv) == 1:

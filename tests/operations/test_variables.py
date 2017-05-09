@@ -214,6 +214,16 @@ class TestVariableSymbolTableBuilder(object):
             Bind("age", self.FakeVariableSub),
         )))
 
+    def test_creation_table_with_type(self):
+        vb = SymbolTableBuilder()
+        vb.register(six.text_type, self.FakeVariable)
+        vb.register(int, self.FakeVariableSub)
+        st = vb("root", {"name": six.text_type, "age": 15})
+        assert_equal(st, SymbolTable('root', (
+            Bind("name", self.FakeVariable),
+            Bind("age", self.FakeVariableSub),
+        )))
+
     def test_creation_table_unknown_type(self):
         vb = SymbolTableBuilder()
         vb.register(six.text_type, self.FakeVariable)

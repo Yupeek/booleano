@@ -3,6 +3,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+import six
+
 logger = logging.getLogger(__name__)
 
 
@@ -69,7 +71,9 @@ class SymbolTableBuilder(object):
 
         binds = []
         for k, v in sample.items():
-            var = self.find_for_type(type(v))
+            var_type = v if isinstance(v, six.class_types) else type(v)
+
+            var = self.find_for_type(var_type)
 
             binds.append(
                 Bind(k, var(k if self.use_key else v))

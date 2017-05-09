@@ -8,7 +8,7 @@ import six
 
 from booleano.operations.operands.classes import Variable
 from booleano.operations.operands.constants import String
-from booleano.utils import SymbolTableBuilder
+from booleano.parser.symbol_table_builder import SymbolTableBuilder
 
 variable_symbol_table_builder = SymbolTableBuilder()
 

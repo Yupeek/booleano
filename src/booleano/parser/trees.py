@@ -85,7 +85,7 @@ class ParseTree(object):
         :rtype: bool
 
         """
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: nocover
 
 
 @six.python_2_unicode_compatible

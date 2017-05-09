@@ -231,6 +231,10 @@ class TestBind(object):
         eq_(bind2_as_unicode, u'Operand 3.1416 bound as "pí"')
         eq_(six.text_type(bind2), 'Operand 3.1416 bound as "pí"')
 
+    def test_repr(self):
+        bind = Bind("pi", Number(3.1416))
+        eq_(repr(bind), u'<Operand 3.1416 bound as "pi">')
+
     def test_string_with_symbol_table(self):
         # With ASCII characters:
         bind1 = Bind("pi", Number(3.1416))

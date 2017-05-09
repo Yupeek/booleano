@@ -7,7 +7,7 @@ from nose.tools import ok_, assert_raises, assert_equal
 
 from booleano.operations.variables import NumberVariable, BooleanVariable, StringVariable, DateVariable, \
     DateTimeVariable, SetVariable, NativeVariable
-from booleano.utils import SymbolTableBuilder
+from booleano.parser.symbol_table_builder import SymbolTableBuilder
 from booleano.parser import SymbolTable, Bind, Grammar
 from booleano.parser.core import EvaluableParseManager
 

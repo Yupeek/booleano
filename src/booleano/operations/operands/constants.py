@@ -35,11 +35,11 @@ import six
 
 from booleano.exc import InvalidOperationError
 from booleano.operations.operands.core import Operand
-from booleano.utils import SymbolTableBuilder
+from booleano.parser.symbol_table_builder import SymbolTableBuilder
 
 __all__ = ["String", "Number", "Set"]
 
-constants_symbol_table_builder = SymbolTableBuilder()
+constants_symbol_table_builder = SymbolTableBuilder(use_key=False)
 
 
 @constants_symbol_table_builder.register(type(None))

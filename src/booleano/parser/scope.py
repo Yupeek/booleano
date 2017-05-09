@@ -207,6 +207,9 @@ class Bind(_Identifier):
             description = "%s (in %s)" % (description, self.symbol_table)
         return description
 
+    def __repr__(self):
+        return '<%s>' % self
+
 
 @six.python_2_unicode_compatible
 class SymbolTable(_Identifier):
@@ -432,7 +435,7 @@ class SymbolTable(_Identifier):
         ``locale``.
 
         :param items: A list of identifiers whose contents should be extracted.
-        :type items: list
+        :type items: list|set|tuple
         :param locale: The locale to be used to filter the contents.
         :type locale: basestring or ``None``
         :return: The contents of each item in ``items``, in a dictionary whose

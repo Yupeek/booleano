@@ -83,6 +83,11 @@ class TestDefaultGrammar(object):
         eq_(self.grammar.get_token("identifier_spacing"), "_")
         eq_(self.grammar.get_token("namespace_separator"), ":")
 
+    def test_get_all_tokens(self):
+        eq_(self.grammar.get_all_tokens(),
+            self.grammar.default_tokens
+        )
+
     def test_setting_existing_token(self):
         self.grammar.set_token("negative_sign", "!")
         eq_(self.grammar.get_token("negative_sign"), "!")
@@ -196,3 +201,12 @@ class TestEarlyCustomizedGrammar(object):
         # Everything else must have not changed:
         eq_(grammar.get_custom_generator("operation"), None)
         eq_(grammar.get_custom_generator("number"), None)
+
+    def test_get_all_tokens(self):
+        grammar = Grammar(eq="=", ne="<>")
+        expected = grammar.default_tokens.copy()
+        expected['eq'] = '='
+        expected['ne'] = '<>'
+        eq_(grammar.get_all_tokens(),
+            expected
+        )

@@ -3,70 +3,55 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+from booleano.operations.operands.constants import constants_symbol_table_builder
+from booleano.operations.variables import variable_symbol_table_builder
+from booleano.parser.core import EvaluableParseManager
+from booleano.parser.grammar import Grammar
+
 logger = logging.getLogger(__name__)
 
 
-class SymbolTableBuilder(object):
+def get_boolean_evaluator(statment, variables=None, constants=None, grammar_tokens=None):
     """
-    a builder that can create a symbolTable of NativeVariable from a sample of data
-    each available NativeVariable can register themselver to a Builder to make him
-    aware of his python type binding
+    an fast and easy to use helper to build a parser with variables and constants.
+    return a callable which take a dict of value (for the variables).
+
+    the returning scope will cotains the variables as is, and the constants into the namespace ``const:``
+
+    ie:  'age < const:majority & "o" in name & birthdate > "1983-02-02"'
+
+    :param str statment: the statment to use
+    :param list|tuple variables:  the sample of variables
+    :param dict constants:  the value for the consts
+    :param dict grammar_tokens: all extra parameters must be a valid grammar token replacements. (is_subset='in')
+    :return: the parse tree that, if called, return a boolean result
+    :rtype: :class:`booleano.parser.trees.ParseTree`
     """
 
-    def __init__(self):
-        self.registered_variables = {}
-        """
-        the mapping from a python type to a Variable subclass
-        """
+    grammar_tokens = grammar_tokens or {}
+    grammar = Grammar(**grammar_tokens)
+    if variables is None:
+        variables = [{}]
 
-    def register(self, type_, variable_class=None):
-        if type_ in self.registered_variables:
-            raise Exception("the type %s is arleady registered to %s" % (type_, self.registered_variables[type_]))
+    root_table = variable_symbol_table_builder('root', variables[0])
 
-        if variable_class is not None:
-            self.registered_variables[type_] = variable_class
-            return variable_class
-        else:
-            # work as a decorator of class
-            def wrapper(_variable_class):
-                return self.register(type_, _variable_class)
+    """:type: booleano.parser.scope.SymbolTable"""
+    if constants:
+        root_table.add_subtable(
+            constants_symbol_table_builder('const', constants),
+        )
 
-            return wrapper
+    parse_manager = EvaluableParseManager(root_table, grammar)
+    return parse_manager.parse(statment)
 
-    def find_for_type(self, type_):
-        """
-        resolve the best registered variable for this type.
-        it accept subclass of a registered type.
-        :param type type_: the type to find the best match
-        :return: the best match
-        :rtype: NativeVariable
-        """
-        found = None
-        for registered_type in self.registered_variables.keys():
-            if issubclass(type_, registered_type):
-                # of this is the firt we found, or it's the more concrete class for this type
-                if found is None or len(found.__mro__) < len(registered_type.__mro__):
-                    found = registered_type
-        if found is None:
-            raise Exception("the type of data %(type)s has no registered variable type. "
-                            "try to use @symbol_table_builder.register(%(type)s)" % dict(type=type_))
-        return self.registered_variables[found]
 
-    def __call__(self, name, sample):
-        """
-        create a SymbolTalbe from the sample data
-        :param string name: the name of the symbolTable
-        :param dict sample: the sample of data
-        :return: the SymbolTable
-        :rtype: SymbolTable
-        """
-        from booleano.parser import Bind, SymbolTable  # isort:skip
-
-        binds = []
-        for k, v in sample.items():
-            var = self.find_for_type(type(v))
-
-            binds.append(
-                Bind(k, var(k))
-            )
-        return SymbolTable(name, binds)
+def eval_boolean(statment, variables=None, constants=None, grammar_tokens=None):
+    """
+    a slow but easy to use boolean evaluation helper.
+    :param statment: the boolean statment to evaluate
+    :param variables: the dict of variables
+    :param constants: the dict of constants.
+    :return: the Truth of the statment with the given variables
+    :rtype: bool
+    """
+    return get_boolean_evaluator(statment, (variables or {},), constants, grammar_tokens)(variables)

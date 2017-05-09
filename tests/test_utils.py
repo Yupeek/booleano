@@ -5,8 +5,7 @@ import logging
 
 import datetime
 
-from nose.tools import assert_equals
-from nose.tools.trivial import ok_
+from nose.tools.trivial import ok_, eq_
 
 from booleano.utils import eval_boolean, get_boolean_evaluator
 
@@ -51,4 +50,4 @@ class TestGetBooleanEvaluator(object):
             grammar_tokens={'belongs_to': 'in'}
         )
         for s, expected in zip(self.sample, (False, False, False, True)):
-            assert_equals(evaluator(s), expected)
+            eq_(evaluator(s), expected)

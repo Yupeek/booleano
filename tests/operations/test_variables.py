@@ -4,9 +4,10 @@ import datetime
 
 import six
 from nose.tools import ok_, assert_raises, assert_equal
+from nose.tools.trivial import eq_
 
 from booleano.operations.variables import NumberVariable, BooleanVariable, StringVariable, DateVariable, \
-    DateTimeVariable, SetVariable, NativeVariable
+    DateTimeVariable, SetVariable, NativeVariable, DurationVariable
 from booleano.parser.symbol_table_builder import SymbolTableBuilder
 from booleano.parser import SymbolTable, Bind, Grammar
 from booleano.parser.core import EvaluableParseManager
@@ -163,6 +164,39 @@ class TestNativeVariableEvaluableParseManager(object):
         ok_(self.mgr.parse('sub:myint > myint')(myints))
         ok_(not self.mgr.parse('sub:myint < myint')(myints))
         ok_(not self.mgr.parse('sub:myint == myint')(myints))
+
+    def test_format_date(self):
+        symbol_table = SymbolTable(
+            "root",
+            (
+                Bind("mydate", DateVariable("mydate", ['%d %m %y'])),
+                Bind("mydate2", DateVariable("mydate2")),
+            )
+        )
+        mgr = EvaluableParseManager(symbol_table, Grammar(belongs_to='in', is_subset='is subset of'))
+        ok_(mgr.parse('mydate < "04 03 01"')({'mydate': datetime.date(2001, 3, 2)}))
+        assert_raises(ValueError, mgr.parse('mydate < "2001-03-04" '), {'mydate': datetime.date(2001, 3, 2)})
+        assert_raises(ValueError, mgr.parse('mydate2 < "04 03 01" '), {'mydate2': datetime.date(2001, 3, 2)})
+
+
+class TestDurationVariable(object):
+
+    def test_default_durations_formats(self):
+        d = DurationVariable('ctx_name')
+        eq_(d._from_native_string('1d'), datetime.timedelta(days=1))
+        eq_(d._from_native_string('1d2s'), datetime.timedelta(days=1, seconds=2))
+        eq_(d._from_native_string('1d4m2s'), datetime.timedelta(days=1, seconds=2, minutes=4))
+        eq_(d._from_native_string('1d5h4m2s'), datetime.timedelta(days=1, seconds=2, minutes=4, hours=5))
+        eq_(d._from_native_string('1 days 5 hours 4 minutes 2 seconds'), datetime.timedelta(days=1, seconds=2, minutes=4, hours=5))
+        eq_(d._from_native_string('1days 5hours 4minutes 2seconds'), datetime.timedelta(days=1, seconds=2, minutes=4, hours=5))
+        eq_(d._from_native_string('1 days 2 seconds'), datetime.timedelta(days=1, seconds=2))
+
+    def test_bad_formated_date(self):
+        d = DurationVariable('ctx_name')
+        assert_raises(ValueError, d._from_native_string, "")
+        assert_raises(ValueError, d._from_native_string, "1j")  # bad j unit
+        assert_raises(ValueError, d._from_native_string, "10s10d")  # bad order
+        assert_raises(ValueError, d._from_native_string, "1d2h3s5h")  # repeated h
 
 
 class TestVariableSymbolTableBuilder(object):

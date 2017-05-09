@@ -179,18 +179,18 @@ class SetVariable(NativeCollectionVariable):
 class DurationVariable(NativeVariable):
     """
     a variable that allow to compare **duration** from the context (datetime.timedelta)
-    
-    the compartion can be made with a string matching the folowing format : 
-    
+
+    the compartion can be made with a string matching the folowing format :
+
     + **days** d **hours** h **minutes** m **seconds** s
     + **days** days **hours** hours **minutes** minutes **seconds** seconds
-    
-    ie : 
-    
+
+    ie :
+
     + duration > "15 d 7 h 8 m 19 s"
     + duration > "15d 24s"
-    
-    
+
+
     """
     formats = [
         (
@@ -234,19 +234,19 @@ class DateTimeVariable(NativeVariable):
     """
     a variable that allow to compare **datetime** from the context (datetime.datetime)
 
-    the compartion can be made with a string matching the folowing format : 
+    the compartion can be made with a string matching the folowing format :
 
     - %d/%m/%Y %H:%M:%S
     - %d-%m-%Y %H:%M:%S
     - %Y/%m/%d %H:%M:%S
     - %Y-%m-%d %H:%M:%S
-    
+
     or you can pass your own formats in the construction
-    
+
     .. code::
-    
+
         DateTimeVariable("context_name", formats=["%Y-%m-%d %H:%M:%S"])
-        
+
     """
 
     formats = (
@@ -283,7 +283,7 @@ class DateVariable(DateTimeVariable):
     """
     a variable that allow to compare **date** from the context (datetime.date)
 
-    the compartion can be made with a string matching the folowing format : 
+    the compartion can be made with a string matching the folowing format :
 
     - %d/%m/%Y
     - %d-%m-%Y

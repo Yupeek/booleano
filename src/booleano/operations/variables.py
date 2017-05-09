@@ -3,12 +3,17 @@
 this module contains all usable variables for native python type.
 """
 import datetime
+
 import six
 
 from booleano.operations.operands.classes import Variable
 from booleano.operations.operands.constants import String
+from booleano.utils import SymbolTableBuilder
+
+variable_symbol_table_builder = SymbolTableBuilder()
 
 
+@variable_symbol_table_builder.register(type(None))
 class NativeVariable(Variable):
     operations = {
         "equality",           # ==, !=
@@ -70,6 +75,8 @@ class NativeVariable(Variable):
         return '<Scop variable for %s [%s]>' % (self.context_name, self.__class__.__name__)
 
 
+@variable_symbol_table_builder.register(list)
+@variable_symbol_table_builder.register(tuple)
 class NativeCollectionVariable(NativeVariable):
     operations = {
         "equality",  # ==, !=
@@ -100,18 +107,24 @@ class NativeCollectionVariable(NativeVariable):
         return cv != value and value in cv
 
 
-class IntegerVariable(NativeVariable):
+@variable_symbol_table_builder.register(int)
+@variable_symbol_table_builder.register(float)
+class NumberVariable(NativeVariable):
     pass
 
 
+@variable_symbol_table_builder.register(bool)
 class BooleanVariable(NativeVariable):
     pass
 
 
+@variable_symbol_table_builder.register(six.text_type)
 class StringVariable(NativeCollectionVariable):
     pass
 
 
+@variable_symbol_table_builder.register(set)
+@variable_symbol_table_builder.register(frozenset)
 class SetVariable(NativeCollectionVariable):
 
     def cast_val(self, value):
@@ -142,6 +155,7 @@ class SetVariable(NativeCollectionVariable):
         return value < cv
 
 
+@variable_symbol_table_builder.register(datetime.datetime)
 class DateTimeVariable(NativeVariable):
     formats = (
         "%d/%m/%Y %H:%M:%S",
@@ -172,6 +186,7 @@ class DateTimeVariable(NativeVariable):
         raise ValueError("bad date format for %s: tied %r" % (value, self.formats))
 
 
+@variable_symbol_table_builder.register(datetime.date)
 class DateVariable(DateTimeVariable):
     formats = (
         "%d/%m/%Y",

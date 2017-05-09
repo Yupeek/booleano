@@ -161,7 +161,7 @@ class Bind(_Identifier):
             any).
         :type global_name: basestring
         :param operand: The operand to be bound.
-        :type operand: :class:`booleano.operations.operands.Operand`
+        :type operand: :class:`booleano.operations.Operand`
 
         Additional keyword arguments represent the translations of the
         ``global_name`` into other languages.

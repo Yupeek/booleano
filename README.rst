@@ -85,6 +85,12 @@ and we will merge it if it's a good piece of code.
 
 see CONTRIBUTING.rst to know how work with ease on this project.
 
+Upgrade Note
+------------
+
+the old alpha release 1.0a1 is not compatible with newer version (starting with 1.1a1) because of heavy
+import path changes. all import from the modules (__init__.py) is discouraged.
+
 
 Credit
 ------

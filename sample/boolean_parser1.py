@@ -4,11 +4,11 @@
 import datetime
 
 from booleano.operations.operands.constants import Number
-from booleano.operations.variables import IntegerVariable, StringVariable, DateVariable, SetVariable
+from booleano.operations.variables import NumberVariable, StringVariable, DateVariable, SetVariable
 from booleano.parser.scope import SymbolTable, Bind
 
-from booleano.parser import Grammar, EvaluableParseManager
-
+from booleano.parser import Grammar
+from booleano.parser.core import EvaluableParseManager
 
 # our sample data to test. matching the SymbolTable
 sample = [
@@ -24,7 +24,7 @@ root_table = SymbolTable(
     "root",
     (
         # variablet taken from context
-        Bind("age", IntegerVariable('age')),
+        Bind("age", NumberVariable('age')),
         Bind("name", StringVariable('name')),
         Bind("birthdate", DateVariable("birthdate")),
         Bind("tags", SetVariable("tags")),

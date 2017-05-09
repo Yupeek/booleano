@@ -34,11 +34,15 @@ from __future__ import unicode_literals
 import six
 
 from booleano.exc import InvalidOperationError
-from booleano.operations.operands import Operand
+from booleano.operations.operands.core import Operand
+from booleano.utils import SymbolTableBuilder
 
 __all__ = ["String", "Number", "Set"]
 
+constants_symbol_table_builder = SymbolTableBuilder()
 
+
+@constants_symbol_table_builder.register(type(None))
 class Constant(Operand):
     """
     Base class for constant operands.
@@ -99,6 +103,7 @@ class Constant(Operand):
         )
 
 
+@constants_symbol_table_builder.register(six.text_type)
 @six.python_2_unicode_compatible
 class String(Constant):
     u"""
@@ -159,6 +164,8 @@ class String(Constant):
         return '<String "%s">' % self.constant_value
 
 
+@constants_symbol_table_builder.register(int)
+@constants_symbol_table_builder.register(float)
 @six.python_2_unicode_compatible
 class Number(Constant):
     """
@@ -247,6 +254,8 @@ class Number(Constant):
         return '<Number %s>' % self.constant_value
 
 
+@constants_symbol_table_builder.register(set)
+@constants_symbol_table_builder.register(frozenset)
 @six.python_2_unicode_compatible
 class Set(Constant):
     """
@@ -256,6 +265,7 @@ class Set(Constant):
     :meth:`is_subset`.
 
     """
+    _is_leaf = False
 
     operations = Constant.operations | set(["inequality", "membership"])
 

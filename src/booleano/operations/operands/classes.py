@@ -42,7 +42,7 @@ from collections import OrderedDict
 import six
 
 from booleano.exc import BadCallError, BadFunctionError
-from booleano.operations.operands import Operand, _OperandMeta
+from booleano.operations.operands.core import Operand, _OperandMeta
 
 __all__ = ["Variable", "Function"]
 
@@ -141,6 +141,7 @@ class Function(six.with_metaclass(_FunctionMeta, Class)):
 
     # Only actual functions should be checked.
     bypass_operation_check = True
+    _is_leaf = False
 
     required_arguments = ()
     """

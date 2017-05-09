@@ -8,8 +8,9 @@ import sys
 
 import pyparsing
 
-from booleano.operations.operands.constants import Number
-from booleano.operations.variables import NumberVariable, StringVariable, DateVariable, SetVariable
+from booleano.operations.operands.constants import Number, constants_symbol_table_builder
+from booleano.operations.variables import NumberVariable, StringVariable, DateVariable, SetVariable, \
+    variable_symbol_table_builder
 from booleano.parser.scope import SymbolTable, Bind
 
 from booleano.parser import Grammar
@@ -23,18 +24,18 @@ sample = [
     {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
 ]
 
+consts = {
+    'majority': 18,
+    'very old': 99
+}
+
 # 1: create a static Symbol Table
+# this variable use the VariableSymbolTableBuilder to build a symbol table from variables and consts
 root_table = SymbolTable(
-    "root",
-    (
-        # variablet taken from context
-        Bind("age", NumberVariable('age')),
-        Bind("name", StringVariable('name')),
-        Bind("birthdate", DateVariable("birthdate")),
-        Bind("tags", SetVariable("tags")),
-        # constants
-        Bind("majority", Number(18)),
-    )
+    'root',
+    [],
+    variable_symbol_table_builder('var', sample[0]),
+    constants_symbol_table_builder('const', consts)
 )
 
 # 2: create the parser with se symbol table and the grammar (customized)
@@ -42,14 +43,15 @@ root_table = SymbolTable(
 grammar = Grammar(belongs_to='in')
 parse_manager = EvaluableParseManager(root_table, grammar)
 # 3: compile a expression
-compiled_expression = parse_manager.parse('age < majority & "o" in name & birthdate > "1983-02-02"')
 
 # check the command line args
 if len(sys.argv) == 1:
-    print("try something like %s '\"a\" in name'" % sys.argv[0])
-    exit(1)
+    stmt = 'var:age < const:majority & "o" in var:name & var:birthdate > "1983-02-02"'
+    print("try something like %s '%s'" % (sys.argv[0], stmt))
 
-stmt = " ".join(sys.argv[1:])
+else:
+    stmt = " ".join(sys.argv[1:])
+
 print("searching with expression %r" % stmt)
 try:
     compiled_expression = parse_manager.parse(stmt)

@@ -33,7 +33,7 @@ from __future__ import unicode_literals
 
 import six
 
-from booleano.operations import OperationNode
+from booleano.operations.core import OperationNode
 from booleano.operations.operands import Variable
 
 __all__ = ("Not", "And", "Or", "Xor", "Equal", "NotEqual", "LessThan",
@@ -47,7 +47,16 @@ class Operator(OperationNode):
     The operands to be used by the operator must be passed in the constructor.
 
     """
-    pass
+    _is_leaf = False
+
+    def is_operator(self):
+        """
+        Check if this node is an operation.
+
+        :rtype: bool
+
+        """
+        return True
 
 
 @six.python_2_unicode_compatible
@@ -63,7 +72,7 @@ class UnaryOperator(Operator):
         storing it.
 
         :param operand: The operand handled by this operator.
-        :type operand: :class:`booleano.operations.operands.Operand`
+        :type operand: :class:`booleano.operations.Operand`
 
         """
         self.operand = operand
@@ -128,9 +137,9 @@ class BinaryOperator(Operator):
         ``left_operand`` and ``right_operand``.
 
         :param left_operand: The left-hand operand handled by this operator.
-        :type left_operand: :class:`booleano.operations.operands.Operand`
+        :type left_operand: :class:`booleano.operations.Operand`
         :param right_operand: The right-hand operand handled by this operator.
-        :type right_operand: :class:`booleano.operations.operands.Operand`
+        :type right_operand: :class:`booleano.operations.Operand`
 
         """
         master, slave = self.organize_operands(left_operand, right_operand)
@@ -143,9 +152,9 @@ class BinaryOperator(Operator):
         ``right_operand`` operands.
 
         :param left_operand: The left-hand operand handled by this operator.
-        :type left_operand: :class:`booleano.operations.operands.Operand`
+        :type left_operand: :class:`booleano.operations.Operand`
         :param right_operand: The right-hand operand handled by this operator.
-        :type right_operand: :class:`booleano.operations.operands.Operand`
+        :type right_operand: :class:`booleano.operations.Operand`
         :return: A pair where the first item is the master operand and the
             second one is the slave.
         :rtype: tuple
@@ -352,9 +361,9 @@ class Equal(BinaryOperator):
         """
 
         :param left_operand: The left-hand operand handled by this operator.
-        :type left_operand: :class:`booleano.operations.operands.Operand`
+        :type left_operand: :class:`booleano.operations.Operand`
         :param right_operand: The right-hand operand handled by this operator.
-        :type right_operand: :class:`booleano.operations.operands.Operand`
+        :type right_operand: :class:`booleano.operations.Operand`
         :raises booleano.exc.InvalidOperationError: If the master operand
             between ``left_operand`` or ``right_operand`` doesn't support
             equality operations.

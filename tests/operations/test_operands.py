@@ -36,9 +36,9 @@ import six
 
 from booleano.operations import (String, Number, Set, Variable, Function,
                                  PlaceholderVariable, PlaceholderFunction)
-from booleano.operations.operands import Operand
 from booleano.exc import (InvalidOperationError, BadOperandError, BadCallError,
                           BadFunctionError)
+from booleano.operations.operands.core import Operand
 
 from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
                    BoolVar)

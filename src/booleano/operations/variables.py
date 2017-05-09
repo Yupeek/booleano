@@ -20,7 +20,7 @@ class NativeVariable(Variable):
     a generic Bindable item that will resolve from the context with
     his given name. it shall be subclass for more specific operations, but
     it work as is using the python type operations.
-    
+
     it can be lazy if the given context_name is a callable, in this case, the callable
     will be called with the current context
     """

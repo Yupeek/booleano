@@ -6,6 +6,7 @@ import six
 from nose.tools import ok_, assert_raises, assert_equal
 from nose.tools.trivial import eq_
 
+from booleano.operations.operands.constants import Number
 from booleano.operations.variables import NumberVariable, BooleanVariable, StringVariable, DateVariable, \
     DateTimeVariable, SetVariable, NativeVariable, DurationVariable
 from booleano.parser.symbol_table_builder import SymbolTableBuilder
@@ -197,6 +198,28 @@ class TestDurationVariable(object):
         assert_raises(ValueError, d._from_native_string, "1j")  # bad j unit
         assert_raises(ValueError, d._from_native_string, "10s10d")  # bad order
         assert_raises(ValueError, d._from_native_string, "1d2h3s5h")  # repeated h
+
+
+class TestVariableLazyResolve(object):
+
+    def test_raw_val(self):
+        c = NumberVariable('n')
+        eq_(c.to_python({'n': 1}), 1)
+
+    def test_lazy_val(self):
+        calls = []
+
+        def lazy(context):
+            calls.append(1)
+            return context['n']
+
+        eq_(calls, [])
+        c = NumberVariable(lazy)
+        eq_(calls, [])
+        eq_(c.to_python({'n': 1}), 1)
+        eq_(calls, [1])
+        eq_(c.to_python({'n': 1}), 1)
+        eq_(calls, [1, 1])
 
 
 class TestVariableSymbolTableBuilder(object):

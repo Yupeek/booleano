@@ -23,15 +23,42 @@ Booleano: Boolean Expressions Interpreter
     conditions from objects provided by a third party library.
 
 
+TLDR;
+-----
+
+a string + some variable = safe boolean evaluation
+
+.. code:: python
+
+    # is this character a minor guy with a "0" in his name and born after 1983 ?
+    eval_boolean(
+        'age < const:majority & "o" in name & birthdate > "1983-02-02"',
+        {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
+        {'majority': 18},
+        grammar_tokens={'belongs_to': 'in'}
+    ) => True
+
+
+
 The Fun Use Case
 ----------------
 
 Booleano allow to safely evaluate an expression into something usable.
 
-``user:name is "john" and user:surname in {"doe", "shepard"}``
-+
-``{"user": {"name": "katara", "surname"}}`` => False
-``{"user": {"name": "john", "doe"}}`` => True
+- ``user:name is "john" and user:surname in {"doe", "shepard"}``
+
+\+
+
++ ``{"user": {"name": "katara", "surname"}}`` => False
++ ``{"user": {"name": "john", "doe"}}`` => True
+
+with some code, you can provide any type you want, and the expression can still be in text:
+
++ ``user:birthdate > "03-07-1987"``
++ ``duration > 1m30s``
+
+check the sample dirrectory to view more running examples !
+
 
 The Three Use Cases
 -------------------
@@ -208,4 +235,5 @@ handy:
    about
    contributing
    changes
+   glossary
 

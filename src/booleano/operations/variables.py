@@ -121,22 +121,31 @@ class NativeCollectionVariable(NativeVariable):
 @variable_symbol_table_builder.register(int)
 @variable_symbol_table_builder.register(float)
 class NumberVariable(NativeVariable):
-    pass
+    """
+    a variable that allow to compare **number** from the context
+    """
 
 
 @variable_symbol_table_builder.register(bool)
 class BooleanVariable(NativeVariable):
-    pass
+    """
+    a variable that allow to compare **boolean** from the context
+    """
 
 
 @variable_symbol_table_builder.register(six.text_type)
 class StringVariable(NativeCollectionVariable):
-    pass
+    """
+    a variable that allow to compare **string** from the context
+    """
 
 
 @variable_symbol_table_builder.register(set)
 @variable_symbol_table_builder.register(frozenset)
 class SetVariable(NativeCollectionVariable):
+    """
+    a variable that allow to compare **set** from the context
+    """
 
     def cast_val(self, value):
         if not isinstance(value, set):
@@ -168,6 +177,21 @@ class SetVariable(NativeCollectionVariable):
 
 @variable_symbol_table_builder.register(datetime.timedelta)
 class DurationVariable(NativeVariable):
+    """
+    a variable that allow to compare **duration** from the context (datetime.timedelta)
+    
+    the compartion can be made with a string matching the folowing format : 
+    
+    + **days** d **hours** h **minutes** m **seconds** s
+    + **days** days **hours** hours **minutes** minutes **seconds** seconds
+    
+    ie : 
+    
+    + duration > "15 d 7 h 8 m 19 s"
+    + duration > "15d 24s"
+    
+    
+    """
     formats = [
         (
             r'^((?P<days>\d+?) ?d(ays)?)? *'
@@ -207,6 +231,24 @@ class DurationVariable(NativeVariable):
 
 @variable_symbol_table_builder.register(datetime.datetime)
 class DateTimeVariable(NativeVariable):
+    """
+    a variable that allow to compare **datetime** from the context (datetime.datetime)
+
+    the compartion can be made with a string matching the folowing format : 
+
+    - %d/%m/%Y %H:%M:%S
+    - %d-%m-%Y %H:%M:%S
+    - %Y/%m/%d %H:%M:%S
+    - %Y-%m-%d %H:%M:%S
+    
+    or you can pass your own formats in the construction
+    
+    .. code::
+    
+        DateTimeVariable("context_name", formats=["%Y-%m-%d %H:%M:%S"])
+        
+    """
+
     formats = (
         "%d/%m/%Y %H:%M:%S",
         "%d-%m-%Y %H:%M:%S",
@@ -238,6 +280,23 @@ class DateTimeVariable(NativeVariable):
 
 @variable_symbol_table_builder.register(datetime.date)
 class DateVariable(DateTimeVariable):
+    """
+    a variable that allow to compare **date** from the context (datetime.date)
+
+    the compartion can be made with a string matching the folowing format : 
+
+    - %d/%m/%Y
+    - %d-%m-%Y
+    - %Y/%m/%d
+    - %Y-%m-%d
+
+    or you can pass your own formats in the construction
+
+    .. code::
+
+        DateVariable("context_name", formats=["%Y %m %d"])
+
+    """
     formats = (
         "%d/%m/%Y",
         "%d-%m-%Y",

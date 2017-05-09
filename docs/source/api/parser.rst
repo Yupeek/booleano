@@ -2,14 +2,10 @@
 :mod:`booleano.parser` -- Boolean expressions parser
 ====================================================
 
-.. automodule:: booleano.parser
-    :synopsis: Boolean parsers and utilities
-
-
 Grammar definition
 ==================
 
-.. autoclass:: Grammar
+.. autoclass:: booleano.parser.grammar.Grammar
     :members: default_tokens
     :inherited-members:
 
@@ -22,17 +18,25 @@ Test utilities
 Scope definition / name binding
 ===============================
 
+
+.. automodule:: booleano.parser.scope
+    :synopsis: Scope definition & name binding
+
 .. autoclass:: Bind
     :inherited-members:
 
 .. autoclass:: SymbolTable
     :inherited-members:
 
-.. autoclass:: booleano.parser.scope.Namespace
+.. autoclass:: Namespace
 
 
 Parse managers
 ==============
+
+
+.. automodule:: booleano.parser.core
+    :synopsis: Boolean parsers and utilities
 
 A parse manager controls the parsers to be used in a single kind of expression,
 with one parser per supported grammar.

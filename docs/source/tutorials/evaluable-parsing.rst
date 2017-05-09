@@ -118,16 +118,18 @@ resolve to it's value at execution.
 
 the Available Variables are :
 
-- NumberVariable: support operation valid for a number
-- BooleanVariable: support operation for a boolean
-- StringVariable: support pythonic operation for a String
-- SetVariable: support operation for a set
-- DurationVariable: support operation for a datetime.timedelat. can  be compared with a string if the format is
+.. module:: booleano.operations.variables
+
+- :class:`NumberVariable`: support operation valid for a number
+- :class:`BooleanVariable`: support operation for a boolean
+- :class:`StringVariable`: support pythonic operation for a String
+- :class:`SetVariable`: support operation for a set
+- :class:`DurationVariable`: support operation for a datetime.timedelat. can  be compared with a string if the format is
   "WW days XX hours YY minutes ZZ seconds"
-- DateTimeVariable: support operation for a datetime.datetime. can  be compared with a string if the format is
+- :class:`DateTimeVariable`: support operation for a datetime.datetime. can  be compared with a string if the format is
   "%d/%m/%Y %H:%M:%S"
 
-- DateVariable: support operation for a datetime.date. can  be compared with a string if the format is
+- :class:`DateVariable`: support operation for a datetime.date. can  be compared with a string if the format is
   "%d/%m/%Y"
 
 .. code::
@@ -157,9 +159,9 @@ comming soon. documentations upgrade are welcome from cuntributor :ref:`contribu
 Sub symbol table
 ^^^^^^^^^^^^^^^^
 
-SymbolTable can be nested. you can create it by adding as many sub SymbolTable at creation time (*args) or via
-:meth:`SymbolTable.add_subtable`. you will then access each sub tables `Bind`ed value via his name folowed by the
-grammar token «namespace_separator» (usualy «:»)
+SymbolTable can be nested. you can create it by adding as many sub SymbolTable at creation time (args) or via
+:meth:`SymbolTable.add_subtable`. you will then access each sub tables :class:`booleano.parsing.scope.Bind` ed
+value via his name folowed by the grammar token «namespace_separator» (usualy «:»)
 
 .. code::
 
@@ -181,7 +183,7 @@ grammar token «namespace_separator» (usualy «:»)
     # age == 14 & my_sub_table:age == 16
 
 
-a subtable can have the same name as a `Bind`ed variable.
+a subtable can have the same name as a :class:`booleano.parsing.scope.Bind` ed variable.
 
 
 .. code:: python
@@ -216,7 +218,7 @@ EvaluableParseManager is the barbar name for «compiled boolean expression».
 once a EvaluableParseManager is created with (Grammar + SymbolTable + expression) it can be used with different set
 of context, and return each time a boolean verifying the expression.
 
-.. testcode:: python
+.. code:: python
 
 	import datetime
 

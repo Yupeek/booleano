@@ -86,7 +86,6 @@ class Constant(Operand):
         """
         return self.constant_value == value
 
-
     def greater_than(self, value, context):
         value = six.text_type(value)
         return self.constant_value > value
@@ -114,7 +113,6 @@ class Constant(Operand):
     def __call__(self, context):
         """Does this variable evaluate to True?"""
         return bool(self.constant_value)
-
 
     def __str__(self):
         """Return the Unicode representation of this constant string."""

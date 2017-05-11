@@ -6,7 +6,7 @@ import six
 from nose.tools import ok_, assert_raises, assert_equal
 from nose.tools.trivial import eq_
 
-from booleano.operations.operands.constants import Number
+from booleano.operations.operands.constants import Number, String
 from booleano.operations.variables import NumberVariable, BooleanVariable, StringVariable, DateVariable, \
     DateTimeVariable, SetVariable, NativeVariable, DurationVariable
 from booleano.parser.symbol_table_builder import SymbolTableBuilder
@@ -39,6 +39,13 @@ class TestNativeVariableEvaluableParseManager(object):
             (
                 Bind("myint", NumberVariable("sub.myint")),
             ),
+        ),
+        SymbolTable(
+            "const",
+            (
+                Bind("hello", String("hello")),
+                Bind("li", String("li")),
+            )
         )
     )
 
@@ -101,6 +108,14 @@ class TestNativeVariableEvaluableParseManager(object):
         ok_(self.mgr.parse('"lo" is subset of mystring')(mystring))
         ok_(not self.mgr.parse('"li" is subset of mystring')(mystring))
         ok_(not self.mgr.parse(' "hello" is subset of mystring')(mystring))
+        # test to string
+        ok_(not self.mgr.parse('const:hello is subset of mystring')(mystring))
+        ok_(not self.mgr.parse('const:li in mystring')(mystring))
+
+    def test_variable_str(self):
+        eq_("%s" % NativeVariable('coucou'), 'Scop variable for coucou [NativeVariable]')
+        eq_("%s" % BooleanVariable('name'), 'Scop variable for name [BooleanVariable]')
+        eq_("%s" % NumberVariable('age'), 'Scop variable for age [NumberVariable]')
 
     def test_variable_values_date(self):
         mydate = {
@@ -167,17 +182,16 @@ class TestNativeVariableEvaluableParseManager(object):
         ok_(not self.mgr.parse('sub:myint == myint')(myints))
 
     def test_format_date(self):
-        symbol_table = SymbolTable(
-            "root",
-            (
-                Bind("mydate", DateVariable("mydate", ['%d %m %y'])),
-                Bind("mydate2", DateVariable("mydate2")),
-            )
-        )
-        mgr = EvaluableParseManager(symbol_table, Grammar(belongs_to='in', is_subset='is subset of'))
-        ok_(mgr.parse('mydate < "04 03 01"')({'mydate': datetime.date(2001, 3, 2)}))
-        assert_raises(ValueError, mgr.parse('mydate < "2001-03-04" '), {'mydate': datetime.date(2001, 3, 2)})
-        assert_raises(ValueError, mgr.parse('mydate2 < "04 03 01" '), {'mydate2': datetime.date(2001, 3, 2)})
+        dt = DateVariable("mydate", '%d %m %y')
+        assert_raises(ValueError, dt._from_native_string, "2001-03-04")
+        eq_(dt._from_native_string( "04 03 01"), datetime.date(2001, 3, 4))
+
+    def test_multi_formats(self):
+        dt = DateVariable("mydate", ['%d %m %Y', '%Y %m %d'])
+        assert_raises(ValueError, dt._from_native_string, "2001-03-04")
+        assert_raises(ValueError, dt._from_native_string, "04-03-2001")
+        eq_(dt._from_native_string("04 03 2001"), datetime.date(2001, 3, 4))
+        eq_(dt._from_native_string("2001 03 04"), datetime.date(2001, 3, 4))
 
 
 class TestDurationVariable(object):
@@ -191,6 +205,23 @@ class TestDurationVariable(object):
         eq_(d._from_native_string('1 days 5 hours 4 minutes 2 seconds'), datetime.timedelta(days=1, seconds=2, minutes=4, hours=5))
         eq_(d._from_native_string('1days 5hours 4minutes 2seconds'), datetime.timedelta(days=1, seconds=2, minutes=4, hours=5))
         eq_(d._from_native_string('1 days 2 seconds'), datetime.timedelta(days=1, seconds=2))
+
+    def test_custom_duration_formats(self):
+
+        dv = DurationVariable('ctx_name', r'^((?P<days>\d+?) ?j(ours?)?)?')
+        assert_raises(ValueError, dv._from_native_string, "1d")
+        eq_(dv._from_native_string('1j'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1jour'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1jours'), datetime.timedelta(days=1))
+
+    def test_multi_custom_duration_format(self):
+        dv = DurationVariable('ctx_name', [r'^((?P<days>\d+?) ?j(ours?)?)?', r'^((?P<days>\d+?) ?d(ías)?)?'])
+        assert_raises(ValueError, dv._from_native_string, "1s")
+        eq_(dv._from_native_string('1j'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1jour'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1jours'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1d'), datetime.timedelta(days=1))
+        eq_(dv._from_native_string('1días'), datetime.timedelta(days=1))
 
     def test_bad_formated_date(self):
         d = DurationVariable('ctx_name')

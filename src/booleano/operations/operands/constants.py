@@ -43,6 +43,7 @@ constants_symbol_table_builder = SymbolTableBuilder(use_key=False)
 
 
 @constants_symbol_table_builder.register(type(None))
+@six.python_2_unicode_compatible
 class Constant(Operand):
     """
     Base class for constant operands.
@@ -87,11 +88,9 @@ class Constant(Operand):
         return self.constant_value == value
 
     def greater_than(self, value, context):
-        value = six.text_type(value)
         return self.constant_value > value
 
     def less_than(self, value, context):
-        value = six.text_type(value)
         return self.constant_value < value
 
     def check_equivalence(self, node):
@@ -116,11 +115,11 @@ class Constant(Operand):
 
     def __str__(self):
         """Return the Unicode representation of this constant string."""
-        return u'"%r"' % self.constant_value
+        return u'%r' % self.constant_value
 
     def __repr__(self):
         """Return the representation for this constant string."""
-        return '<Constant "%r">' % self.constant_value
+        return '<Constant %r>' % self.constant_value
 
 
 @constants_symbol_table_builder.register(six.text_type)

@@ -170,7 +170,7 @@ class OperationNode(object):
             yet implemented.
 
         """
-        return "<%s>" % type(self)
+        return "<%s>" % type(self).__name__
 
     def __repr__(self):
         """

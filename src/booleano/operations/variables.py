@@ -15,6 +15,7 @@ variable_symbol_table_builder = SymbolTableBuilder()
 
 
 @variable_symbol_table_builder.register(type(None))
+@six.python_2_unicode_compatible
 class NativeVariable(Variable):
     """
     a generic Bindable item that will resolve from the context with
@@ -99,8 +100,6 @@ class NativeCollectionVariable(NativeVariable):
     def belongs_to(self, value, context):
         """does this variable belong to (in) """
         self.evaluated = True
-        if isinstance(value, String):
-            value = self._from_native_string(value)
         return value in self.to_python(context)
 
     def is_subset(self, value, context):
@@ -112,8 +111,6 @@ class NativeCollectionVariable(NativeVariable):
         :return:
         """
         self.evaluated = True
-        if isinstance(value, String):
-            value = self._from_native_string(value)
         cv = self.to_python(context)
         return cv != value and value in cv
 

@@ -31,6 +31,7 @@ Tests for unbounded operands.
 """
 from __future__ import unicode_literals
 
+import datetime
 from nose.tools import eq_, ok_, assert_false, assert_raises, raises
 import six
 
@@ -38,7 +39,9 @@ from booleano.operations import (String, Number, Set, Variable, Function,
                                  PlaceholderVariable, PlaceholderFunction)
 from booleano.exc import (InvalidOperationError, BadOperandError, BadCallError,
                           BadFunctionError)
+from booleano.operations.operands.constants import Constant
 from booleano.operations.operands.core import Operand
+from booleano.operations.operators import LessThan, GreaterThan
 
 from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
                    BoolVar)
@@ -76,6 +79,9 @@ class TestOperand(object):
     def test_no_repr_by_default(self):
         """Operands must not have a default representation."""
         assert_raises(NotImplementedError, repr, self.op)
+
+    def test_str_default(self):
+        eq_("%s" % self.op, "<Operand>")
 
     def test_python_bool(self):
         """Operands must not support Pythonic truth evaluation."""
@@ -548,8 +554,29 @@ class TestFunction(object):
         eq_(repr(func), expected)
 
 
-
 # Constants
+class TestConstant(object):
+    """
+    tests for :class:`Constant` default behavior
+    """
+
+    def test_default_inequality(self):
+        ok_(LessThan(Constant(datetime.datetime(2017, 9, 1)), Constant(datetime.datetime(2017, 9, 15)))(None))
+        ok_(GreaterThan(Constant(datetime.datetime(2017, 9, 15)), Constant(datetime.datetime(2017, 9, 1)))(None))
+
+    def test_bad_type_inequality(self):
+        assert_raises(Exception, LessThan(Constant(datetime.datetime(2017, 9, 1)), Constant(1)), None)
+        assert_raises(Exception, GreaterThan(Constant(datetime.datetime(2017, 9, 15)), Constant(4)), None)
+
+    def test_str(self):
+        eq_("%s" % Constant('coucou'), '%r' % 'coucou')
+        eq_("%s" % Constant(int(4)), '4')
+        eq_("%s" % Constant(datetime.datetime(2017, 9, 1)), 'datetime.datetime(2017, 9, 1, 0, 0)')
+
+    def test_repr(self):
+        eq_("%r" % Constant('coucou'), '<Constant %r>' % 'coucou')
+        eq_("%r" % Constant(int(4)), '<Constant 4>')
+        eq_("%r" % Constant(datetime.datetime(2017, 9, 1)), '<Constant datetime.datetime(2017, 9, 1, 0, 0)>')
 
 
 class TestString(object):

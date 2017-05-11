@@ -60,7 +60,7 @@ class Constant(Operand):
 
     """
 
-    operations = {'equality'}
+    operations = {'equality', 'inequality', 'boolean'}
 
     def __init__(self, constant_value):
         """
@@ -86,6 +86,15 @@ class Constant(Operand):
         """
         return self.constant_value == value
 
+
+    def greater_than(self, value, context):
+        value = six.text_type(value)
+        return self.constant_value > value
+
+    def less_than(self, value, context):
+        value = six.text_type(value)
+        return self.constant_value < value
+
     def check_equivalence(self, node):
         """
         Make sure constant ``node`` and this constant are equivalent.
@@ -101,6 +110,19 @@ class Constant(Operand):
             self,
             node
         )
+
+    def __call__(self, context):
+        """Does this variable evaluate to True?"""
+        return bool(self.constant_value)
+
+
+    def __str__(self):
+        """Return the Unicode representation of this constant string."""
+        return u'"%r"' % self.constant_value
+
+    def __repr__(self):
+        """Return the representation for this constant string."""
+        return '<Constant "%r">' % self.constant_value
 
 
 @constants_symbol_table_builder.register(six.text_type)

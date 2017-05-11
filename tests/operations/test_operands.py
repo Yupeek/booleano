@@ -649,7 +649,7 @@ class TestNumber(object):
         Numeric constants must only support equality and inequality operations.
 
         """
-        eq_(Number.operations, set(["equality", "inequality"]))
+        eq_(Number.operations, {"equality", "inequality", "boolean"})
 
     def test_python_value(self):
         op = Number(22)
@@ -715,9 +715,11 @@ class TestNumber(object):
         assert_false(op.greater_than("11", None))
 
     def test_checking_logical_support(self):
-        """Numbers don't have logical support."""
+        """Numbers have logical support."""
         op = Number(9)
-        assert_raises(InvalidOperationError, op.check_logical_support)
+        op.check_logical_support()
+        ok_(Number(9)(None))
+        assert_false(Number(0)(None))
 
     def test_equivalence(self):
         """
@@ -765,7 +767,7 @@ class TestSet(object):
         operations.
 
         """
-        eq_(Set.operations, {"equality", "inequality", "membership"})
+        eq_(Set.operations, {"equality", "inequality", "membership", "boolean"})
 
     def test_python_value(self):
         op = Set(Number(10), Number(1), String("paola"))
@@ -830,7 +832,10 @@ class TestSet(object):
     def test_checking_logical_support(self):
         """Sets don't have logical support."""
         op = Set(Number(9), String("carla"))
-        assert_raises(InvalidOperationError, op.check_logical_support)
+        op.check_logical_support()
+        ok_(op(None))
+        ok_(Set(Number(0))(None))
+        ok_(not Set()(None))
 
     def test_equivalence(self):
         """

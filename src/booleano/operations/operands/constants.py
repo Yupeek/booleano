@@ -52,12 +52,9 @@ class Constant(Operand):
     :meth:`equals`).
 
     Constants don't rely on the context -- they are constant!
+    
+    if the value given to a Constant is None, all operation will resolve to False
 
-    .. warning::
-        This class is available as the base for the built-in :class:`String`,
-        :class:`Number` and :class:`Set` classes. User-defined constants aren't
-        supported, but you can assign a name to a constant (see
-        :term:`binding`).
 
     """
 
@@ -85,13 +82,13 @@ class Constant(Operand):
         Check if this constant equals ``value``.
 
         """
-        return self.constant_value == value
+        return self.constant_value is not None and self.constant_value == value
 
     def greater_than(self, value, context):
-        return self.constant_value > value
+        return self.constant_value is not None and self.constant_value > value
 
     def less_than(self, value, context):
-        return self.constant_value < value
+        return self.constant_value is not None and self.constant_value < value
 
     def check_equivalence(self, node):
         """

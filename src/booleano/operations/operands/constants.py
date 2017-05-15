@@ -52,10 +52,8 @@ class Constant(Operand):
     :meth:`equals`).
 
     Constants don't rely on the context -- they are constant!
-    
+
     if the value given to a Constant is None, all operation will resolve to False
-
-
     """
 
     operations = {'equality', 'inequality', 'boolean'}

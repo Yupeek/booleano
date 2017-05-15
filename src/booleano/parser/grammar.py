@@ -128,6 +128,16 @@ class Grammar(object):
 
     # Token handling
 
+    def get_all_tokens(self):
+        """
+        return the list of all valid token for this grammar
+        :return: the dict representing all tokens
+        """
+        res = {}
+        res.update(self.default_tokens)
+        res.update(self._custom_tokens)
+        return res
+
     def get_token(self, token_name):
         """
         Return the token called ``token_name``.

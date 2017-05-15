@@ -33,9 +33,10 @@ evaluable ones).
 from __future__ import unicode_literals
 
 from booleano.exc import ConversionError
-from booleano.operations import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual, LessThan, Not,
-                                 NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set, String, Xor)
-from booleano.operations.operators import UnaryOperator
+from booleano.operations.operands.constants import Number, Set, String
+from booleano.operations.operands.placeholders import PlaceholderFunction, PlaceholderVariable
+from booleano.operations.operators import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual,
+                                           LessThan, Not, NotEqual, Or, UnaryOperator, Xor)
 
 __all__ = ("BaseConverter", )
 
@@ -76,7 +77,7 @@ class BaseConverter(object):
         Convert ``root_node``.
 
         :param root_node: The root of the tree to be converted.
-        :type root_node: :class:`booleano.operations.OperationNode`
+        :type root_node: :class:`booleano.operations.core.OperationNode`
         :return: The tree converted.
         :raises booleano.exc.ConversionError: If the type of ``root_node`` is
             unknown.
@@ -94,7 +95,7 @@ class BaseConverter(object):
         Convert ``node``.
 
         :param node: The node to be converted.
-        :type node: :class:`booleano.operations.OperationNode`
+        :type node: :class:`booleano.operations.core.OperationNode`
         :return: The node converted.
 
         If ``node`` is a branch, its children will be converted first.

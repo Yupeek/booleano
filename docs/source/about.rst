@@ -7,43 +7,14 @@ in late April 2009, when he was working on some authorization stuff (`PyACL
 <http://pyacl.com>`_ and `repoze.what 2 <http://what.repoze.org>`_) and the
 need to support user-friendly, plain text conditions arose.
 
-Community links
-===============
+it's now maintened by `Yupeek <http://my.yupeek.com>`_ for the scale rule system of
+`Maiev <https://github.com/Yupeek/maiev>`_.
 
-* `Mailing list <http://groups.google.com/group/booleano>`_.
-* `News feed <http://feeds.launchpad.net/booleano/announcements.atom>`_.
-* `Development web site <https://launchpad.net/booleano>`_ at Launchpad.
-
-  * `Bugs <https://bugs.launchpad.net/booleano>`_.
-  * `Bazaar repository <https://code.launchpad.net/booleano>`_.
-
-* Do you like Booleano? Promote it at `Ohloh <https://www.ohloh.net/p/booleano>`_
-  or `Freshmeat <http://freshmeat.net/projects/booleano>`_!
+Contributing
+------------
 
 
-How to contribute
-=================
-
-Any help is most welcome! Below are some tips:
-
-* It's assumed that you've read and understood :ref:`legal-terms`.
-* Bugs should be reported at `Booleano's bug tracking system
-  <https://launchpad.net/booleano/+filebug>`_.
-* Feature requests should be posted to the mailing list, so they can be
-  discussed first.
-* Regular code contributors are encouraged to create a Bazaar branch of the
-  mainline development repository (``bzr branch lp:booleano``) and make a `merge
-  proposal via Launchpad.net <https://help.launchpad.net/Code/Review>`_ when
-  they're done, instead of sending individual patches. For help, please
-  read the tutorial `Bazaar in five minutes
-  <http://doc.bazaar-vcs.org/latest/en/mini-tutorial/>`_ or ask on the
-  mailing list.
-* Patches and merge proposals that meet the `coding conventions`_ will be
-  applied immediately. Those that don't, will remain in the merge queue until
-  the maintainer of Booleano finds the time to improve the changes proposed.
-
-Sorry about the pickiness, but the goal is to keep Booleano as a transparent
-and high quality library. That's something we'll all benefit from in the end.
+see :ref:`Contributing`
 
 
 Coding conventions
@@ -55,7 +26,7 @@ conventions below apply to Python files only, but some of them apply to any
 source code file:
 
 * The character encoding should be UTF-8.
-* Lines should not contain more than 80 characters.
+* Lines should not contain more than 119 characters.
 * The new line character should be the one used in Unix systems (``\n``).
 * Stick to the `widely` used `Style Guide for Python Code
   <http://www.python.org/dev/peps/pep-0008/>`_ and `Docstring Conventions

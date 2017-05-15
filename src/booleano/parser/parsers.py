@@ -36,14 +36,16 @@ import re
 
 import six
 import six.moves
-from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal, OneOrMore, Optional,
-                       ParserElement, Regex, StringEnd, StringStart, Suppress, Word, ZeroOrMore, delimitedList,
-                       nums, opAssoc, operatorPrecedence, quotedString, removeQuotes)
+from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal, OneOrMore, Optional, ParserElement, Regex,
+                       StringEnd, StringStart, Suppress, Word, ZeroOrMore, delimitedList, nums, opAssoc,
+                       operatorPrecedence, quotedString, removeQuotes)
 
 from booleano.exc import BadExpressionError
-from booleano.operations import (And, BelongsTo, Equal, Function, GreaterEqual, GreaterThan, IsSubset, LessEqual,
-                                 LessThan, Not, NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set,
-                                 String, Xor)
+from booleano.operations.operands.classes import Function
+from booleano.operations.operands.constants import Number, Set, String
+from booleano.operations.operands.placeholders import PlaceholderFunction, PlaceholderVariable
+from booleano.operations.operators import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual,
+                                           LessThan, Not, NotEqual, Or, Xor)
 from booleano.parser.trees import ConvertibleParseTree, EvaluableParseTree
 
 __all__ = ("EvaluableParser", "ConvertibleParser")

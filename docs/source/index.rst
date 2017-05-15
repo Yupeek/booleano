@@ -15,7 +15,7 @@ Booleano: Boolean Expressions Interpreter
     `Python <http://python.org/>`_ code.
     
     In order to handle text-based filters, Booleano ships with a fully-featured
-    parser whose grammar is :term:`adaptive <adaptive grammar>`: Its properties
+    parser whose grammar is adaptive: Its properties
     can be overridden using simple configuration directives.
     
     On the other hand, the library exposes a pythonic API for filters written
@@ -23,15 +23,42 @@ Booleano: Boolean Expressions Interpreter
     conditions from objects provided by a third party library.
 
 
+TLDR;
+-----
+
+a string + some variable = safe boolean evaluation
+
+.. code:: python
+
+    # is this character a minor guy with a "0" in his name and born after 1983 ?
+    eval_boolean(
+        'age < const:majority & "o" in name & birthdate > "1983-02-02"',
+        {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
+        {'majority': 18},
+        grammar_tokens={'belongs_to': 'in'}
+    ) => True
+
+
+
 The Fun Use Case
 ----------------
 
 Booleano allow to safely evaluate an expression into something usable.
 
-``user:name is "john" and user:surname in {"doe", "shepard"}``
-+
-``{"user": {"name": "katara", "surname"}}`` => False
-``{"user": {"name": "john", "doe"}}`` => True
+- ``user:name is "john" and user:surname in {"doe", "shepard"}``
+
+\+
+
++ ``{"user": {"name": "katara", "surname"}}`` => False
++ ``{"user": {"name": "john", "doe"}}`` => True
+
+with some code, you can provide any type you want, and the expression can still be in text:
+
++ ``user:birthdate > "03-07-1987"``
++ ``duration > 1m30s``
+
+check the sample dirrectory to view more running examples !
+
 
 The Three Use Cases
 -------------------
@@ -62,7 +89,7 @@ For example, if an user enters::
     "python" in title and category == "computing" and (rating > 3 or publication_date:year => 2007) and (not software or software:works_on_linux)
 
 Booleano will parse that expression and will use a converter (defined by you)
-to turn the resulting :term:`parse tree` into a *WHERE* clause which filters
+to turn the resulting parse tree into a *WHERE* clause which filters
 the books that meet all the requirements below:
 
 * The book title contains the word "python".
@@ -96,7 +123,7 @@ of your application)::
 
 Then, Booleano will parse the expression delimited by single quotes and
 :command:`search` will iterate over all the files in the filesystem. On every
-iteration, :command:`search` will use the :term:`parse tree` returned by 
+iteration, :command:`search` will use the parse tree returned by
 Booleano and will evaluate it against the current file; if evaluation fails,
 the file is excluded from the results; otherwise, it's included.
 
@@ -155,19 +182,18 @@ The general features of Booleano include:
   * Membership ("belongs to" and "is subset of").
   * Logical connectives: "not", "and", "xor" and "or".
 
-* Supports Python 2.4 through 2.6.
+* Supports Python 2.7 and python 3.4 through 3.6.
 * Comprehensive unit test suite, which covers the 100% of the package.
 * `Freedomware <http://www.softwareliberty.com/>`_, released under the `MIT/X
   License <http://www.opensource.org/licenses/mit-license.php>`_. 
 
 While the parser-specific features include:
 
-* The operands can be :term:`bound <binding>` to :term:`identifiers
-  <identifier>`.
-* The identifiers can be available under :term:`namespaces <namespace>`.
+* The operands can be bound to identifiers.
+* The identifiers can be available under namespaces.
 * Boolean expressions can contain any Unicode character, even in identifiers.
 * It's easy to have one grammar per localization.
-* The grammar is :term:`adaptive <adaptive grammar>`. You can customize it
+* The grammar is adaptive. You can customize it
   with simple parameters or via `Pyparsing <http://pyparsing.wikispaces.com/>`_.
 * Expressions can span multiple lines. Whitespace makes no difference, so they
   can contain tabs as well.
@@ -179,24 +205,21 @@ Documentation
 
 .. warning::
 
-    Booleano has just gotten its first developers' preview release and
-    its documentation is far from complete, in spite of the package being
-    **absolutely usable**. This issue will be solved by the `second alpha 
-    <https://launchpad.net/booleano/+milestone/1.0a2>`_ release. 
-    
-    In the mean time, the best you can do to understand and try Booleano, is
-    to read the rough draft of the :doc:`tutorial </tutorials/index>` you're 
-    interested in to learn the steps to set up a project and complement this 
-    information with the :doc:`API documentation </api/index>` if necessary.
-    Also, you can always use the `mailing list 
-    <http://groups.google.com/group/booleano>`_ when you need help.
+    Booleano is a library with his own story. it was first released by Gustavo Narea in 2009 in alpha release.
+    but since 2009, this project was abandoned. in 2017, the `Yupeek <http://my.yupeek.com>`_ team has intended
+    to use it for his project of auto scaling/monitoring micro service (`Maiev <http://my.yupeek.com>`_) and thus
+    has took the lead of the maintainig stuff. it's now on github, with CI and other stuff. compatible with
+    python 3. this was not possible without the great stuff of Gustavo Narea, which wrote 750 tests with 100% of
+    code covered...
+
+    the current version is a fork of the Alpha release, fully functional, but keep in mind that the current team is
+    not the original author.
 
 
 .. toctree::
    :maxdepth: 2
    
    tutorials/index
-   manual/index
    api/index
 
 
@@ -210,5 +233,7 @@ handy:
    :maxdepth: 2
    
    about
+   contributing
    changes
+   glossary
 

@@ -5,8 +5,7 @@
 .. module:: booleano
     :synopsis: Boolean Expressions Interpreter
 
-This section contains the API documentation for Booleano. For a narrative
-documentation, check the :doc:`/manual/index`.
+This section contains the API documentation for Booleano.
 
 :mod:`booleano` is a `namespace package
 <http://peak.telecommunity.com/DevCenter/setuptools#namespace-packages>`_ in

@@ -161,7 +161,7 @@ class Bind(_Identifier):
             any).
         :type global_name: basestring
         :param operand: The operand to be bound.
-        :type operand: :class:`booleano.operations.operands.Operand`
+        :type operand: :class:`booleano.operations.Operand`
 
         Additional keyword arguments represent the translations of the
         ``global_name`` into other languages.
@@ -207,6 +207,9 @@ class Bind(_Identifier):
             description = "%s (in %s)" % (description, self.symbol_table)
         return description
 
+    def __repr__(self):
+        return '<%s>' % self
+
 
 @six.python_2_unicode_compatible
 class SymbolTable(_Identifier):
@@ -224,7 +227,7 @@ class SymbolTable(_Identifier):
             symbol tables, if any).
         :type global_name: basestring
         :param objects: List of bound operands available in this symbol table.
-        :type objects: list
+        :type objects: list | tuple
         :raises booleano.exc.ScopeError: If an object/subtable is already
             included or already belongs to another symbol table.
 
@@ -432,7 +435,7 @@ class SymbolTable(_Identifier):
         ``locale``.
 
         :param items: A list of identifiers whose contents should be extracted.
-        :type items: list
+        :type items: list|set|tuple
         :param locale: The locale to be used to filter the contents.
         :type locale: basestring or ``None``
         :return: The contents of each item in ``items``, in a dictionary whose

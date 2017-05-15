@@ -28,7 +28,7 @@ stable branche
 .. image:: https://img.shields.io/pypi/dm/booleano.svg
     :target: https://pypi.python.org/pypi/booleano
     :alt: Number of PyPI downloads per month
-    
+
 .. image:: https://codeclimate.com/github/Yupeek/booleano/badges/gpa.svg
    :target: https://codeclimate.com/github/Yupeek/booleano
    :alt: Code Climate
@@ -52,25 +52,40 @@ On the other hand, the library exposes a pythonic API for filters written
 in pure Python. These filters are particularly useful to build reusable
 conditions from objects provided by a third party library.
 
+TLDR;
+-----
+
+a string + some variable = safe boolean evaluation
+
+.. code:: python
+
+    # is this character a minor guy with a "0" in his name and born after 1983 ?
+    eval_boolean(
+        'age < const:majority & "o" in name & birthdate > "1983-02-02"',
+        {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
+        {'majority': 18},
+        grammar_tokens={'belongs_to': 'in'}
+    ) => True
+
+
 
 The Fun Use Case
 ----------------
 
 Booleano allow to safely evaluate an expression into something usable.
 
-``user:name is "john" and user:surname in {"doe", "shepard"}``
+- ``user:name is "john" and user:surname in {"doe", "shepard"}``
 
 
-+ ``{"user": {"name": "katara"}}`` => False
-
-+ ``{"user": {"name": "john", "surname": "doe"}}`` => True
++``{"user": {"name": "katara"}}`` => False
++``{"user": {"name": "john", "surname": "doe"}}`` => True
 
 with some code, you can provide any type you want, and the expression can still be in text:
 
-+ ``user:birthdate > "03-07-1987"``
++``user:birthdate > "03-07-1987"``
++``duration > 1m30s``
 
-+ ``duration > 1m30s``
-
+check the sample dirrectory to view more running examples !
 
 
 Documentation
@@ -90,6 +105,12 @@ it can be hard for us to work on it. the best way to have it fixed, it's to writ
 and we will merge it if it's a good piece of code.
 
 see CONTRIBUTING.rst to know how work with ease on this project.
+
+Upgrade Note
+------------
+
+the old alpha release 1.0a1 is not compatible with newer version (starting with 1.1a1) because of heavy
+import path changes. all import from the modules (__init__.py) is discouraged.
 
 
 Credit

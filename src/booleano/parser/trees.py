@@ -53,7 +53,7 @@ class ParseTree(object):
         """
 
         :param root_node: The root node of the parse tree.
-        :type root_node: :class:`booleano.operations.OperationNode`
+        :type root_node: :class:`booleano.operations.core.OperationNode`
 
         """
         self.root_node = root_node
@@ -76,6 +76,17 @@ class ParseTree(object):
         """
         return not self.__eq__(other)
 
+    def __call__(self, context):
+        """
+        Check if the parse tree evaluates to True with the context described by
+        the ``context``.
+
+        :return: Whether the parse tree evaluates to True.
+        :rtype: bool
+
+        """
+        raise NotImplementedError()  # pragma: nocover
+
 
 @six.python_2_unicode_compatible
 class EvaluableParseTree(ParseTree):
@@ -88,7 +99,7 @@ class EvaluableParseTree(ParseTree):
         """
 
         :param root_node: The root node of the parse tree.
-        :type root_node: :class:`booleano.operations.OperationNode`
+        :type root_node: :class:`booleano.operations.core.OperationNode`
         :raises booleano.exc.InvalidOperationError: If the ``root_node`` is an
             operand that doesn't support logical values.
 

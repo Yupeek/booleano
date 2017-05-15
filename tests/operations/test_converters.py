@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -42,12 +42,12 @@ from booleano.exc import ConversionError
 from tests import AntiConverter
 
 
-#{ The tests themselves
+# The tests themselves
 
 
 class TestBaseConverter(object):
     """Tests for the base class of the converters."""
-    
+
     def test_no_default_conversion(self):
         """No node is convertible by default."""
         conv = BaseConverter()
@@ -74,7 +74,7 @@ class TestBaseConverter(object):
 
 class TestActualConverter(object):
     """Tests for an actual converter."""
-    
+
     parse_trees = (
         # Operands alone:
         String("this is a string"),
@@ -118,25 +118,25 @@ class TestActualConverter(object):
         Or(
             And(
                Equal(
-                     PlaceholderVariable("venezuela", None), 
+                     PlaceholderVariable("venezuela", None),
                      String("Venezuela")
                      ),
                PlaceholderFunction("today_is_gonna_rain", None)),
             Xor(
                 Equal(
-                      PlaceholderVariable("venezuela", None), 
+                      PlaceholderVariable("venezuela", None),
                       String("Venezuela")
                       ),
                 PlaceholderFunction("today_is_gonna_rain", None))
             ),
         Xor(
-            PlaceholderFunction("in_europe", None), 
+            PlaceholderFunction("in_europe", None),
             PlaceholderFunction("in_spain", None)
             ),
         Xor(
             Or(
                Equal(
-                     PlaceholderVariable("venezuela", None), 
+                     PlaceholderVariable("venezuela", None),
                      String("Venezuela")
                      ),
                PlaceholderFunction("today_is_gonna_rain", None)),
@@ -149,7 +149,7 @@ class TestActualConverter(object):
             ),
         Equal(PlaceholderVariable("venezuela", None), String("Venezuela")),
         NotEqual(
-                 PlaceholderVariable("venezuela", None), 
+                 PlaceholderVariable("venezuela", None),
                  PlaceholderVariable("here", None)
                  ),
         LessThan(Number(2), PlaceholderVariable("counter", None)),
@@ -159,11 +159,11 @@ class TestActualConverter(object):
         BelongsTo(Number(4), Set(Number(3), String("no"), Number(0))),
         IsSubset(Set(), Set(Number(3), String("no"), Number(0))),
     )
-    
+
     def test_conversions(self):
         """Check that each parse tree is converted back to its original form."""
         for parse_tree in self.parse_trees:
-            
+
             # Let's use a Nose test generator:
             def check():
                 conversion = ANTI_CONVERTER(parse_tree)
@@ -172,20 +172,20 @@ class TestActualConverter(object):
                                                      repr(conversion)))
             check.description = ("Parse tree %s shouldn't change" %
                                  repr(parse_tree))
-            
+
             yield check
-    
+
     @raises(ConversionError)
     def test_converting_non_node(self):
         """Only nodes are tried to be converted."""
         ANTI_CONVERTER(12345)
 
 
-#{ Test utilities
+# Test utilities
 
 
 ANTI_CONVERTER = AntiConverter()
 
 
-#}
+
 

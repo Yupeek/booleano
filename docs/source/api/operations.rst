@@ -2,7 +2,7 @@
 :mod:`booleano.operations` -- Boolean Operation Nodes
 =====================================================
 
-.. automodule:: booleano.operations
+.. automodule:: booleano.operations.core
     :synopsis: Boolean operation nodes and utilities
     :show-inheritance:
 
@@ -13,16 +13,16 @@
 Operands
 ========
 
-.. autoclass:: booleano.operations.operands.Operand
-
-.. inheritance-diagram:: String Number Set Variable Function PlaceholderVariable 
-    PlaceholderFunction
-    :parts: 1
+.. autoclass:: booleano.operations.operands.core.Operand
 
 Constants
 ---------
 
-.. autoclass:: booleano.operations.operands.constants.Constant
+.. automodule:: booleano.operations.operands.constants
+    :synopsis: Boolean operation nodes and utilities
+    :show-inheritance:
+
+.. autoclass:: Constant
 
 .. autoclass:: String
 
@@ -35,9 +35,11 @@ Classes
 -------
 
 Note we're talking about **Booleano classes**, not Python classes. These are
-used in :term:`evaluable parsing`.
+used in evaluable parsing.
 
-.. autoclass:: booleano.operations.operands.classes.Class
+.. automodule:: booleano.operations.operands.classes
+
+.. autoclass:: Class
 
 .. autoclass:: Variable
     :members:
@@ -45,14 +47,23 @@ used in :term:`evaluable parsing`.
 .. autoclass:: Function
     :members:
 
+Variables
+---------
+
+.. automodule:: booleano.operations.variables
+    :members: NativeVariable, NativeCollectionVariable, NumberVariable, BooleanVariable, StringVariable, SetVariable,
+        DurationVariable, DateTimeVariable, DateVariable
+
 
 Placeholder instances
 ---------------------
 
 Note we're talking about **placeholders for instances of Booleano classes**,
-not Python class instances. These are used in :term:`convertible parsing`.
+not Python class instances. These are used in convertible parsing.
 
-.. autoclass:: booleano.operations.operands.placeholders.PlaceholderInstance
+.. automodule:: booleano.operations.operands.placeholders
+
+.. autoclass:: PlaceholderInstance
 
 .. autoclass:: PlaceholderVariable
 
@@ -64,6 +75,9 @@ Operators
 
 Logical connectives
 -------------------
+
+.. automodule:: booleano.operations.operators
+
 
 .. autoclass:: Not
 

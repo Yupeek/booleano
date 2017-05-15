@@ -38,8 +38,8 @@ from __future__ import unicode_literals
 import six
 
 from booleano.exc import BadCallError, InvalidOperationError
-from booleano.operations import OPERATIONS
-from booleano.operations.operands import Operand
+from booleano.operations.core import OPERATIONS
+from booleano.operations.operands.core import Operand
 
 __all__ = ("PlaceholderVariable", "PlaceholderFunction")
 
@@ -130,6 +130,7 @@ class PlaceholderFunction(PlaceholderInstance):
     Placeholder for a function call.
 
     """
+    _is_leaf = False
 
     def __init__(self, function_name, namespace_parts=None, *arguments):
         """

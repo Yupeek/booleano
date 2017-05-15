@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright (c) 2009 by Gustavo Narea <http://gustavonarea.net/>.
-#
+
 # This file is part of Booleano <http://code.gustavonarea.net/booleano/>.
-#
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -11,17 +11,17 @@
 # modifications, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the following
 # conditions:
-#
+
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-#
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # ABOVE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 # IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
 # use or other dealings in this Software without prior written authorization.
@@ -39,12 +39,12 @@ from booleano.exc import GrammarError
 
 class TestDefaultGrammar(object):
     """Tests for the grammar with the default properties, at least initially."""
-    
+
     def setUp(self):
         self.grammar = Grammar()
-    
-    #{ Token handling stuff
-    
+
+    # Token handling stuff
+
     def test_default_tokens(self):
         """All the tokens must have an initial value."""
         # Logical connectives:
@@ -82,67 +82,72 @@ class TestDefaultGrammar(object):
         # Miscellaneous
         eq_(self.grammar.get_token("identifier_spacing"), "_")
         eq_(self.grammar.get_token("namespace_separator"), ":")
-    
+
+    def test_get_all_tokens(self):
+        eq_(self.grammar.get_all_tokens(),
+            self.grammar.default_tokens
+        )
+
     def test_setting_existing_token(self):
         self.grammar.set_token("negative_sign", "!")
         eq_(self.grammar.get_token("negative_sign"), "!")
-    
+
     def test_requesting_non_existing_token(self):
         assert_raises(GrammarError, self.grammar.get_token, "non_existing")
-    
+
     def test_setting_non_existing_token(self):
         assert_raises(GrammarError, self.grammar.set_token, "non_existing", "-")
-    
-    #{ Setting handling stuff
-    
+
+    # Setting handling stuff
+
     def test_default_settings(self):
         eq_(self.grammar.get_setting("superset_right_in_is_subset"), True)
         eq_(self.grammar.get_setting("set_right_in_contains"), True)
         eq_(self.grammar.get_setting("optional_positive_sign"), True)
-    
+
     def test_setting_existing_setting(self):
         self.grammar.set_setting("set_right_in_contains", False)
         eq_(self.grammar.get_setting("set_right_in_contains"), False)
-    
+
     def test_requesting_non_existing_setting(self):
         assert_raises(GrammarError, self.grammar.get_setting, "non_existing")
-    
+
     def test_setting_non_existing_setting(self):
         assert_raises(GrammarError, self.grammar.set_setting, "non_existing",
                       None)
-    
-    #{ Custom generator handling stuff
-    
+
+    # Custom generator handling stuff
+
     def test_no_custom_generators_by_default(self):
         """There must not be custom generators by default."""
         eq_(self.grammar.get_custom_generator("operation"), None)
         eq_(self.grammar.get_custom_generator("string"), None)
         eq_(self.grammar.get_custom_generator("number"), None)
-    
+
     def test_setting_existing_generator(self):
         mock_generator = lambda: None
         self.grammar.set_custom_generator("number", mock_generator)
         eq_(self.grammar.get_custom_generator("number"), mock_generator)
-    
+
     def test_requesting_non_existing_generator(self):
         assert_raises(GrammarError, self.grammar.get_custom_generator,
                       "non_existing")
-    
+
     def test_setting_non_existing_generator(self):
         mock_generator = lambda: None
         assert_raises(GrammarError, self.grammar.set_custom_generator,
                       "non_existing", mock_generator)
-    
-    #}
+
+    #
 
 
 class TestEarlyCustomizedGrammar(object):
     """
     Tests for the grammar customized from the beginning (i.e., in the
     constructor).
-    
+
     """
-    
+
     def test_custom_tokens(self):
         """The tokens can be customized using the keyword arguments."""
         grammar = Grammar(eq="=", ne="<>")
@@ -176,7 +181,7 @@ class TestEarlyCustomizedGrammar(object):
         eq_(grammar.get_token("thousands_separator"), ",")
         eq_(grammar.get_token("identifier_spacing"), "_")
         eq_(grammar.get_token("namespace_separator"), ":")
-    
+
     def test_settings(self):
         settings = {'superset_right_in_is_subset': False,
                     'set_right_in_contains': None}
@@ -186,7 +191,7 @@ class TestEarlyCustomizedGrammar(object):
         eq_(grammar.get_setting("set_right_in_contains"), None)
         # Everything else must have not changed:
         eq_(grammar.get_setting("optional_positive_sign"), True)
-    
+
     def test_generators(self):
         mock_generator = lambda: None
         generators = {'string': mock_generator}
@@ -196,3 +201,12 @@ class TestEarlyCustomizedGrammar(object):
         # Everything else must have not changed:
         eq_(grammar.get_custom_generator("operation"), None)
         eq_(grammar.get_custom_generator("number"), None)
+
+    def test_get_all_tokens(self):
+        grammar = Grammar(eq="=", ne="<>")
+        expected = grammar.default_tokens.copy()
+        expected['eq'] = '='
+        expected['ne'] = '<>'
+        eq_(grammar.get_all_tokens(),
+            expected
+        )

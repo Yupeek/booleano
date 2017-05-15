@@ -34,11 +34,16 @@ from __future__ import unicode_literals
 import six
 
 from booleano.exc import InvalidOperationError
-from booleano.operations.operands import Operand
+from booleano.operations.operands.core import Operand
+from booleano.parser.symbol_table_builder import SymbolTableBuilder
 
 __all__ = ["String", "Number", "Set"]
 
+constants_symbol_table_builder = SymbolTableBuilder(use_key=False)
 
+
+@constants_symbol_table_builder.register(type(None))
+@six.python_2_unicode_compatible
 class Constant(Operand):
     """
     Base class for constant operands.
@@ -48,15 +53,10 @@ class Constant(Operand):
 
     Constants don't rely on the context -- they are constant!
 
-    .. warning::
-        This class is available as the base for the built-in :class:`String`,
-        :class:`Number` and :class:`Set` classes. User-defined constants aren't
-        supported, but you can assign a name to a constant (see
-        :term:`binding`).
-
+    if the value given to a Constant is None, all operation will resolve to False
     """
 
-    operations = set(['equality'])
+    operations = {'equality', 'inequality', 'boolean'}
 
     def __init__(self, constant_value):
         """
@@ -80,7 +80,13 @@ class Constant(Operand):
         Check if this constant equals ``value``.
 
         """
-        return self.constant_value == value
+        return self.constant_value is not None and self.constant_value == value
+
+    def greater_than(self, value, context):
+        return self.constant_value is not None and self.constant_value > value
+
+    def less_than(self, value, context):
+        return self.constant_value is not None and self.constant_value < value
 
     def check_equivalence(self, node):
         """
@@ -98,43 +104,32 @@ class Constant(Operand):
             node
         )
 
+    def __call__(self, context):
+        """Does this variable evaluate to True?"""
+        return bool(self.constant_value)
 
+    def __str__(self):
+        """Return the Unicode representation of this constant string."""
+        return u'%r' % self.constant_value
+
+    def __repr__(self):
+        """Return the representation for this constant string."""
+        return '<Constant %r>' % self.constant_value
+
+
+@constants_symbol_table_builder.register(six.text_type)
 @six.python_2_unicode_compatible
 class String(Constant):
     u"""
     Constant string.
-
-    These constants only support equality operations.
-
-    .. note:: **Membership operations aren't supported**
-
-        Although both sets and strings are item collections, the former is
-        unordered and the later is ordered. If they were supported, there would
-        some ambiguities to sort out, because users would expect the following
-        operation results:
-
-        - ``"ao" ⊂ "hola"`` is false: If strings were also sets, then the
-          resulting operation would be ``{"a", "o"} ⊂ {"h", "o", "l", "a"}``,
-          which is true.
-        - ``"la" ∈ "hola"`` is true: If strings were also sets, then the
-          resulting operation would be ``{"l", "a"} ∈ {"h", "o", "l", "a"}``,
-          which would be an *invalid operation* because the first operand must
-          be an item, not a set. But if we make an exception and take the first
-          operand as an item, the resulting operation would be
-          ``"la" ∈ {"h", "o", "l", "a"}``, which is not true.
-
-        The solution to the problems above would involve some magic which
-        contradicts the definition of a set: Take the second operand as an
-        *ordered collection*. But it'd just cause more trouble, because both
-        operations would be equivalent!
-
-        Also, there would be other issues to take into account (or not), like
-        case-sensitivity.
-
-        Therefore, if this functionality is needed, developers should create
-        functions to handle it.
-
+    this support native python resulution for membership, equiality and inequality
     """
+    operations = {
+        "equality",  # ==, !=
+        "inequality",  # >, <, >=, <=
+        "boolean",  # Logical values
+        "membership",
+    }
 
     def __init__(self, string):
         """
@@ -151,9 +146,28 @@ class String(Constant):
         super(String, self).__init__(string)
 
     def equals(self, value, context):
-        """Turn ``value`` into a string if it isn't a string yet"""
         value = six.text_type(value)
         return super(String, self).equals(value, context)
+
+    def belongs_to(self, value, context):
+        value = six.text_type(value)
+        return value in self.constant_value
+
+    def is_subset(self, value, context):
+        value = six.text_type(value)
+        return value != self.constant_value and value in self.constant_value
+
+    def greater_than(self, value, context):
+        value = six.text_type(value)
+        return self.constant_value > value
+
+    def less_than(self, value, context):
+        value = six.text_type(value)
+        return self.constant_value < value
+
+    def __call__(self, context):
+        """Does this variable evaluate to True?"""
+        return bool(six.text_type(self.constant_value))
 
     def __str__(self):
         """Return the Unicode representation of this constant string."""
@@ -164,6 +178,8 @@ class String(Constant):
         return '<String "%s">' % self.constant_value
 
 
+@constants_symbol_table_builder.register(int)
+@constants_symbol_table_builder.register(float)
 @six.python_2_unicode_compatible
 class Number(Constant):
     """
@@ -252,6 +268,8 @@ class Number(Constant):
         return '<Number %s>' % self.constant_value
 
 
+@constants_symbol_table_builder.register(set)
+@constants_symbol_table_builder.register(frozenset)
 @six.python_2_unicode_compatible
 class Set(Constant):
     """
@@ -261,6 +279,7 @@ class Set(Constant):
     :meth:`is_subset`.
 
     """
+    _is_leaf = False
 
     operations = Constant.operations | set(["inequality", "membership"])
 

@@ -172,8 +172,23 @@ class SetVariable(NativeCollectionVariable):
         return value < cv
 
 
+class FormatableVariable(NativeVariable):
+    """
+    a class that accept a extra format in his constructor
+    """
+    formats = []
+
+    def __init__(self, context_name, formats=None):
+
+        if isinstance(formats, six.text_type):
+            self.formats = (formats, )
+        elif formats is not None:
+            self.formats = formats
+        super(FormatableVariable, self).__init__(context_name)
+
+
 @variable_symbol_table_builder.register(datetime.timedelta)
-class DurationVariable(NativeVariable):
+class DurationVariable(FormatableVariable):
     """
     a variable that allow to compare **duration** from the context (datetime.timedelta)
 
@@ -199,16 +214,10 @@ class DurationVariable(NativeVariable):
     ]
 
     def __init__(self, context_name, formats=None):
-
-        if isinstance(formats, six.text_type):
-            self.formats = (formats, )
-        elif formats is not None:
-            self.formats = formats
-
+        super(DurationVariable, self).__init__(context_name, formats)
         self.regexps = [
             re.compile(regex) for regex in self.formats
         ]
-        super(DurationVariable, self).__init__(context_name)
 
     def _from_native_string(self, value):
         """
@@ -227,7 +236,7 @@ class DurationVariable(NativeVariable):
 
 
 @variable_symbol_table_builder.register(datetime.datetime)
-class DateTimeVariable(NativeVariable):
+class DateTimeVariable(FormatableVariable):
     """
     a variable that allow to compare **datetime** from the context (datetime.datetime)
 
@@ -252,13 +261,6 @@ class DateTimeVariable(NativeVariable):
         "%Y/%m/%d %H:%M:%S",
         "%Y-%m-%d %H:%M:%S",
     )
-
-    def __init__(self, context_name, formats=None):
-        if isinstance(formats, six.text_type):
-            self.formats = (formats, )
-        elif formats is not None:
-            self.formats = formats
-        super(DateTimeVariable, self).__init__(context_name)
 
     def _from_native_string(self, value):
         """

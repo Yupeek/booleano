@@ -91,7 +91,7 @@ check the sample dirrectory to view more running examples !
 Documentation
 -------------
 
-The full documentation is at http://django-rest-models.readthedocs.org/en/latest/.
+The full documentation is at http://booleano.readthedocs.io/en/latest/.
 
 
 Contribute

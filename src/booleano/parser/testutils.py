@@ -36,7 +36,7 @@ from pyparsing import ParseException
 
 from booleano.parser.parsers import ConvertibleParser
 
-__all__ = ("BaseGrammarTest", )
+__all__ = ("BaseGrammarTest",)
 
 
 class BaseGrammarTest(object):
@@ -102,8 +102,11 @@ class BaseGrammarTest(object):
             def check():
                 tree = self.parser(expression)
                 expected_node.check_equivalence(tree.root_node)
-            check.description = 'Operation "%s" should yield "%s"' % \
-                                (repr(expression), expected_node)
+
+            check.description = 'Operation "%s" should yield "%s"' % (
+                repr(expression),
+                expected_node,
+            )
 
             yield check
 
@@ -115,6 +118,7 @@ class BaseGrammarTest(object):
             @raises(ParseException)
             def check():
                 self.parser(expression)
+
             check.description = "'%s' is an invalid expression" % expression
 
             yield check
@@ -133,8 +137,11 @@ class BaseGrammarTest(object):
                 node = operand_parser(expression, parseAll=True)
                 eq_(1, len(node))
                 expected_operand.check_equivalence(node[0])
-            check.description = ('Single operand "%s" should return %s' %
-                                 (expression, expected_operand))
+
+            check.description = 'Single operand "%s" should return %s' % (
+                expression,
+                expected_operand,
+            )
 
             yield check
 
@@ -150,7 +157,7 @@ class BaseGrammarTest(object):
             @raises(ParseException)
             def check():
                 operand_parser(expression, parseAll=True)
-            check.description = ('"%s" is an invalid operand' %
-                                 expression)
+
+            check.description = '"%s" is an invalid operand' % expression
 
             yield check

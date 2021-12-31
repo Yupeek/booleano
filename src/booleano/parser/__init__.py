@@ -35,5 +35,4 @@ from __future__ import unicode_literals
 from booleano.parser.grammar import Grammar
 from booleano.parser.scope import Bind, SymbolTable
 
-__all__ = ("Grammar",
-           "Bind", "SymbolTable")
+__all__ = ("Grammar", "Bind", "SymbolTable")

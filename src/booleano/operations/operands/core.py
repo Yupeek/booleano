@@ -40,39 +40,42 @@ class _OperandMeta(type):
 
         """
         if not cls.operations.issubset(OPERATIONS):
-            raise BadOperandError("Operand %s supports unknown operations" %
-                                  name)
+            raise BadOperandError("Operand %s supports unknown operations" % name)
         if len(cls.operations) == 0:
-            raise BadOperandError("Operand %s must support at least one "
-                                  "operation" % name)
+            raise BadOperandError(
+                "Operand %s must support at least one " "operation" % name
+            )
         if not cls.is_implemented(cls.to_python):
-            raise BadOperandError("Operand %s must define the .to_python() "
-                                  "method" % name)
+            raise BadOperandError(
+                "Operand %s must define the .to_python() " "method" % name
+            )
         # Checking the operations supported:
-        if ("boolean" in cls.operations and
-                not cls.is_implemented(cls.__call__)):
-            raise BadOperandError("Operand %s must return its truth value "
-                                  "through .__call__() method" % name)
+        if "boolean" in cls.operations and not cls.is_implemented(cls.__call__):
+            raise BadOperandError(
+                "Operand %s must return its truth value "
+                "through .__call__() method" % name
+            )
         if "equality" in cls.operations and not cls.is_implemented(cls.equals):
-            raise BadOperandError("Operand %s must define the .equals() "
-                                  "method because it supports equalities" %
-                                  name)
-        if (
-            "inequality" in cls.operations and not (
-                cls.is_implemented(cls.less_than) and
-                cls.is_implemented(cls.greater_than))
+            raise BadOperandError(
+                "Operand %s must define the .equals() "
+                "method because it supports equalities" % name
+            )
+        if "inequality" in cls.operations and not (
+            cls.is_implemented(cls.less_than) and cls.is_implemented(cls.greater_than)
         ):
-            raise BadOperandError("Operand %s must define the .greater_than() "
-                                  "and .less_than() methods because it "
-                                  "supports inequalities" % name)
-        if (
-            "membership" in cls.operations and not (
-                cls.is_implemented(cls.belongs_to) and
-                cls.is_implemented(cls.is_subset))
+            raise BadOperandError(
+                "Operand %s must define the .greater_than() "
+                "and .less_than() methods because it "
+                "supports inequalities" % name
+            )
+        if "membership" in cls.operations and not (
+            cls.is_implemented(cls.belongs_to) and cls.is_implemented(cls.is_subset)
         ):
-            raise BadOperandError("Operand %s must define the .belongs_to() "
-                                  "and .is_subset() methods because it "
-                                  "supports memberships" % name)
+            raise BadOperandError(
+                "Operand %s must define the .belongs_to() "
+                "and .is_subset() methods because it "
+                "supports memberships" % name
+            )
 
     def is_implemented(cls, method):
         """Check that ``method`` is implemented."""
@@ -113,6 +116,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     to_python.implemented = False
 
     def check_operation(self, operation):
@@ -127,8 +131,9 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
         """
         if operation in self.operations:
             return
-        raise InvalidOperationError('Operand "%s" does not support operation '
-                                    '"%s"' % (repr(self), operation))
+        raise InvalidOperationError(
+            'Operand "%s" does not support operation ' '"%s"' % (repr(self), operation)
+        )
 
     # Unary operations
 
@@ -145,6 +150,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     __call__.implemented = False
 
     # Binary operations
@@ -160,6 +166,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     equals.implemented = False
 
     def greater_than(self, value, context):
@@ -173,6 +180,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     greater_than.implemented = False
 
     def less_than(self, value, context):
@@ -186,6 +194,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     less_than.implemented = False
 
     def belongs_to(self, value, context):
@@ -199,6 +208,7 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     belongs_to.implemented = False
 
     def is_subset(self, value, context):
@@ -212,4 +222,5 @@ class Operand(six.with_metaclass(_OperandMeta, OperationNode)):
 
         """
         raise NotImplementedError
+
     is_subset.implemented = False

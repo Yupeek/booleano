@@ -24,6 +24,7 @@ class OperationNode(object):
     It can also be seen as the base class for each node in the parse trees.
 
     """
+
     _is_leaf = None
 
     def __call__(self, context):
@@ -63,7 +64,9 @@ class OperationNode(object):
         :class:`PlaceholderVariable`.
 
         """
-        assert self._is_leaf is not None, "subclass of OperationNode must provide _is_leaf with true or false"
+        assert (
+            self._is_leaf is not None
+        ), "subclass of OperationNode must provide _is_leaf with true or false"
         return self._is_leaf
 
     def is_branch(self):
@@ -110,8 +113,7 @@ class OperationNode(object):
 
         """
         error_msg = 'Nodes "%s" and "%s" are not equivalent'
-        assert isinstance(node, self.__class__), error_msg % (repr(node),
-                                                              repr(self))
+        assert isinstance(node, self.__class__), error_msg % (repr(node), repr(self))
 
     def __hash__(self):
         return id(self)
@@ -129,8 +131,9 @@ class OperationNode(object):
         Operation nodes must be evaluated passing the context explicitly.
 
         """
-        raise InvalidOperationError("Operation nodes do not support Pythonic "
-                                    "truth evaluation")
+        raise InvalidOperationError(
+            "Operation nodes do not support Pythonic " "truth evaluation"
+        )
 
     __nonzero__ = __bool__
 
@@ -178,5 +181,6 @@ class OperationNode(object):
         representation explicitly.
 
         """
-        raise NotImplementedError("Node %s doesn't have an "
-                                  "representation" % type(self))
+        raise NotImplementedError(
+            "Node %s doesn't have an " "representation" % type(self)
+        )

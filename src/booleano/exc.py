@@ -13,6 +13,7 @@ class BooleanoException(Exception):
     exception raised by Booleano.
 
     """
+
     pass
 
 
@@ -30,6 +31,7 @@ class InvalidOperationError(BooleanoException):
     For example: ``"word" > 10``.
 
     """
+
     pass
 
 
@@ -38,6 +40,7 @@ class BadCallError(InvalidOperationError):
     Exception raised when a function is called with wrong parameters.
 
     """
+
     pass
 
 
@@ -49,6 +52,7 @@ class BadOperandError(BooleanoException):
     translatable.
 
     """
+
     pass
 
 
@@ -60,6 +64,7 @@ class BadFunctionError(BadOperandError):
     translatable.
 
     """
+
     pass
 
 
@@ -74,6 +79,7 @@ class ParsingException(BooleanoException):
     exception raised by the parser.
 
     """
+
     pass
 
 
@@ -83,16 +89,19 @@ class GrammarError(ParsingException):
     made to use it incorrectly.
 
     """
+
     pass
 
 
 class BadExpressionError(ParsingException):
     """Exception raised when a expression is not a valid boolean expression."""
+
     pass
 
 
 class ScopeError(ParsingException):
     """Exception raised when a scope-related item is defined incorrectly."""
+
     pass
 
 
@@ -105,4 +114,5 @@ class ConversionError(BooleanoException):
     was passed.
 
     """
+
     pass

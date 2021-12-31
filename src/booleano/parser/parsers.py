@@ -29,7 +29,6 @@
 Generic Pyparsing-based parser implementation.
 
 """
-
 from __future__ import unicode_literals
 
 import re
@@ -37,8 +36,8 @@ import re
 import six
 import six.moves
 from pyparsing import (CaselessLiteral, Combine, Forward, Group, Literal, OneOrMore, Optional, ParserElement, Regex,
-                       StringEnd, StringStart, Suppress, Word, ZeroOrMore, delimitedList, nums, opAssoc,
-                       operatorPrecedence, quotedString, removeQuotes)
+                       StringEnd, StringStart, Suppress, Word, ZeroOrMore, delimitedList, infixNotation, nums, opAssoc,
+                       quotedString, removeQuotes)
 
 from booleano.exc import BadExpressionError
 from booleano.operations.operands.classes import Function
@@ -148,7 +147,7 @@ class Parser(object):
 
         operand = self.define_operand()
 
-        operation = operatorPrecedence(
+        operation = infixNotation(
             operand,
             [
                 (relationals, 2, opAssoc.LEFT, self.make_relational),
@@ -207,8 +206,7 @@ class Parser(object):
         function.setName("function")
         function.setParseAction(self.make_function)
 
-        operand << (function | variable | self.define_number() |
-                    self.define_string() | set_)
+        operand << (function | variable | self.define_number() | self.define_string() | set_)
 
         return operand
 
@@ -278,7 +276,7 @@ class Parser(object):
                                    if six.unichr(n).isdigit()])
         unicode_number_expr = Regex("[%s]" % unicode_numbers, re.UNICODE)
         space_char = re.escape(self._grammar.get_token("identifier_spacing"))
-        identifier0 = Regex("[\w%s]+" % space_char, re.UNICODE)
+        identifier0 = Regex("[\w%s]+" % space_char, re.UNICODE)  # noqa: W605
         # Identifiers cannot start with a number:
         identifier0 = Combine(~unicode_number_expr + identifier0)
         identifier0.setName("individual_identifier")
@@ -289,8 +287,7 @@ class Parser(object):
         namespace.setName("namespace")
 
         # --- The full identifier, which could have a namespace:
-        identifier = Combine(namespace.setResultsName("namespace_parts") +
-                             identifier0.setResultsName("identifier"))
+        identifier = Combine(namespace.setResultsName("namespace_parts") + identifier0.setResultsName("identifier"))
         identifier.setName("full_identifier")
 
         return identifier

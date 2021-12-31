@@ -78,8 +78,7 @@ class PlaceholderInstance(Operand):
         """
         super(PlaceholderInstance, self).check_equivalence(node)
         assert (
-            self.name == node.name and
-            self.namespace_parts == node.namespace_parts), \
+            self.name == node.name and self.namespace_parts == node.namespace_parts), \
             'Placeholders "%s" and "%s" are not equivalent' % (self, node)
 
     def no_evaluation(self, *args, **kwargs):

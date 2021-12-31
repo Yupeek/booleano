@@ -35,5 +35,12 @@ from booleano.operations.operands.classes import Function, Variable
 from booleano.operations.operands.constants import Number, Set, String
 from booleano.operations.operands.placeholders import PlaceholderFunction, PlaceholderVariable
 
-__all__ = ("String", "Number", "Set", "Variable", "Function",
-           "PlaceholderVariable", "PlaceholderFunction")
+__all__ = (
+    "String",
+    "Number",
+    "Set",
+    "Variable",
+    "Function",
+    "PlaceholderVariable",
+    "PlaceholderFunction",
+)

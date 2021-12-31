@@ -44,9 +44,24 @@ from booleano.operations.operators import (And, BelongsTo, Equal, GreaterEqual, 
 
 __all__ = (
     # Operands:
-    "String", "Number", "Set", "Variable", "Function", "PlaceholderVariable",
+    "String",
+    "Number",
+    "Set",
+    "Variable",
+    "Function",
+    "PlaceholderVariable",
     "PlaceholderFunction",
     # Operators:
-    "Not", "And", "Or", "Xor", "Equal", "NotEqual", "LessThan", "GreaterThan",
-    "LessEqual", "GreaterEqual", "BelongsTo", "IsSubset",
+    "Not",
+    "And",
+    "Or",
+    "Xor",
+    "Equal",
+    "NotEqual",
+    "LessThan",
+    "GreaterThan",
+    "LessEqual",
+    "GreaterEqual",
+    "BelongsTo",
+    "IsSubset",
 )

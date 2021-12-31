@@ -87,8 +87,7 @@ class ParseManager(object):
 
         """
         if locale in self._parsers:
-            raise GrammarError("There is already a parser for grammar %s" %
-                               locale)
+            raise GrammarError("There is already a parser for grammar %s" % locale)
         parser = self._define_parser(locale, grammar)
         self._parsers[locale] = parser
 
@@ -122,8 +121,7 @@ class ParseManager(object):
         :rtype: Parser
 
         """
-        raise NotImplementedError("Actual parse managers must define their "
-                                  "parsers")
+        raise NotImplementedError("Actual parse managers must define their " "parsers")
 
         #
 
@@ -136,8 +134,9 @@ class EvaluableParseManager(ParseManager):
 
     """
 
-    def __init__(self, symbol_table, generic_grammar, cache_limit=0,
-                 **localized_grammars):
+    def __init__(
+        self, symbol_table, generic_grammar, cache_limit=0, **localized_grammars
+    ):
         """
 
         :param symbol_table: The symbol table for the supported expressions.
@@ -153,9 +152,9 @@ class EvaluableParseManager(ParseManager):
 
         """
         self._symbol_table = symbol_table
-        super(EvaluableParseManager, self).__init__(generic_grammar,
-                                                    cache_limit,
-                                                    **localized_grammars)
+        super(EvaluableParseManager, self).__init__(
+            generic_grammar, cache_limit, **localized_grammars
+        )
 
     def evaluate(self, expression, locale, context):
         """
@@ -330,8 +329,9 @@ class _Cache(object):
         been reached or there's nothing cached.
 
         """
-        if (self.limit is None or self.counter < self.limit or
-                not self.latest_expressions):
+        if (
+            self.limit is None or self.counter < self.limit or not self.latest_expressions
+        ):
             return
         (locale, expression) = self.latest_expressions.pop(-1)
         del self.cache_by_locale[locale][expression]

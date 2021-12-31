@@ -191,14 +191,12 @@ class BinaryOperator(Operator):
 
         """
         super(BinaryOperator, self).check_equivalence(node)
+        is_same_master = node.master_operand == self.master_operand
+        is_same_slave = node.slave_operand == self.slave_operand
+        node_master_slave = node.master_operand == self.slave_operand
+        node_slave_master = self.master_operand == node.slave_operand
         same_operands = (
-            (
-                node.master_operand == self.master_operand and
-                node.slave_operand == self.slave_operand
-            ) or (
-                node.master_operand == self.slave_operand and
-                self.master_operand == node.slave_operand
-            )
+            (is_same_master and is_same_slave) or (node_master_slave and node_slave_master)
         )
         assert same_operands, 'Operands of binary operations %s and %s are not equivalent' % (
             node,

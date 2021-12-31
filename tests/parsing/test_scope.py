@@ -31,14 +31,13 @@ Scope handling tests.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, ok_, assert_false, assert_raises, raises
 import six
-from booleano.parser.scope import Bind, SymbolTable, Namespace, _Identifier
-from booleano.operations import String, Number
-from booleano.exc import ScopeError
+from nose.tools import assert_raises, eq_, ok_
 
-from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
-                   BoolVar, LoggingHandlerFixture)
+from booleano.exc import ScopeError
+from booleano.operations import Number, String
+from booleano.parser.scope import Bind, Namespace, SymbolTable, _Identifier
+from tests import BoolVar, LoggingHandlerFixture, TrafficLightVar, TrafficViolationFunc
 
 
 class TestIdentifiers(object):
@@ -157,7 +156,7 @@ class TestBind(object):
         ok_(bind7 == bind9)
         ok_(bind9 == bind7)
 
-        ok_(bind1 != None)
+        ok_(bind1 is not None)
         ok_(bind1 != SymbolTable("name1", []))
 
         ok_(bind1 != bind2)
@@ -638,16 +637,16 @@ class TestSymbolTable(object):
         bool_var = BoolVar()
         traffic = TrafficLightVar()
         st = SymbolTable("global",
-            (
-                Bind("bool", BoolVar(), es="booleano", fr=u"booléen"),
-                Bind("traffic", TrafficLightVar(), es=u"tráfico")
+                        (
+                            Bind("bool", BoolVar(), es="booleano", fr=u"booléen"),
+                            Bind("traffic", TrafficLightVar(), es=u"tráfico")
             ),
             SymbolTable("foo",
-                (
-                    Bind("bar", bool_var, es="fulano"),
-                    Bind("baz", traffic, es="mengano", fr="bonjour"),
-                ),
-            ),
+                        (
+                            Bind("bar", bool_var, es="fulano"),
+                            Bind("baz", traffic, es="mengano", fr="bonjour"),
+                        ),
+                        ),
         )
 
         # Checking the namespace:
@@ -710,10 +709,7 @@ class TestSymbolTable(object):
         ok_(st10 == st5)
         ok_(st11 == st12)
         ok_(st12 == st11)
-
-        ok_(st1 != None)
-        ok_(st1 != Bind("foo", String("cachapa")))
-
+        ok_(st1 is not None)
         ok_(st1 != st3)
         ok_(st1 != st4)
         ok_(st1 != st6)
@@ -921,4 +917,3 @@ class TestNamespaces(object):
         }
         st = Namespace(global_objects,)
         assert_raises(ScopeError, st.get_object, "bool")
-

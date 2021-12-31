@@ -31,14 +31,13 @@ Tests for the parse trees.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, ok_, assert_false, assert_raises, raises
 import six
-from booleano.parser.trees import EvaluableParseTree, ConvertibleParseTree
-from booleano.operations import And, String, PlaceholderVariable
-from booleano.exc import InvalidOperationError
+from nose.tools import assert_false, assert_raises, eq_, ok_
 
-from tests import (TrafficLightVar, PedestriansCrossingRoad, BoolVar,
-                   DriversAwaitingGreenLightVar, AntiConverter)
+from booleano.exc import InvalidOperationError
+from booleano.operations import And, PlaceholderVariable, String
+from booleano.parser.trees import ConvertibleParseTree, EvaluableParseTree
+from tests import AntiConverter, BoolVar, DriversAwaitingGreenLightVar, PedestriansCrossingRoad, TrafficLightVar
 
 
 class TestEvaluableTrees(object):
@@ -49,31 +48,33 @@ class TestEvaluableTrees(object):
         operand = TrafficLightVar()
         tree = EvaluableParseTree(operand)
         # True
-        context = {'traffic_light': "red"}
+        context = {"traffic_light": "red"}
         ok_(tree(context))
         # False
-        context = {'traffic_light': None}
+        context = {"traffic_light": None}
         assert_false(tree(context))
 
     def test_non_boolean_operands(self):
         """Only operands that support logical values are supported."""
+
         class FakeString(String):
             operations = {"equality"}
+
         operand = FakeString("I'm a string")
         assert_raises(InvalidOperationError, EvaluableParseTree, operand)
 
     def test_operation(self):
         """Operations are valid evaluable parse trees."""
-        operation = And(PedestriansCrossingRoad(),
-                        DriversAwaitingGreenLightVar())
+        operation = And(PedestriansCrossingRoad(), DriversAwaitingGreenLightVar())
         tree = EvaluableParseTree(operation)
         # True
-        context = {'pedestrians_crossroad': ("gustavo", "carla"),
-                   'drivers_trafficlight': ("andreina", "juan")}
+        context = {
+            "pedestrians_crossroad": ("gustavo", "carla"),
+            "drivers_trafficlight": ("andreina", "juan"),
+        }
         ok_(tree(context))
         # False
-        context = {'pedestrians_crossroad': (),
-                   'drivers_traffic_light': ()}
+        context = {"pedestrians_crossroad": (), "drivers_traffic_light": ()}
         assert_false(tree(context))
 
     def test_equivalence(self):
@@ -85,7 +86,7 @@ class TestEvaluableTrees(object):
         ok_(tree1 == tree2)
         ok_(tree2 == tree1)
 
-        ok_(tree1 != None)
+        ok_(tree1 is not None)
         ok_(tree1 != tree3)
         ok_(tree1 != tree4)
         ok_(tree2 != tree3)
@@ -129,7 +130,7 @@ class TestConvertibleTrees(object):
         ok_(tree1 == tree2)
         ok_(tree2 == tree1)
 
-        ok_(tree1 != None)
+        ok_(tree1 is not None)
         ok_(tree1 != tree3)
         ok_(tree1 != tree4)
         ok_(tree2 != tree3)
@@ -149,7 +150,5 @@ class TestConvertibleTrees(object):
 
     def test_representation(self):
         tree = ConvertibleParseTree(BoolVar())
-        expected = "<Parse tree (convertible) " \
-                   "<Anonymous variable [BoolVar]>>"
+        expected = "<Parse tree (convertible) " "<Anonymous variable [BoolVar]>>"
         eq_(repr(tree), expected)
-

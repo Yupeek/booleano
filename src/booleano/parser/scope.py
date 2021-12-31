@@ -120,9 +120,7 @@ class _Identifier(object):
         Two identifiers are equivalent if the have the same names.
 
         """
-        if (isinstance(other, _Identifier) and
-                self.global_name == other.global_name and
-                self.names == other.names):
+        if (isinstance(other, _Identifier) and self.global_name == other.global_name and self.names == other.names):
             return True
         return False
 
@@ -384,11 +382,11 @@ class SymbolTable(_Identifier):
 
         """
         same_id = super(SymbolTable, self).__eq__(other)
-        return (same_id and
-                hasattr(other, "subtables") and
-                hasattr(other, "objects") and
-                other.subtables == self.subtables and
-                self.objects == other.objects)
+        is_subtables = other.subtables == self.subtables
+        is_objects = self.objects == other.objects
+        return (
+            same_id and hasattr(other, "subtables") and hasattr(other, "objects") and is_subtables and is_objects
+        )
 
     def __hash__(self):
         return hash((frozenset(getattr(self, 'subtables', set())), frozenset(getattr(self, 'objects', set()))))

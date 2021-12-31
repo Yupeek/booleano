@@ -31,10 +31,10 @@ Test suite for the grammar configurations.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, ok_, assert_raises
+from nose.tools import assert_raises, eq_
 
-from booleano.parser import Grammar
 from booleano.exc import GrammarError
+from booleano.parser import Grammar
 
 
 class TestDefaultGrammar(object):

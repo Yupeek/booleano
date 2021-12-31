@@ -31,14 +31,12 @@ Tests for the parse tree converters.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, assert_raises, raises
+from nose.tools import assert_raises, eq_, raises
 
-from booleano.operations.converters import BaseConverter
-from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
-    GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset, String, Number,
-    Set, Variable, Function, PlaceholderVariable, PlaceholderFunction)
 from booleano.exc import ConversionError
-
+from booleano.operations import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual, LessThan, Not,
+                                 NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set, String, Xor)
+from booleano.operations.converters import BaseConverter
 from tests import AntiConverter
 
 
@@ -185,7 +183,3 @@ class TestActualConverter(object):
 
 
 ANTI_CONVERTER = AntiConverter()
-
-
-
-

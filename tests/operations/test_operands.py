@@ -32,19 +32,16 @@ Tests for unbounded operands.
 from __future__ import unicode_literals
 
 import datetime
-from nose.tools import eq_, ok_, assert_false, assert_raises, raises
-import six
 
-from booleano.operations import (String, Number, Set, Variable, Function,
-                                 PlaceholderVariable, PlaceholderFunction)
-from booleano.exc import (InvalidOperationError, BadOperandError, BadCallError,
-                          BadFunctionError)
+import six
+from nose.tools import assert_false, assert_raises, eq_, ok_, raises
+
+from booleano.exc import BadCallError, BadFunctionError, BadOperandError, InvalidOperationError
+from booleano.operations import Function, Number, PlaceholderFunction, PlaceholderVariable, Set, String, Variable
 from booleano.operations.operands.constants import Constant
 from booleano.operations.operands.core import Operand
-from booleano.operations.operators import LessThan, GreaterThan
-
-from tests import (TrafficLightVar, PermissiveFunction, TrafficViolationFunc,
-                   BoolVar)
+from booleano.operations.operators import GreaterThan, LessThan
+from tests import BoolVar, PermissiveFunction, TrafficLightVar, TrafficViolationFunc
 
 
 class TestOperand(object):
@@ -93,33 +90,43 @@ class TestOperand(object):
         """Valid operations should just work."""
         class EqualityOperand(Operand):
             operations = set(["equality"])
+
             def to_python(self, value, context):
                 pass
+
             def equals(self, value, context):
                 pass
 
         class InequalityOperand(Operand):
             operations = set(["inequality"])
+
             def to_python(self, value, context):
                 pass
+
             def less_than(self, value, context):
                 pass
+
             def greater_than(self, value, context):
                 pass
 
         class BooleanOperand(Operand):
             operations = set(["boolean"])
+
             def to_python(self, value, context):
                 pass
+
             def __call__(self, value, context):
                 pass
 
         class MembershipOperand(Operand):
             operations = set(["membership"])
+
             def to_python(self, value, context):
                 pass
+
             def belongs_to(self, value, context):
                 pass
+
             def is_subset(self, value, context):
                 pass
 
@@ -140,6 +147,7 @@ class TestOperand(object):
         """Operands must define the .to_python() method."""
         class BadOperand(Operand):
             operations = set(["equality"])
+
             def equals(self, value, context):
                 pass
 
@@ -151,6 +159,7 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["boolean"])
+
             def to_python(self, context):
                 pass
 
@@ -159,6 +168,7 @@ class TestOperand(object):
         """Operands supporting equality must define the .equals() method."""
         class BadOperand(Operand):
             operations = set(["equality"])
+
             def to_python(self, context):
                 pass
 
@@ -171,6 +181,7 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
+
             def to_python(self, context):
                 pass
 
@@ -182,8 +193,10 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
+
             def to_python(self, context):
                 pass
+
             def greater_than(self, value, context):
                 pass
 
@@ -195,8 +208,10 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["inequality"])
+
             def to_python(self, context):
                 pass
+
             def less_than(self, value, context):
                 pass
 
@@ -209,6 +224,7 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["membership"])
+
             def to_python(self, context):
                 pass
 
@@ -220,8 +236,10 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["membership"])
+
             def to_python(self, context):
                 pass
+
             def is_subset(self, value, context):
                 pass
 
@@ -233,8 +251,10 @@ class TestOperand(object):
         """
         class BadOperand(Operand):
             operations = set(["membership"])
+
             def to_python(self, context):
                 pass
+
             def belongs_to(self, value, context):
                 pass
 
@@ -248,6 +268,7 @@ class TestOperand(object):
         """The operation support check setting shouldn't be inherited."""
         class ForgivenOperand(Operand):
             bypass_operation_check = True
+
         class BadOperand(ForgivenOperand):
             pass
 
@@ -287,8 +308,10 @@ class TestVariable(object):
     def test_checking_logical_support(self):
         class GreetingVariable(Variable):
             operations = set(["equality"])
+
             def to_python(self, context):
                 pass
+
             def equals(self, value, context):
                 pass
 
@@ -475,9 +498,15 @@ class TestFunction(object):
     def test_checking_logical_support(self):
         class NoBoolFunction(Function):
             operations = set(["equality"])
-            def equals(self, node): pass
-            def to_python(self): pass
-            def check_arguments(self): pass
+
+            def equals(self, node):
+                pass
+
+            def to_python(self):
+                pass
+
+            def check_arguments(self):
+                pass
 
         func1 = PermissiveFunction(String("foo"))
         func2 = NoBoolFunction()
@@ -495,7 +524,9 @@ class TestFunction(object):
             bypass_operation_check = True
             required_arguments = ("abc", )
             optional_arguments = {"xyz": String("123")}
-            def check_arguments(self): pass
+
+            def check_arguments(self):
+                pass
 
         func1 = FooFunction(String("whatever"))
         func2 = FooFunction(String("whatever"))
@@ -1278,14 +1309,11 @@ class TestPlaceholderFunction(object):
     def test_representation_with_namespace(self):
         # With Unicode:
         func = PlaceholderFunction(u"aquí", ["a", "d"], Number(1), String("hi"))
-        eq_('<Placeholder function call "aquí"(<Number 1.0>, <String "hi">) ' \
+        eq_('<Placeholder function call "aquí"(<Number 1.0>, <String "hi">) '
             'at namespace="a:d">',
             repr(func))
         # With ASCII:
         func = PlaceholderFunction("here", ["a", "d"], Number(1), String("hi"))
-        eq_(u'<Placeholder function call "here"(<Number 1.0>, <String "hi">) ' \
+        eq_(u'<Placeholder function call "here"(<Number 1.0>, <String "hi">) '
             'at namespace="a:d">',
             repr(func))
-
-
-

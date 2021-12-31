@@ -11,7 +11,9 @@ from booleano.parser.grammar import Grammar
 logger = logging.getLogger(__name__)
 
 
-def get_boolean_evaluator(statment, variables=None, constants=None, grammar_tokens=None):
+def get_boolean_evaluator(
+    statment, variables=None, constants=None, grammar_tokens=None
+):
     """
     an fast and easy to use helper to build a parser with variables and constants.
     return a callable which take a dict of value (for the variables).
@@ -33,13 +35,11 @@ def get_boolean_evaluator(statment, variables=None, constants=None, grammar_toke
     if variables is None:
         variables = [{}]
 
-    root_table = variable_symbol_table_builder('root', variables[0])
+    root_table = variable_symbol_table_builder("root", variables[0])
 
     """:type: booleano.parser.scope.SymbolTable"""
     if constants:
-        root_table.add_subtable(
-            constants_symbol_table_builder('const', constants),
-        )
+        root_table.add_subtable(constants_symbol_table_builder("const", constants))
 
     parse_manager = EvaluableParseManager(root_table, grammar)
     return parse_manager.parse(statment)
@@ -54,4 +54,6 @@ def eval_boolean(statment, variables=None, constants=None, grammar_tokens=None):
     :return: the Truth of the statment with the given variables
     :rtype: bool
     """
-    return get_boolean_evaluator(statment, (variables or {},), constants, grammar_tokens)(variables)
+    return get_boolean_evaluator(
+        statment, (variables or {},), constants, grammar_tokens
+    )(variables)

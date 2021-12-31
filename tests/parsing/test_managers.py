@@ -31,17 +31,15 @@ Tests for the parsing managers.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, ok_, assert_false, assert_raises
+from nose.tools import assert_false, assert_raises, eq_, ok_
 
 from booleano.exc import GrammarError
-from booleano.operations import (Equal, LessEqual, String, Number,
-                                 PlaceholderVariable)
-from booleano.parser import (SymbolTable, Bind, Grammar)
-from booleano.parser.core import ParseManager, EvaluableParseManager, ConvertibleParseManager
-from booleano.parser.trees import EvaluableParseTree, ConvertibleParseTree
-from tests import (BoolVar, TrafficLightVar, PedestriansCrossingRoad,
-                   DriversAwaitingGreenLightVar, PermissiveFunction, TrafficViolationFunc,
-                   LoggingHandlerFixture)
+from booleano.operations import Equal, LessEqual, Number, PlaceholderVariable, String
+from booleano.parser import Bind, Grammar, SymbolTable
+from booleano.parser.core import ConvertibleParseManager, EvaluableParseManager, ParseManager
+from booleano.parser.trees import ConvertibleParseTree, EvaluableParseTree
+from tests import (BoolVar, DriversAwaitingGreenLightVar, LoggingHandlerFixture, PedestriansCrossingRoad,
+                   PermissiveFunction, TrafficLightVar, TrafficViolationFunc)
 
 
 class TestBaseManager(object):
@@ -60,23 +58,23 @@ class TestEvaluableParseManager(object):
 
     # A symbol table to be used across the tests:
     symbol_table = SymbolTable("root",
-        (
-            Bind("boolean", BoolVar(), es="booleano"),
-            Bind("message", String("Hello world"), es="mensaje"),
-            Bind("foo", PermissiveFunction, es="fulano"),
-        ),
+                    (
+                        Bind("boolean", BoolVar(), es="booleano"),
+                        Bind("message", String("Hello world"), es="mensaje"),
+                        Bind("foo", PermissiveFunction, es="fulano"),
+                    ),
         SymbolTable("traffic",
-            (
-                Bind("traffic_light", TrafficLightVar(), es=u"semáforo"),
-                Bind("pedestrians_crossing_road", PedestriansCrossingRoad(),
-                     es="peatones_cruzando_calle"),
-                Bind("drivers_awaiting_green", DriversAwaitingGreenLightVar(),
-                     es="conductores_esperando_verde"),
-                Bind("traffic_violation", TrafficViolationFunc,
-                     es=u"infracción"),
-            ),
-            es=u"tráfico"
-        ),
+                    (
+                        Bind("traffic_light", TrafficLightVar(), es=u"semáforo"),
+                        Bind("pedestrians_crossing_road", PedestriansCrossingRoad(),
+                             es="peatones_cruzando_calle"),
+                        Bind("drivers_awaiting_green", DriversAwaitingGreenLightVar(),
+                             es="conductores_esperando_verde"),
+                        Bind("traffic_violation", TrafficViolationFunc,
+                             es=u"infracción"),
+                    ),
+                    es=u"tráfico"
+                    ),
     )
 
     def test_parsing_with_no_localized_grammars(self):
@@ -270,22 +268,21 @@ class TestManagersWithCaching(object):
         When the cache limit has been reached, the oldest items must be removed.
 
         """
-        expr1 = 'today == "2009-07-13"'
-        expr2 = 'yesterday < "2009-07-13"'
-        expr3 = 'tomorrow > "2009-07-13"'
-        expr4 = 'today > "1999-01-06"'
+        expr1 = 'yesterday < "2009-07-13"'
+        expr2 = 'tomorrow > "2009-07-13"'
+        expr3 = 'today > "1999-01-06"'
         # Parsing the expressions:
-        tree1 = self.manager.parse(expr1)
-        tree2 = self.manager.parse(expr2)
-        tree3 = self.manager.parse(expr3)
-        tree4 = self.manager.parse(expr4)
+
+        tree2 = self.manager.parse(expr1)
+        tree3 = self.manager.parse(expr2)
+        tree4 = self.manager.parse(expr3)
         # Checking the cache:
         eq_(self.manager._cache.counter, 3)
         eq_(len(self.manager._cache.cache_by_locale[None]), 3)
-        eq_(self.manager._cache.cache_by_locale[None][expr2], tree2)
-        eq_(self.manager._cache.cache_by_locale[None][expr3], tree3)
-        eq_(self.manager._cache.cache_by_locale[None][expr4], tree4)
-        latest = [(None, expr4), (None, expr3), (None, expr2)]
+        eq_(self.manager._cache.cache_by_locale[None][expr1], tree2)
+        eq_(self.manager._cache.cache_by_locale[None][expr2], tree3)
+        eq_(self.manager._cache.cache_by_locale[None][expr3], tree4)
+        latest = [(None, expr3), (None, expr2), (None, expr1)]
         eq_(self.manager._cache.latest_expressions, latest)
 
     def test_limit_reached_in_different_locales(self):
@@ -294,24 +291,22 @@ class TestManagersWithCaching(object):
         oldest items must be removed.
 
         """
-        expr1 = 'today == "2009-07-13"'
-        expr2 = 'yesterday < "2009-07-13"'
-        expr3 = 'tomorrow > "2009-07-13"'
-        expr4 = 'hoy > "1999-01-06"'
+        expr1 = 'yesterday < "2009-07-13"'
+        expr2 = 'tomorrow > "2009-07-13"'
+        expr3 = 'hoy > "1999-01-06"'
         # Parsing the expressions:
-        tree1 = self.manager.parse(expr1)
-        tree2 = self.manager.parse(expr2, "fr")
-        tree3 = self.manager.parse(expr3)
-        tree4 = self.manager.parse(expr4, "es")
+        tree2 = self.manager.parse(expr1, "fr")
+        tree3 = self.manager.parse(expr2)
+        tree4 = self.manager.parse(expr3, "es")
         # Checking the cache:
         eq_(self.manager._cache.counter, 3)
         eq_(len(self.manager._cache.cache_by_locale[None]), 1)
         eq_(len(self.manager._cache.cache_by_locale['es']), 1)
         eq_(len(self.manager._cache.cache_by_locale['fr']), 1)
-        eq_(self.manager._cache.cache_by_locale['fr'][expr2], tree2)
-        eq_(self.manager._cache.cache_by_locale[None][expr3], tree3)
-        eq_(self.manager._cache.cache_by_locale['es'][expr4], tree4)
-        latest = [("es", expr4), (None, expr3), ("fr", expr2)]
+        eq_(self.manager._cache.cache_by_locale['fr'][expr1], tree2)
+        eq_(self.manager._cache.cache_by_locale[None][expr2], tree3)
+        eq_(self.manager._cache.cache_by_locale['es'][expr3], tree4)
+        latest = [("es", expr3), (None, expr2), ("fr", expr1)]
         eq_(self.manager._cache.latest_expressions, latest)
 
     def test_unlimited_caching(self):
@@ -331,4 +326,3 @@ class TestManagersWithCaching(object):
         eq_(manager._cache.counter, 5)
         eq_(len(manager._cache.cache_by_locale[None]), 5)
         eq_(len(manager._cache.latest_expressions), 5)
-

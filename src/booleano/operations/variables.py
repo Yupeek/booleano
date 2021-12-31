@@ -25,10 +25,11 @@ class NativeVariable(Variable):
     it can be lazy if the given context_name is a callable, in this case, the callable
     will be called with the current context
     """
+
     operations = {
-        "equality",           # ==, !=
-        "inequality",         # >, <, >=, <=
-        "boolean",            # Logical values
+        "equality",  # ==, !=
+        "inequality",  # >, <, >=, <=
+        "boolean",  # Logical values
     }
 
     def __init__(self, context_name):
@@ -80,11 +81,17 @@ class NativeVariable(Variable):
 
     def __str__(self):
         """Return the Unicode representation of this variable."""
-        return 'Scop variable for %s [%s]' % (self.context_name, self.__class__.__name__)
+        return "Scop variable for %s [%s]" % (
+            self.context_name,
+            self.__class__.__name__,
+        )
 
     def __repr__(self):
         """Represent this variable."""
-        return '<Scop variable for %s [%s]>' % (self.context_name, self.__class__.__name__)
+        return "<Scop variable for %s [%s]>" % (
+            self.context_name,
+            self.__class__.__name__,
+        )
 
 
 @variable_symbol_table_builder.register(list)
@@ -176,12 +183,13 @@ class FormatableVariable(NativeVariable):
     """
     a class that accept a extra format in his constructor
     """
+
     formats = []
 
     def __init__(self, context_name, formats=None):
 
         if isinstance(formats, six.text_type):
-            self.formats = (formats, )
+            self.formats = (formats,)
         elif formats is not None:
             self.formats = formats
         super(FormatableVariable, self).__init__(context_name)
@@ -204,20 +212,19 @@ class DurationVariable(FormatableVariable):
 
 
     """
+
     formats = [
         (
-            r'^((?P<days>\d+?) ?d(ays)?)? *'
-            r'((?P<hours>\d+?) ?h(r|ours?)?)? *'
-            r'((?P<minutes>\d+?) ?m(inutes)?)? *'
-            r'((?P<seconds>\d+?) ?s(econds)?)? *$'
+            r"^((?P<days>\d+?) ?d(ays)?)? *"
+            r"((?P<hours>\d+?) ?h(r|ours?)?)? *"
+            r"((?P<minutes>\d+?) ?m(inutes)?)? *"
+            r"((?P<seconds>\d+?) ?s(econds)?)? *$"
         )
     ]
 
     def __init__(self, context_name, formats=None):
         super(DurationVariable, self).__init__(context_name, formats)
-        self.regexps = [
-            re.compile(regex) for regex in self.formats
-        ]
+        self.regexps = [re.compile(regex) for regex in self.formats]
 
     def _from_native_string(self, value):
         """
@@ -229,7 +236,11 @@ class DurationVariable(FormatableVariable):
         for regex in self.regexps:
             match = regex.search(value)
             if match:
-                res = {unit: int(val) for unit, val in match.groupdict().items() if val is not None}
+                res = {
+                    unit: int(val)
+                    for unit, val in match.groupdict().items()
+                    if val is not None
+                }
                 if res:
                     return datetime.timedelta(**res)
         raise ValueError("bad date format for %s: tied %r" % (value, self.formats))
@@ -296,12 +307,8 @@ class DateVariable(DateTimeVariable):
         DateVariable("context_name", formats=["%Y %m %d"])
 
     """
-    formats = (
-        "%d/%m/%Y",
-        "%d-%m-%Y",
-        "%Y/%m/%d",
-        "%Y-%m-%d",
-    )
+
+    formats = ("%d/%m/%Y", "%d-%m-%Y", "%Y/%m/%d", "%Y-%m-%d")
 
     def _from_native_string(self, value):
         return super(DateVariable, self)._from_native_string(value).date()

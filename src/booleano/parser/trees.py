@@ -63,8 +63,7 @@ class ParseTree(object):
         Check if the ``other`` parse tree is equivalent to this one.
 
         """
-        return (isinstance(other, self.__class__) and
-                other.root_node == self.root_node)
+        return isinstance(other, self.__class__) and other.root_node == self.root_node
 
     def __hash__(self):
         return id(self)

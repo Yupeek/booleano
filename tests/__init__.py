@@ -31,9 +31,19 @@ Test suite for Booleano.
 This module contains utilities shared among the whole test suite.
 
 """
-
 from __future__ import unicode_literals
+
+import logging
+from collections import OrderedDict
+from importlib import reload
+
 import six
+
+from booleano.exc import BadCallError, InvalidOperationError
+from booleano.operations import (And, BelongsTo, Equal, Function, GreaterEqual, GreaterThan, IsSubset, LessEqual,
+                                 LessThan, Not, NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set,
+                                 String, Variable, Xor)
+from booleano.operations.converters import BaseConverter
 
 if six.PY2:  # pragma: nocover
     import sys
@@ -41,16 +51,6 @@ if six.PY2:  # pragma: nocover
     sys.setdefaultencoding("utf-8")
 
 
-import logging
-from collections import OrderedDict
-
-
-
-from booleano.operations.converters import BaseConverter
-from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
-    GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset, String, Number,
-    Set, Variable, Function, PlaceholderVariable, PlaceholderFunction)
-from booleano.exc import InvalidOperationError, BadCallError
 
 
 # Mock variables
@@ -420,6 +420,3 @@ class StringConverter(BaseConverter):
         namespace = ns_sep.join(namespace_parts)
         identifier = namespace + ns_sep + name
         return identifier
-
-
-

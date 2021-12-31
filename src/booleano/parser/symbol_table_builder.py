@@ -28,7 +28,10 @@ class SymbolTableBuilder(object):
 
     def register(self, type_, variable_class=None):
         if type_ in self.registered_variables:
-            raise Exception("the type %s is arleady registered to %s" % (type_, self.registered_variables[type_]))
+            raise Exception(
+                "the type %s is arleady registered to %s"
+                % (type_, self.registered_variables[type_])
+            )
 
         if variable_class is not None:
             self.registered_variables[type_] = variable_class
@@ -55,8 +58,10 @@ class SymbolTableBuilder(object):
                 if found is None or len(found.__mro__) < len(registered_type.__mro__):
                     found = registered_type
         if found is None:
-            raise Exception("the type of data %(type)s has no registered variable type. "
-                            "try to use @symbol_table_builder.register(%(type)s)" % dict(type=type_))
+            raise Exception(
+                "the type of data %(type)s has no registered variable type. "
+                "try to use @symbol_table_builder.register(%(type)s)" % dict(type=type_)
+            )
         return self.registered_variables[found]
 
     def __call__(self, name, sample):
@@ -75,7 +80,5 @@ class SymbolTableBuilder(object):
 
             var = self.find_for_type(var_type)
 
-            binds.append(
-                Bind(k, var(k if self.use_key else v))
-            )
+            binds.append(Bind(k, var(k if self.use_key else v)))
         return SymbolTable(name, binds)

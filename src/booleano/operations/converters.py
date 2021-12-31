@@ -38,7 +38,7 @@ from booleano.operations.operands.placeholders import PlaceholderFunction, Place
 from booleano.operations.operators import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual,
                                            LessThan, Not, NotEqual, Or, UnaryOperator, Xor)
 
-__all__ = ("BaseConverter", )
+__all__ = ("BaseConverter",)
 
 
 class BaseConverter(object):
@@ -114,8 +114,7 @@ class BaseConverter(object):
             return convert(node.constant_value)
 
         if isinstance(node, Set):
-            elements = [self.convert(element) for element
-                        in node.constant_value]
+            elements = [self.convert(element) for element in node.constant_value]
             return convert(*elements)
 
         if isinstance(node, PlaceholderFunction):

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+import datetime
 import logging
 
-import datetime
-
-from nose.tools.trivial import ok_, eq_
+from nose.tools.trivial import eq_, ok_
 
 from booleano.utils import eval_boolean, get_boolean_evaluator
 
@@ -14,18 +13,22 @@ logger = logging.getLogger(__name__)
 
 class TestBooleanEval(object):
     def test_eval(self):
-        ok_(eval_boolean(
-            '"o" ∈ name & birthdate > "1983-02-02"',
-            {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
-        ))
+        ok_(
+            eval_boolean(
+                '"o" ∈ name & birthdate > "1983-02-02"',
+                {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
+            )
+        )
 
     def test_eval_grammar(self):
-        ok_(eval_boolean(
-            'age < const:majority & "o" in name & birthdate > "1983-02-02"',
-            {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
-            {'majority': 18},
-            grammar_tokens={'belongs_to': 'in'}
-        ))
+        ok_(
+            eval_boolean(
+                'age < const:majority & "o" in name & birthdate > "1983-02-02"',
+                {"name": "sokka", "age": 15, "birthdate": datetime.date(1984, 1, 1)},
+                {"majority": 18},
+                grammar_tokens={"belongs_to": "in"},
+            )
+        )
 
     def test_eval_no_val(self):
         ok_(eval_boolean('"key" ∈ "keylogger"'))
@@ -46,8 +49,8 @@ class TestGetBooleanEvaluator(object):
         evaluator = get_boolean_evaluator(
             'age < const:majority & "o" in name & birthdate > "1983-02-02"',
             self.sample,
-            {'majority': 18},
-            grammar_tokens={'belongs_to': 'in'}
+            {"majority": 18},
+            grammar_tokens={"belongs_to": "in"},
         )
         for s, expected in zip(self.sample, (False, False, False, True)):
             eq_(evaluator(s), expected)

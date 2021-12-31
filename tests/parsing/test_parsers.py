@@ -31,22 +31,18 @@ Test suite for the built-in parser implementation.
 """
 from __future__ import unicode_literals
 
-from nose.tools import eq_, assert_raises
 import six
+from nose.tools import assert_raises, eq_
 
+from booleano.exc import BadExpressionError, ScopeError
+from booleano.operations import (And, BelongsTo, Equal, GreaterEqual, GreaterThan, IsSubset, LessEqual, LessThan, Not,
+                                 NotEqual, Number, Or, PlaceholderFunction, PlaceholderVariable, Set, String, Xor)
 from booleano.parser.grammar import Grammar
-from booleano.parser.parsers import EvaluableParser, ConvertibleParser
+from booleano.parser.parsers import ConvertibleParser, EvaluableParser, Parser
 from booleano.parser.scope import Namespace
-from booleano.parser.parsers import Parser
-from booleano.operations import (Not, And, Or, Xor, Equal, NotEqual, LessThan,
-    GreaterThan, LessEqual, GreaterEqual, BelongsTo, IsSubset, String, Number,
-    Set, PlaceholderVariable, PlaceholderFunction)
 from booleano.parser.testutils import BaseGrammarTest
-from booleano.exc import ScopeError, BadExpressionError
-
-from tests import (StringConverter, BoolVar, TrafficLightVar,
-                   PedestriansCrossingRoad, DriversAwaitingGreenLightVar,
-                   PermissiveFunction, TrafficViolationFunc)
+from tests import (BoolVar, DriversAwaitingGreenLightVar, PedestriansCrossingRoad, PermissiveFunction, StringConverter,
+                   TrafficLightVar, TrafficViolationFunc)
 
 
 class TestDefaultGrammar(BaseGrammarTest):
@@ -477,16 +473,6 @@ class TestDefaultGrammar(BaseGrammarTest):
                     )
                 )
             ),
-        'W == 0   |   (X != 1   ^   (Y > 2   &   Z < 3))': Or(
-            Equal(PlaceholderVariable("W"), Number(0)),
-            Xor(
-                NotEqual(PlaceholderVariable("X"), Number(1)),
-                And(
-                    GreaterThan(PlaceholderVariable("Y"), Number(2)),
-                    LessThan(PlaceholderVariable("Z"), Number(3))
-                    )
-                )
-            ),
         'W == 0   |   ((X != 1   ^   Y > 2)   &   Z < 3)': Or(
             Equal(PlaceholderVariable("W"), Number(0)),
             And(
@@ -572,14 +558,14 @@ class TestDefaultGrammar(BaseGrammarTest):
             Set(String("orange"), String("apple"))
             ),
         u'{"españa", {"caracas", {"las chimeneas", "el trigal"}}, "france"}': \
-            Set(
-                String(u"españa"),
-                String("france"),
                 Set(
-                    String("caracas"),
-                    Set(String("el trigal"), String("las chimeneas"))
+                    String(u"españa"),
+                    String("france"),
+                    Set(
+                        String("caracas"),
+                        Set(String("el trigal"), String("las chimeneas"))
+                    ),
                 ),
-            ),
         '{var1, var2}': Set(PlaceholderVariable("var1"),
                             PlaceholderVariable("var2")),
         '{var, "string"}': Set(PlaceholderVariable("var"), String("string")),
@@ -909,6 +895,3 @@ class TestEvaluableParser(object):
             eq_('"bool" is not a function', six.text_type(exc))
         else:
             assert 0, '"bool" is a variable, not a function!'
-
-    #
-

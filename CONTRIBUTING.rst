@@ -87,7 +87,7 @@ To get flake8, isort and tox, just pip install them into your virtualenv.
 
 6. Build the doc::
 
-    $ python setup doc
+    $ python setup.py doc
 
 check the resulting html in docs/build/html/
 
